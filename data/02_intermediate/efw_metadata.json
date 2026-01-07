@@ -1,0 +1,39 @@
+{
+  "efw_areas": {
+    "efw_area1": "Size of Government",
+    "efw_area2": "Legal System & Property Rights",
+    "efw_area3": "Sound Money",
+    "efw_area4": "Freedom to Trade Internationally",
+    "efw_area5": "Regulation"
+  },
+  "level_cols": [
+    "efw_aggregate",
+    "efw_area1",
+    "efw_area2",
+    "efw_area3",
+    "efw_area4",
+    "efw_area5"
+  ],
+  "change_cols": [
+    "d_efw_aggregate",
+    "d_efw_area1",
+    "d_efw_area2",
+    "d_efw_area3",
+    "d_efw_area4",
+    "d_efw_area5"
+  ],
+  "quinquennial_years": [
+    1970,
+    1975,
+    1980,
+    1985,
+    1990,
+    1995,
+    2000,
+    2005,
+    2010,
+    2015,
+    2020
+  ],
+  "source": "fraser.xlsx - EFW Panel Dataset"
+}

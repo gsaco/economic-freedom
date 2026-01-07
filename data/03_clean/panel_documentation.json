@@ -1,0 +1,57 @@
+{
+  "identifiers": [
+    "iso3c",
+    "country_name",
+    "year"
+  ],
+  "efw_levels": [
+    "efw_aggregate",
+    "efw_area1",
+    "efw_area2",
+    "efw_area3",
+    "efw_area4",
+    "efw_area5",
+    "efw_sd"
+  ],
+  "efw_changes": [
+    "d_efw_aggregate",
+    "d_efw_area1",
+    "d_efw_area2",
+    "d_efw_area3",
+    "d_efw_area4",
+    "d_efw_area5"
+  ],
+  "outcomes": [
+    "gdp_pc_constant",
+    "gdp_pc_ppp",
+    "ln_gdp_pc",
+    "growth",
+    "population"
+  ],
+  "lagged_controls": [
+    "ln_gdp_pc_lag1",
+    "growth_lag1",
+    "efw_aggregate_lag1",
+    "efw_area1_lag1",
+    "efw_area2_lag1",
+    "efw_area3_lag1",
+    "efw_area4_lag1",
+    "efw_area5_lag1"
+  ],
+  "leads_for_classification": [
+    "efw_aggregate_lead1",
+    "efw_aggregate_lead2"
+  ],
+  "state_dependence": [
+    "ln_gdp_pc_initial",
+    "efw_initial",
+    "gdp_quartile",
+    "efw_quartile"
+  ],
+  "groups": [
+    "region",
+    "income_group",
+    "wb_region",
+    "wb_income"
+  ]
+}

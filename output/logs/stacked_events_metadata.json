@@ -1,0 +1,28 @@
+{
+  "config": {
+    "pre_periods": 4,
+    "post_periods": 6,
+    "pos_event_col": "reform_agg_pos_cd",
+    "neg_event_col": "shock_agg_neg_cd",
+    "control_type": "not_yet_treated",
+    "min_obs_per_event": 5
+  },
+  "timestamp": "2026-01-07T13:48:13.905814",
+  "positive_reforms": {
+    "n_obs": 64564,
+    "n_cohorts": 48,
+    "n_treated": 47,
+    "n_control": 164
+  },
+  "negative_reforms": {
+    "n_obs": 25147,
+    "n_cohorts": 20,
+    "n_treated": 17,
+    "n_control": 160
+  },
+  "variables": {
+    "outcome": "y_cumulative (ln GDP per capita relative to t-1)",
+    "treatment": "treated \u00d7 event_time interactions",
+    "fixed_effects": "cohort_id \u00d7 iso3c (cohort-country FE)"
+  }
+}

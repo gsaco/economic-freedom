@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-01-07T13:37:01.983510",
+  "method": "Synthetic Control Method (convex weights on pre-treatment outcomes)",
+  "positive_reform": {
+    "country": "NIC",
+    "country_name": "Nicaragua",
+    "treatment_year": 1995,
+    "pre_rmse": NaN,
+    "n_donors": 110,
+    "effects": {
+      "0": {
+        "year": 1995,
+        "effect": NaN
+      },
+      "1": {
+        "year": 2000,
+        "effect": NaN
+      },
+      "2": {
+        "year": 2005,
+        "effect": NaN
+      },
+      "3": {
+        "year": 2010,
+        "effect": NaN
+      }
+    }
+  },
+  "negative_reform": null
+}

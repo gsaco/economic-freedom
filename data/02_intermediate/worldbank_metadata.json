@@ -1,0 +1,29 @@
+{
+  "indicators": {
+    "NY.GDP.PCAP.KD": "gdp_pc_constant",
+    "NY.GDP.PCAP.PP.KD": "gdp_pc_ppp",
+    "SP.POP.TOTL": "population"
+  },
+  "quinquennial_years": [
+    1970,
+    1975,
+    1980,
+    1985,
+    1990,
+    1995,
+    2000,
+    2005,
+    2010,
+    2015,
+    2020
+  ],
+  "source": "World Bank API (api.worldbank.org)",
+  "date_downloaded": "2026-01-07T13:48:10.701920",
+  "variables": {
+    "gdp_pc_constant": "GDP per capita, constant 2015 US$",
+    "gdp_pc_ppp": "GDP per capita, PPP, constant 2021 international $",
+    "population": "Total population",
+    "ln_gdp_pc": "Log of gdp_pc_constant",
+    "growth": "Quinquennial log difference of GDP per capita"
+  }
+}

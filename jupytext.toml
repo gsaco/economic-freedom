@@ -1,0 +1,7 @@
+# Jupytext configuration for paired notebooks
+# All notebooks are paired as .ipynb and .py (percent format)
+# The .py files are the canonical source tracked in git
+
+formats = "ipynb,py:percent"
+notebook_metadata_filter = "all"
+cell_metadata_filter = "all"

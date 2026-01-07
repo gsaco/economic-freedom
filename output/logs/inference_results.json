@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-01-07T13:35:33.711508",
+  "bootstrap": {
+    "n_replications": 999,
+    "method": "wild_cluster_bootstrap",
+    "weight_type": "rademacher"
+  },
+  "positive_reforms": {
+    "n_clusters": 163,
+    "supt_critical_value": 2.3100106419233435,
+    "pretrend_joint_pvalue": 0.8528528528528528,
+    "placebo_pvalue": 0.04
+  },
+  "negative_reforms": {
+    "n_clusters": 164,
+    "supt_critical_value": 2.3217331704051176,
+    "pretrend_joint_pvalue": 0.6026026026026026,
+    "placebo_pvalue": 0.6
+  }
+}

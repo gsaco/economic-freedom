@@ -1,0 +1,284 @@
+{
+  "run_timestamp": "2026-01-07T13:32:57.772330",
+  "python_version": "3.11.14 | packaged by conda-forge | (main, Oct 22 2025, 22:56:31) [Clang 19.1.7 ]",
+  "platform": "macOS-15.6.1-arm64-arm-64bit",
+  "project_root": "/Users/gabrielsaco/Documents/GitHub/economic-freedom",
+  "git": {
+    "commit": "67a9ebc",
+    "branch": "main"
+  },
+  "notebooks": [
+    {
+      "notebook": "00_env_setup",
+      "notebook_file": "00_env_setup.py",
+      "status": "success",
+      "exit_code": 0,
+      "runtime_seconds": 1.9,
+      "stdout_tail": "\u2713 data/03_clean\n\u2713 output/figures\n\u2713 output/tables\n\u2713 output/logs\n\u2713 paper/figures\n\u2713 paper/tables\n\u2713 paper/notes\n\u2713 notebooks\n\u2713 Fraser data found: /Users/gabrielsaco/Documents/GitHub/economic-freedom/data/01_raw/fraser.xlsx\n  File size: 5.42 MB\nConfiguration:\n  quinquennial_years: [1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020]\n  shock_thresholds:\n    main: 1.0\n    robustness: [0.75, 1.25, 1.5]\n  sustained_reform:\n    epsilon: 0.5\n    periods_forward: 2\n  cooldown_periods: 2\n  horizons:\n    pre_periods: 2\n    post_periods: 4\n  worldbank_indicators:\n    gdp_pc_constant: NY.GDP.PCAP.KD\n    gdp_pc_ppp: NY.GDP.PCAP.PP.KD\n    population: SP.POP.TOTL\n  run_date: 2026-01-07T13:32:59.414012\n  random_seed: 42\n\u2713 Loaded existing spec ledger with 1 previous runs\n\u2713 Spec ledger saved to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/logs/spec_ledger.json\n\n============================================================\nENVIRONMENT SETUP COMPLETE\n============================================================\nPython: 3.11.14\nProject: economic-freedom\nQuinquennial years: 1970-2020\nMain shock threshold: 1.0\nEvent horizons: K=2, L=4\n============================================================",
+      "stderr_tail": "",
+      "log_file": "output/logs/run_00_env_setup.log",
+      "warnings_count": 0,
+      "start_time": "2026-01-07T13:32:57.804598",
+      "end_time": "2026-01-07T13:32:59.702693",
+      "artifacts": {
+        "notebook": "00_env_setup",
+        "created": [
+          "logs/run_00_env_setup.log"
+        ],
+        "modified": [
+          "logs/spec_ledger.json"
+        ],
+        "timestamp": "2026-01-07T13:32:59.704020"
+      }
+    },
+    {
+      "notebook": "01_ingest_fraser",
+      "notebook_file": "01_ingest_fraser.py",
+      "status": "success",
+      "exit_code": 0,
+      "runtime_seconds": 1.08,
+      "stdout_tail": "\nChanges (\u0394):\n       d_efw_aggregate  d_efw_area1  ...  d_efw_area4  d_efw_area5\ncount          1311.00      1408.00  ...      1133.00      1418.00\nmean              0.13         0.11  ...         0.20         0.10\nstd               0.50         1.03  ...         1.17         0.60\nmin              -1.94        -5.46  ...        -9.27        -3.63\n25%              -0.15        -0.36  ...        -0.26        -0.17\n50%               0.09         0.03  ...         0.04         0.05\n75%               0.38         0.53  ...         0.56         0.35\nmax               2.84         9.32  ...         6.27         3.62\n\n[8 rows x 6 columns]\n\nDistribution of aggregate EFW changes:\n  Mean: 0.127\n  Std:  0.501\n  Negative: 524 (40.0%)\n  Positive: 781 (59.6%)\n  |\u0394| \u2265 1.0: 85\n  |\u0394| \u2265 1.5: 18\n  |\u0394| \u2265 2.0: 3\n\n\u2713 Saved quinquennial EFW panel to /Users/gabrielsaco/Documents/GitHub/economic-freedom/data/02_intermediate/efw_panel_raw.parquet\n  Observations: 1815\n  Countries: 165\n  Years: [np.int64(1970), np.int64(1975), np.int64(1980), np.int64(1985), np.int64(1990), np.int64(1995), np.int64(2000), np.int64(2005), np.int64(2010), np.int64(2015), np.int64(2020)]\n\u2713 Saved metadata to /Users/gabrielsaco/Documents/GitHub/economic-freedom/data/02_intermediate/efw_metadata.json\n\n============================================================\nFINAL VALIDATION CHECKS\n============================================================\n\u2713 No duplicate country-year keys\n\u2713 All years are quinquennial\n\u2713 EFW values in valid range [0, 10]\n\u2713 Panel size: 1815 obs, 165 countries\n\n============================================================\n01_INGEST_FRASER COMPLETE\n============================================================",
+      "stderr_tail": "",
+      "log_file": "output/logs/run_01_ingest_fraser.log",
+      "warnings_count": 1,
+      "start_time": "2026-01-07T13:32:59.704588",
+      "end_time": "2026-01-07T13:33:00.787602",
+      "artifacts": {
+        "notebook": "01_ingest_fraser",
+        "created": [
+          "logs/run_01_ingest_fraser.log"
+        ],
+        "modified": [],
+        "timestamp": "2026-01-07T13:33:00.789216"
+      }
+    },
+    {
+      "notebook": "02_pull_worldbank",
+      "notebook_file": "02_pull_worldbank.py",
+      "status": "success",
+      "exit_code": 0,
+      "runtime_seconds": 0.55,
+      "stdout_tail": "  1990: 194 countries with GDP per capita\n  1995: 197 countries with GDP per capita\n  2000: 201 countries with GDP per capita\n  2005: 205 countries with GDP per capita\n  2010: 212 countries with GDP per capita\n  2015: 214 countries with GDP per capita\n  2020: 210 countries with GDP per capita\n\u2713 All growth calculations use 5-year differences\n\nGrowth statistics (quinquennial log difference):\ncount    1835.0000\nmean        0.0703\nstd         0.1952\nmin        -1.2499\n25%        -0.0156\n50%         0.0792\n75%         0.1652\nmax         1.8276\nName: growth, dtype: float64\n\n============================================================\nVALIDATION CHECKS\n============================================================\n\u2713 No duplicate country-year keys\n\u2713 GDP per capita range: $139 - $170,437\n\u2713 Growth range: -1.250 to 1.828\n\u2713 Coverage: 219 countries\n\n\u2713 Saved World Bank data to /Users/gabrielsaco/Documents/GitHub/economic-freedom/data/02_intermediate/worldbank_raw.parquet\n  Observations: 2405\n  Countries: 219\n\u2713 Saved metadata to /Users/gabrielsaco/Documents/GitHub/economic-freedom/data/02_intermediate/worldbank_metadata.json\n\n============================================================\n02_PULL_WORLDBANK COMPLETE\n============================================================\nDownloaded 3 indicators from World Bank API\nFinal dataset: 2405 obs, 219 countries\nQuinquennial years: 1970 - 2020\n============================================================",
+      "stderr_tail": "",
+      "log_file": "output/logs/run_02_pull_worldbank.log",
+      "warnings_count": 0,
+      "start_time": "2026-01-07T13:33:00.790583",
+      "end_time": "2026-01-07T13:33:01.345162",
+      "artifacts": {
+        "notebook": "02_pull_worldbank",
+        "created": [
+          "logs/run_02_pull_worldbank.log"
+        ],
+        "modified": [],
+        "timestamp": "2026-01-07T13:33:01.346932"
+      }
+    },
+    {
+      "notebook": "03_build_quinquennial_panel",
+      "notebook_file": "03_build_quinquennial_panel.py",
+      "status": "success",
+      "exit_code": 0,
+      "runtime_seconds": 0.48,
+      "stdout_tail": "  d_efw_area3: 1342 non-missing\n  d_efw_area4: 1133 non-missing\n  d_efw_area5: 1418 non-missing\n\noutcomes:\n  gdp_pc_constant: 1661 non-missing\n  gdp_pc_ppp: 1125 non-missing\n  ln_gdp_pc: 1661 non-missing\n  growth: 1497 non-missing\n  population: 1804 non-missing\n\nlagged_controls:\n  ln_gdp_pc_lag1: 1498 non-missing\n  growth_lag1: 1334 non-missing\n  efw_aggregate_lag1: 1311 non-missing\n  efw_area1_lag1: 1408 non-missing\n  efw_area2_lag1: 1551 non-missing\n  efw_area3_lag1: 1342 non-missing\n  efw_area4_lag1: 1133 non-missing\n  efw_area5_lag1: 1418 non-missing\n\nleads_for_classification:\n  efw_aggregate_lead1: 1379 non-missing\n  efw_aggregate_lead2: 1272 non-missing\n\nstate_dependence:\n  ln_gdp_pc_initial: 1804 non-missing\n  efw_initial: 1815 non-missing\n  gdp_quartile: 1498 non-missing\n  efw_quartile: 1311 non-missing\n\ngroups:\n  region: 1815 non-missing\n  income_group: 1815 non-missing\n  wb_region: 1476 non-missing\n  wb_income: 1044 non-missing\n\n============================================================\n03_BUILD_QUINQUENNIAL_PANEL COMPLETE\n============================================================",
+      "stderr_tail": "",
+      "log_file": "output/logs/run_03_build_quinquennial_panel.log",
+      "warnings_count": 1,
+      "start_time": "2026-01-07T13:33:01.348308",
+      "end_time": "2026-01-07T13:33:01.826668",
+      "artifacts": {
+        "notebook": "03_build_quinquennial_panel",
+        "created": [
+          "logs/run_03_build_quinquennial_panel.log"
+        ],
+        "modified": [],
+        "timestamp": "2026-01-07T13:33:01.828320"
+      }
+    },
+    {
+      "notebook": "04_construct_shocks",
+      "notebook_file": "04_construct_shocks.py",
+      "status": "success",
+      "exit_code": 0,
+      "runtime_seconds": 1.42,
+      "stdout_tail": "============================================================\n\u2713 No duplicate country-year keys\n\u2713 All 50 shock/reform indicators are binary\n\u2713 Cooldown properly enforced\n\u2713 Sustained positive reforms: 48\n\u26a0 WARNING: Only 6 sustained negative reforms (maintenance rule is strict)\n  Using basic shocks (S-_cd) for negative analysis: 20\n\u2713 Basic shocks (for robustness): S+_cd=52, S-_cd=20\n\n\u2713 Saved panel with shocks to /Users/gabrielsaco/Documents/GitHub/economic-freedom/data/03_clean/panel_with_shocks.parquet\n  Observations: 1815\n  Countries: 165\n  Total columns: 105\n\nNew shock/reform columns (62):\n  d_efw_aggregate\n  d_efw_area1\n  d_efw_area2\n  d_efw_area3\n  d_efw_area4\n  d_efw_area5\n  d_efw_bin\n  d_efw_category\n  is_bundled_reform\n  is_clean_reform\n  n_areas_shocked\n  reform_agg_any\n  reform_agg_neg\n  reform_agg_neg_cd\n  reform_agg_neg_cd_alt\n  reform_agg_pos\n  reform_agg_pos_cd\n  reform_area1_any\n  reform_area1_neg\n  reform_area1_neg_cd\n  ... and 42 more\n\n============================================================\n04_CONSTRUCT_SHOCKS COMPLETE\n============================================================",
+      "stderr_tail": "",
+      "log_file": "output/logs/run_04_construct_shocks.log",
+      "warnings_count": 1,
+      "start_time": "2026-01-07T13:33:01.829571",
+      "end_time": "2026-01-07T13:33:03.246679",
+      "artifacts": {
+        "notebook": "04_construct_shocks",
+        "created": [
+          "logs/run_04_construct_shocks.log"
+        ],
+        "modified": [
+          "logs/event_counts.json"
+        ],
+        "timestamp": "2026-01-07T13:33:03.248228"
+      }
+    },
+    {
+      "notebook": "05_build_stacked_event_data",
+      "notebook_file": "05_build_stacked_event_data.py",
+      "status": "success",
+      "exit_code": 0,
+      "runtime_seconds": 1.34,
+      "stdout_tail": "  Total observations: 63592\n  Positive cohorts: 48\n  Negative cohorts: 20\n\nSummary by event time (Positive Reforms):\n            n_treated  n_outcome  mean_y  std_y  n_cohorts\nevent_time                                                \n-2                 49       5650  -0.044  0.221         48\n-1                 49       6023   0.000  0.000         48\n 0                 49       6023   0.049  0.237         48\n 1                 49       6023   0.133  0.339         48\n 2                 49       6022   0.239  0.388         48\n 3                 48       5898   0.328  0.444         47\n 4                 40       4954   0.411  0.498         39\n\nSummary by event time (Negative Reforms):\n            n_treated  n_outcome  mean_y  std_y  n_cohorts\nevent_time                                                \n-2                 14       1788  -0.100  0.185         13\n-1                 23       2652   0.000  0.000         20\n 0                 23       2650   0.103  0.161         20\n 1                 21       2356   0.194  0.270         18\n 2                 21       2353   0.235  0.354         18\n 3                 18       1907   0.291  0.467         15\n 4                 16       1604   0.338  0.572         13\n\n\u2713 Saved positive reforms to /Users/gabrielsaco/Documents/GitHub/economic-freedom/data/03_clean/stacked_events_pos.parquet\n\u2713 Saved negative reforms to /Users/gabrielsaco/Documents/GitHub/economic-freedom/data/03_clean/stacked_events_neg.parquet\n\u2713 Saved combined dataset to /Users/gabrielsaco/Documents/GitHub/economic-freedom/data/03_clean/stacked_events_combined.parquet\n\u2713 Saved metadata to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/logs/stacked_events_metadata.json\n\n============================================================\n05_BUILD_STACKED_EVENT_DATA COMPLETE\n============================================================\nEvent window: t=-2 to t=+4 (7 periods)\nControl type: not_yet_treated\nPositive reform cohorts: 48\nNegative reform cohorts: 20\nTotal stacked observations: 63592\n============================================================",
+      "stderr_tail": "",
+      "log_file": "output/logs/run_05_build_stacked_event_data.log",
+      "warnings_count": 2,
+      "start_time": "2026-01-07T13:33:03.249563",
+      "end_time": "2026-01-07T13:33:04.587702",
+      "artifacts": {
+        "notebook": "05_build_stacked_event_data",
+        "created": [
+          "logs/run_05_build_stacked_event_data.log"
+        ],
+        "modified": [
+          "logs/stacked_events_metadata.json"
+        ],
+        "timestamp": "2026-01-07T13:33:04.589180"
+      }
+    },
+    {
+      "notebook": "06_estimate_lp_stacked",
+      "notebook_file": "06_estimate_lp_stacked.py",
+      "status": "success",
+      "exit_code": 0,
+      "runtime_seconds": 98.09,
+      "stdout_tail": "--------------------------------------------------\n  Period       Coef         SE    p-value\n--------------------------------------------------\n      -2    -0.0357     0.0559     0.5232 \n      -1     0.0000     0.0000        nan \n       0    -0.0345     0.0345     0.3176 \n       1    -0.0046     0.0489     0.9249 \n       2    -0.0520     0.0799     0.5152 \n       3    -0.1208     0.1047     0.2484 \n       4     0.0923     0.1138     0.4175 \n\u2713 Saved figure to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_irf_signed_main.pdf\n\u2713 Saved figure to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_irf_combined.pdf\n\nFunctional Summaries\n============================================================\nMeasure                          Positive        Negative\n------------------------------------------------------------\nImpact (h=0)                       0.0845         -0.0345\nPeak Effect                        0.5372         -0.1208\nPeak Period                             4               3\nCumulative (h\u22650)                   1.6565         -0.1197\nMedium-run (h\u22652)                   0.4499         -0.0269\n============================================================\n\u2713 Saved results to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/logs/lp_did_results_main.json\n\u2713 Saved LaTeX table to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/tables/tab_main_results.tex\n\n============================================================\n06_ESTIMATE_LP_STACKED COMPLETE\n============================================================\nEstimated event study for positive and negative EFW reforms\nEvent window: t-2 to t+4\nPositive reforms: 40593 obs, 163 clusters\nNegative reforms: 15310 obs, 164 clusters\n\nOutputs:\n  - /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_irf_signed_main.pdf\n  - /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_irf_combined.pdf\n  - /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/tables/tab_main_results.tex\n  - /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/logs/lp_did_results_main.json\n============================================================",
+      "stderr_tail": "",
+      "log_file": "output/logs/run_06_estimate_lp_stacked.log",
+      "warnings_count": 0,
+      "start_time": "2026-01-07T13:33:04.590558",
+      "end_time": "2026-01-07T13:34:42.676450",
+      "artifacts": {
+        "notebook": "06_estimate_lp_stacked",
+        "created": [
+          "logs/run_06_estimate_lp_stacked.log"
+        ],
+        "modified": [
+          "tables/tab_main_results.tex",
+          "logs/lp_did_results_main.json",
+          "figures/fig_irf_combined.pdf",
+          "figures/fig_irf_signed_main.pdf"
+        ],
+        "timestamp": "2026-01-07T13:34:42.677692"
+      }
+    },
+    {
+      "notebook": "07_inference_bands_placebos",
+      "notebook_file": "07_inference_bands_placebos.py",
+      "status": "success",
+      "exit_code": 0,
+      "runtime_seconds": 51.23,
+      "stdout_tail": "Joint Wald statistic                     0.035           0.447\nJoint p-value                            0.853           0.603\n------------------------------------------------------------\n\nIndividual pre-period tests (Positive):\n  treat_et_-2_dm: coef=-0.0075, p=0.853\n\nIndividual pre-period tests (Negative):\n  treat_et_-2_dm: coef=-0.0357, p=0.603\n\nRunning timing placebo test for POSITIVE reforms...\n  True cumulative effect: 1.6565\n  Placebo p-value: 0.040\n\nRunning timing placebo test for NEGATIVE reforms...\n  True cumulative effect: -0.1197\n  Placebo p-value: 0.600\n\u2713 Saved figure to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_placebo_pos.pdf\n\u2713 Saved figure to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_placebo_neg.pdf\n\u2713 Saved inference results to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/logs/inference_results.json\n\u2713 Saved pre-trend table to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/tables/tab_pretrends_placebos.tex\n\n============================================================\n07_INFERENCE_BANDS_PLACEBOS COMPLETE\n============================================================\nWild cluster bootstrap: 999 replications\n\nPre-trend tests (Joint p-value):\n  Positive reforms: 0.853\n  Negative reforms: 0.603\n\nTiming placebo tests:\n  Positive reforms: p=0.040\n  Negative reforms: p=0.600\n\nOutputs:\n  - /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_irf_pos_bootstrap.pdf\n  - /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_irf_neg_bootstrap.pdf\n  - /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/tables/tab_pretrends_placebos.tex\n============================================================",
+      "stderr_tail": "Placebo iterations:  98%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a| 98/100 [00:11<00:00,  8.23it/s]\nPlacebo iterations:  99%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589| 99/100 [00:12<00:00,  8.21it/s]\nPlacebo iterations: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 100/100 [00:12<00:00,  8.14it/s]\nPlacebo iterations: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 100/100 [00:12<00:00,  8.18it/s]\n\nPlacebo iterations:   0%|          | 0/100 [00:00<?, ?it/s]\nPlacebo iterations:   3%|\u258e         | 3/100 [00:00<00:03, 25.00it/s]\nPlacebo iterations:   6%|\u258c         | 6/100 [00:00<00:03, 25.59it/s]\nPlacebo iterations:   9%|\u2589         | 9/100 [00:00<00:03, 26.04it/s]\nPlacebo iterations:  12%|\u2588\u258f        | 12/100 [00:00<00:03, 25.83it/s]\nPlacebo iterations:  15%|\u2588\u258c        | 15/100 [00:00<00:03, 26.07it/s]\nPlacebo iterations:  18%|\u2588\u258a        | 18/100 [00:00<00:03, 26.37it/s]\nPlacebo iterations:  21%|\u2588\u2588        | 21/100 [00:00<00:02, 26.45it/s]\nPlacebo iterations:  24%|\u2588\u2588\u258d       | 24/100 [00:00<00:02, 25.86it/s]\nPlacebo iterations:  27%|\u2588\u2588\u258b       | 27/100 [00:01<00:03, 23.43it/s]\nPlacebo iterations:  30%|\u2588\u2588\u2588       | 30/100 [00:01<00:02, 23.69it/s]\nPlacebo iterations:  33%|\u2588\u2588\u2588\u258e      | 33/100 [00:01<00:02, 24.35it/s]\nPlacebo iterations:  36%|\u2588\u2588\u2588\u258c      | 36/100 [00:01<00:02, 24.70it/s]\nPlacebo iterations:  39%|\u2588\u2588\u2588\u2589      | 39/100 [00:01<00:02, 25.23it/s]\nPlacebo iterations:  42%|\u2588\u2588\u2588\u2588\u258f     | 42/100 [00:01<00:02, 25.33it/s]\nPlacebo iterations:  45%|\u2588\u2588\u2588\u2588\u258c     | 45/100 [00:01<00:02, 25.64it/s]\nPlacebo iterations:  48%|\u2588\u2588\u2588\u2588\u258a     | 48/100 [00:01<00:02, 25.87it/s]\nPlacebo iterations:  51%|\u2588\u2588\u2588\u2588\u2588     | 51/100 [00:02<00:01, 25.72it/s]\nPlacebo iterations:  54%|\u2588\u2588\u2588\u2588\u2588\u258d    | 54/100 [00:02<00:01, 25.88it/s]\nPlacebo iterations:  57%|\u2588\u2588\u2588\u2588\u2588\u258b    | 57/100 [00:02<00:01, 25.96it/s]\nPlacebo iterations:  60%|\u2588\u2588\u2588\u2588\u2588\u2588    | 60/100 [00:02<00:01, 25.90it/s]\nPlacebo iterations:  63%|\u2588\u2588\u2588\u2588\u2588\u2588\u258e   | 63/100 [00:02<00:01, 25.53it/s]\nPlacebo iterations:  66%|\u2588\u2588\u2588\u2588\u2588\u2588\u258c   | 66/100 [00:02<00:01, 25.69it/s]\nPlacebo iterations:  69%|\u2588\u2588\u2588\u2588\u2588\u2588\u2589   | 69/100 [00:02<00:01, 25.62it/s]\nPlacebo iterations:  72%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  | 72/100 [00:02<00:01, 25.66it/s]\nPlacebo iterations:  75%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c  | 75/100 [00:02<00:00, 25.80it/s]\nPlacebo iterations:  78%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a  | 78/100 [00:03<00:00, 25.62it/s]\nPlacebo iterations:  81%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  | 81/100 [00:03<00:00, 25.72it/s]\nPlacebo iterations:  84%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d | 84/100 [00:03<00:00, 25.36it/s]\nPlacebo iterations:  87%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b | 87/100 [00:03<00:00, 25.55it/s]\nPlacebo iterations:  90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 90/100 [00:03<00:00, 25.47it/s]\nPlacebo iterations:  93%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e| 93/100 [00:03<00:00, 23.85it/s]\nPlacebo iterations:  96%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c| 96/100 [00:03<00:00, 24.08it/s]\nPlacebo iterations:  99%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589| 99/100 [00:03<00:00, 24.51it/s]\nPlacebo iterations: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 100/100 [00:03<00:00, 25.26it/s]",
+      "log_file": "output/logs/run_07_inference_bands_placebos.log",
+      "warnings_count": 0,
+      "start_time": "2026-01-07T13:34:42.678419",
+      "end_time": "2026-01-07T13:35:33.906201",
+      "artifacts": {
+        "notebook": "07_inference_bands_placebos",
+        "created": [
+          "logs/run_07_inference_bands_placebos.log"
+        ],
+        "modified": [
+          "tables/tab_pretrends_placebos.tex",
+          "logs/inference_results.json",
+          "figures/fig_irf_pos_bootstrap.pdf",
+          "figures/fig_irf_neg_bootstrap.pdf",
+          "figures/fig_placebo_neg.pdf",
+          "figures/fig_placebo_pos.pdf"
+        ],
+        "timestamp": "2026-01-07T13:35:33.907227"
+      }
+    },
+    {
+      "notebook": "08_state_dependence_nonlinearity",
+      "notebook_file": "08_state_dependence_nonlinearity.py",
+      "status": "success",
+      "exit_code": 0,
+      "runtime_seconds": 50.99,
+      "stdout_tail": "  Mean: -1.297\n  Std: 0.238\n  Min: -1.938, Max: -1.017\n\nEstimating by MAGNITUDE (Positive Reforms)...\n  Median |magnitude|: 1.246\n  Large: 21130 obs\n  Small: 19463 obs\n\nEstimating by MAGNITUDE (Negative Reforms)...\n  Median |magnitude|: 1.199\n  Large: 8352 obs\n  Small: 6958 obs\n\u2713 Saved figure to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_irf_magnitude_pos.pdf\n\u2713 Saved figure to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_irf_magnitude_neg.pdf\n\n============================================================\nSTATE DEPENDENCE SUMMARY\n============================================================\n\nBy Income Level (Positive Reforms):\nState  N_obs  N_clusters  Impact (h=0)  Cumulative\n High  21297         111      0.091174    1.875423\n  Low  19296         163      0.082398    1.180876\n\nBy Initial EFW (Positive Reforms):\nState  N_obs  N_clusters  Impact (h=0)  Cumulative\n High  28663         160      0.056094    1.719483\n  Low  11930         161      0.054713   -0.002083\n\nBy Magnitude (Positive Reforms):\nState  N_obs  N_clusters  Impact (h=0)  Cumulative\nLarge  21130         160      0.141119    2.291133\nSmall  19463         161      0.048992    1.121866\n\n\u2713 Saved state dependence results to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/logs/state_dependence_results.json\n\n============================================================\n08_STATE_DEPENDENCE_NONLINEARITY COMPLETE\n============================================================",
+      "stderr_tail": "",
+      "log_file": "output/logs/run_08_state_dependence_nonlinearity.log",
+      "warnings_count": 0,
+      "start_time": "2026-01-07T13:35:33.907833",
+      "end_time": "2026-01-07T13:36:24.896097",
+      "artifacts": {
+        "notebook": "08_state_dependence_nonlinearity",
+        "created": [
+          "logs/run_08_state_dependence_nonlinearity.log"
+        ],
+        "modified": [
+          "logs/state_dependence_results.json",
+          "figures/fig_irf_state_income_neg.pdf",
+          "figures/fig_irf_state_income_pos.pdf",
+          "figures/fig_irf_magnitude_neg.pdf",
+          "figures/fig_irf_state_efw_neg.pdf",
+          "figures/fig_irf_state_efw_pos.pdf",
+          "figures/fig_irf_magnitude_pos.pdf"
+        ],
+        "timestamp": "2026-01-07T13:36:24.897220"
+      }
+    },
+    {
+      "notebook": "09_dimensions_bundles",
+      "notebook_file": "09_dimensions_bundles.py",
+      "status": "success",
+      "exit_code": 0,
+      "runtime_seconds": 31.02,
+      "stdout_tail": "\nArea 4 (Freedom to Trade):\n  Positive: 63762 obs, 88 cohorts\n  Negative: 9826 obs, 10 cohorts\n\nArea 5 (Regulation):\n  Positive: 48855 obs, 60 cohorts\n  Negative: 13480 obs, 15 cohorts\n\u2713 Saved figure to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_irf_areas_pos.pdf\n\u2713 Saved figure to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_irf_areas_neg.pdf\n\u2713 Saved figure to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_cumulative_by_area.pdf\nBundle analysis:\n  Clean reforms (single area): 498\n  Bundled reforms (multi-area): 282\n\nNumber of areas shocked:\nn_areas_shocked\n1    498\n2    206\n3     59\n4     16\n5      1\nName: count, dtype: int64\n\n================================================================================\nAREA-SPECIFIC EFFECTS SUMMARY\n================================================================================\n Area                           Name  N_pos  Impact_pos  Cum_pos  N_neg  Impact_neg  Cum_neg\n    1             Size of Government     83   -0.019765 0.929949     39    0.011840 0.895129\n    2 Legal System & Property Rights     34    0.062461 1.431759     17   -0.034546 0.475281\n    3                    Sound Money    111    0.040838 1.332701     33    0.065891 0.496383\n    4               Freedom to Trade     88   -0.027422 0.804045     10    0.129064 1.458588\n    5                     Regulation     60    0.043808 1.760325     15    0.009716 0.726044\n\n\u2713 Saved table to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/tables/tab_area_effects.tex\n\u2713 Saved results to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/logs/dimensions_bundles_results.json\n\n============================================================\n09_DIMENSIONS_BUNDLES COMPLETE\n============================================================",
+      "stderr_tail": "",
+      "log_file": "output/logs/run_09_dimensions_bundles.log",
+      "warnings_count": 0,
+      "start_time": "2026-01-07T13:36:24.898032",
+      "end_time": "2026-01-07T13:36:55.914899",
+      "artifacts": {
+        "notebook": "09_dimensions_bundles",
+        "created": [
+          "logs/run_09_dimensions_bundles.log"
+        ],
+        "modified": [
+          "tables/tab_area_effects.tex",
+          "logs/dimensions_bundles_results.json",
+          "figures/fig_irf_areas_pos.pdf",
+          "figures/fig_irf_areas_neg.pdf",
+          "figures/fig_cumulative_by_area.pdf"
+        ],
+        "timestamp": "2026-01-07T13:36:55.916136"
+      }
+    },
+    {
+      "notebook": "10_scm_major_reforms",
+      "notebook_file": "10_scm_major_reforms.py",
+      "status": "success",
+      "exit_code": 0,
+      "runtime_seconds": 6.14,
+      "stdout_tail": "  MEX       Mexico  1980        -1.408505       5.317615\n  ISL      Iceland  2010        -1.401868       6.661360\n  SWZ     Eswatini  2010        -1.391857       5.290185\n  MMR      Myanmar  1990        -1.339957       3.437281\nSelected positive reform: NIC (Nicaragua) in 1995\n  \u0394EFW = 2.84\n\nSCM Results for Nicaragua (1995):\n  Pre-treatment RMSE: nan\n  Number of donors: 110\n  Top donor weights:\n\u2713 Saved figure to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/figures/fig_scm_top_positive.pdf\nSelected negative reform: GIN (Guinea) in 2010\n  \u0394EFW = -1.94\n\nSCM Results for Guinea (2010):\n  Pre-treatment RMSE: nan\n  Number of donors: 122\n  Top donor weights:\nCannot plot: missing data\n\nTreatment Effects (Positive Reform):\n  h=0 (1995): Effect = nan\n  h=1 (2000): Effect = nan\n  h=2 (2005): Effect = nan\n  h=3 (2010): Effect = nan\n\n\u2713 Saved SCM results to /Users/gabrielsaco/Documents/GitHub/economic-freedom/output/logs/scm_results.json\n\n============================================================\n10_SCM_MAJOR_REFORMS COMPLETE\n============================================================\n\nThis notebook provides a scaffold for Synthetic Control Method analysis.\nFor publication, consider:\n  - Using specialized SCM packages (e.g., Synth, augsynth)\n  - Implementing ridge augmentation (ASCM)\n  - Running placebo tests (permutation of treatment timing)\n  - Analyzing multiple events and aggregating results\n============================================================",
+      "stderr_tail": "",
+      "log_file": "output/logs/run_10_scm_major_reforms.log",
+      "warnings_count": 0,
+      "start_time": "2026-01-07T13:36:55.916796",
+      "end_time": "2026-01-07T13:37:02.059776",
+      "artifacts": {
+        "notebook": "10_scm_major_reforms",
+        "created": [
+          "logs/run_10_scm_major_reforms.log"
+        ],
+        "modified": [
+          "logs/scm_results.json",
+          "figures/fig_scm_top_positive.pdf"
+        ],
+        "timestamp": "2026-01-07T13:37:02.060719"
+      }
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "success": 11,
+    "failed": 0,
+    "total_runtime_seconds": 244.24
+  }
+}
