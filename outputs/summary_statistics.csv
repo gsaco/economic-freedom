@@ -1,0 +1,12 @@
+Metric,Value
+Total Observations,"4,950"
+Unique Countries,165
+Time Span,1970 - 2023
+Mean EFW Score,6.40
+Median EFW Score,6.46
+Std Dev EFW,1.21
+Min EFW Score,2.25
+Max EFW Score,9.32
+Countries in Latest Year,165
+Correlation: Legal-Trade,0.64
+Correlation: Regulation-Trade,0.68

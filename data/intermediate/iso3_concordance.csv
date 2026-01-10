@@ -1,0 +1,209 @@
+country_name,iso3,source
+"Hong Kong SAR, China",HKG,manual
+Singapore,SGP,manual
+New Zealand,NZL,manual
+Switzerland,CHE,manual
+United States,USA,manual
+Ireland,IRL,manual
+Australia,AUS,manual
+Taiwan,TWN,manual
+Denmark,DNK,manual
+Netherlands,NLD,manual
+Canada,CAN,manual
+Luxembourg,LUX,manual
+United Kingdom,GBR,manual
+Costa Rica,CRI,manual
+Finland,FIN,manual
+Germany,DEU,manual
+Japan,JPN,manual
+Malta,MLT,manual
+Estonia,EST,manual
+Cyprus,CYP,manual
+Mauritius,MUS,manual
+Spain,ESP,manual
+Iceland,ISL,manual
+Portugal,PRT,manual
+Georgia,GEO,manual
+Chile,CHL,manual
+Panama,PAN,manual
+Guatemala,GTM,manual
+Czechia,CZE,manual
+Latvia,LVA,manual
+Belgium,BEL,manual
+Seychelles,SYC,efw
+Austria,AUT,manual
+Lithuania,LTU,manual
+Albania,ALB,efw
+Malaysia,MYS,manual
+Sweden,SWE,manual
+"Korea, Rep.",KOR,manual
+Armenia,ARM,manual
+Israel,ISR,manual
+Jamaica,JAM,manual
+Jordan,JOR,manual
+Bahrain,BHR,manual
+Cabo Verde,CPV,manual
+France,FRA,manual
+Italy,ITA,manual
+Dominican Republic,DOM,manual
+Norway,NOR,manual
+Slovak Republic,SVK,manual
+Romania,ROU,manual
+Peru,PER,manual
+United Arab Emirates,ARE,manual
+Montenegro,MNE,efw
+Uruguay,URY,manual
+Greece,GRC,manual
+Bulgaria,BGR,manual
+Thailand,THA,manual
+Brunei Darussalam,BRN,manual
+El Salvador,SLV,manual
+Paraguay,PRY,manual
+Hungary,HUN,manual
+Philippines,PHL,manual
+Slovenia,SVN,manual
+Honduras,HND,manual
+Indonesia,IDN,manual
+Saudi Arabia,SAU,manual
+Croatia,HRV,manual
+"Gambia, The",GMB,manual
+Botswana,BWA,manual
+Mexico,MEX,manual
+"Bahamas, The",BHS,manual
+Uganda,UGA,manual
+Bhutan,BTN,efw
+Kazakhstan,KAZ,manual
+Mongolia,MNG,manual
+Poland,POL,manual
+Cambodia,KHM,manual
+Barbados,BRB,manual
+North Macedonia,MKD,manual
+Qatar,QAT,manual
+Kenya,KEN,manual
+Trinidad and Tobago,TTO,manual
+Oman,OMN,manual
+South Africa,ZAF,manual
+Moldova,MDA,efw
+India,IND,manual
+Brazil,BRA,manual
+Kyrgyz Republic,KGZ,manual
+Serbia,SRB,manual
+Nepal,NPL,manual
+Kuwait,KWT,manual
+Nicaragua,NIC,manual
+Bosnia and Herzegovina,BIH,efw
+Colombia,COL,manual
+Morocco,MAR,manual
+Namibia,NAM,manual
+Rwanda,RWA,manual
+Benin,BEN,efw
+Tajikistan,TJK,efw
+Ecuador,ECU,manual
+Somalia,SOM,efw
+Burkina Faso,BFA,efw
+Tanzania,TZA,manual
+Zambia,ZMB,manual
+Mozambique,MOZ,efw
+Vietnam,VNM,manual
+Senegal,SEN,manual
+China,CHN,manual
+Liberia,LBR,efw
+Djibouti,DJI,efw
+Mauritania,MRT,efw
+Papua New Guinea,PNG,efw
+Côte d'Ivoire,CIV,manual
+Fiji,FJI,efw
+Togo,TGO,efw
+Bolivia,BOL,manual
+Madagascar,MDG,efw
+Haiti,HTI,efw
+Belize,BLZ,efw
+Timor-Leste,TLS,manual
+Lesotho,LSO,efw
+Belarus,BLR,manual
+Nigeria,NGA,manual
+Tunisia,TUN,manual
+Guinea,GIN,efw
+Niger,NER,efw
+Bangladesh,BGD,manual
+Ghana,GHA,manual
+Sri Lanka,LKA,manual
+Azerbaijan,AZE,manual
+Mali,MLI,efw
+Lao PDR,LAO,manual
+Cameroon,CMR,manual
+Pakistan,PAK,manual
+Sierra Leone,SLE,efw
+Comoros,COM,efw
+Suriname,SUR,efw
+Guyana,GUY,efw
+Türkiye,TUR,manual
+Eswatini,SWZ,manual
+Iraq,IRQ,efw
+Guinea-Bissau,GNB,efw
+Gabon,GAB,efw
+Lebanon,LBN,manual
+Ukraine,UKR,manual
+Angola,AGO,efw
+Malawi,MWI,efw
+Russian Federation,RUS,manual
+"Egypt, Arab Rep.",EGY,manual
+"Yemen, Rep.",YEM,manual
+"Congo, Dem. Rep.",COD,manual
+Burundi,BDI,efw
+Ethiopia,ETH,manual
+Central African Republic,CAF,efw
+"Congo, Rep.",COG,manual
+Chad,TCD,efw
+Libya,LBY,efw
+Syrian Arab Republic,SYR,manual
+Argentina,ARG,manual
+Myanmar,MMR,manual
+"Iran, Islamic Rep.",IRN,manual
+Algeria,DZA,manual
+Sudan,SDN,efw
+Zimbabwe,ZWE,manual
+"Venezuela, RB",VEN,manual
+Hong Kong,HKG,manual
+"Korea, South",KOR,manual
+South Korea,KOR,manual
+"Korea, North",PRK,manual
+North Korea,PRK,manual
+"Taiwan, China",TWN,manual
+Venezuela,VEN,manual
+Egypt,EGY,manual
+Iran,IRN,manual
+Syria,SYR,manual
+Yemen,YEM,manual
+Congo,COG,manual
+Democratic Republic of the Congo,COD,manual
+Ivory Coast,CIV,manual
+Cote d'Ivoire,CIV,manual
+Slovakia,SVK,manual
+Czech Republic,CZE,manual
+Russia,RUS,manual
+Laos,LAO,manual
+Kyrgyzstan,KGZ,manual
+Burma,MMR,manual
+The Gambia,GMB,manual
+Gambia,GMB,manual
+The Bahamas,BHS,manual
+Bahamas,BHS,manual
+"Macedonia, FYR",MKD,manual
+"Micronesia, Fed. Sts.",FSM,manual
+Micronesia,FSM,manual
+St. Lucia,LCA,manual
+Saint Lucia,LCA,manual
+St. Vincent and the Grenadines,VCT,manual
+Saint Vincent and the Grenadines,VCT,manual
+St. Kitts and Nevis,KNA,manual
+Saint Kitts and Nevis,KNA,manual
+São Tomé and Príncipe,STP,manual
+Sao Tome and Principe,STP,manual
+Brunei,BRN,manual
+Cape Verde,CPV,manual
+Turkey,TUR,manual
+East Timor,TLS,manual
+eSwatini,SWZ,manual
+Swaziland,SWZ,manual
+Uzbekistan,UZB,manual

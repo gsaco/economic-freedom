@@ -1,0 +1,64 @@
+{
+  "wdi": {
+    "pull_date": "2026-01-08T17:26:07.344641",
+    "indicators": [
+      "NY.GDP.PCAP.KD",
+      "NY.GDP.MKTP.KD.ZG",
+      "FP.CPI.TOTL.ZG",
+      "SP.POP.TOTL",
+      "NE.TRD.GNFS.ZS",
+      "NE.GDI.FTOT.ZS",
+      "NE.CON.GOVT.ZS",
+      "SL.UEM.TOTL.ZS",
+      "FS.AST.PRVT.GD.ZS",
+      "BX.KLT.DINV.WD.GD.ZS",
+      "BN.CAB.XOKA.GD.ZS",
+      "GC.TAX.TOTL.GD.ZS",
+      "GC.DOD.TOTL.GD.ZS",
+      "FM.LBL.BMNY.GD.ZS",
+      "SE.SEC.ENRR",
+      "SI.POV.GINI",
+      "SP.DYN.LE00.IN",
+      "NY.GDP.TOTL.RT.ZS",
+      "SL.TLF.CACT.ZS"
+    ],
+    "url": "https://api.worldbank.org/v2"
+  },
+  "wgi": {
+    "pull_date": "2026-01-08T16:29:39.559058",
+    "indicators": [
+      "wgi_control_corruption",
+      "wgi_govt_effectiveness",
+      "wgi_political_stability",
+      "wgi_regulatory_quality",
+      "wgi_rule_of_law",
+      "wgi_voice_accountability"
+    ],
+    "url": "https://api.worldbank.org/v2"
+  },
+  "pwt": {
+    "pull_date": "2026-01-08T17:25:45.383239",
+    "indicators": [
+      "gdp_real_national",
+      "gdp_real_expenditure",
+      "gdp_real_output",
+      "population_pwt",
+      "employment",
+      "avg_hours_worked",
+      "human_capital",
+      "tfp",
+      "investment_share",
+      "govt_share",
+      "export_share",
+      "import_share"
+    ],
+    "url": "https://www.rug.nl/ggdc/productivity/pwt/pwt-releases/pwt-10.01/?lang=en"
+  },
+  "maddison": {
+    "pull_date": "2026-01-08T17:28:57.996459",
+    "indicators": [
+      "gdppc_maddison"
+    ],
+    "url": "https://www.rug.nl/ggdc/historicaldevelopment/maddison/data/mpd2020.xlsx"
+  }
+}
