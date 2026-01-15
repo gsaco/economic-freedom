@@ -1,0 +1,6 @@
+{
+  "indicator": "SP.POP.TOTL",
+  "retrieved_at": "2026-01-15 12:40:51",
+  "rows": 17290,
+  "url": "https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL"
+}
