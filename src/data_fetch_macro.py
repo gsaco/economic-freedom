@@ -26,7 +26,16 @@ def _write_metadata(meta_path: Path, metadata: dict) -> None:
 
 def download_file(url: str, dest: Path, timeout: int = 60) -> Path:
     dest.parent.mkdir(parents=True, exist_ok=True)
+    meta_path = dest.with_suffix(dest.suffix + ".meta")
     if dest.exists():
+        if not meta_path.exists():
+            meta = {
+                "url": url,
+                "retrieved_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "bytes": dest.stat().st_size,
+                "note": "Metadata generated after cache existed.",
+            }
+            _write_metadata(meta_path, meta)
         print(f"Using cached download: {dest}")
         return dest
     print(f"Downloading: {url}")
@@ -41,7 +50,7 @@ def download_file(url: str, dest: Path, timeout: int = 60) -> Path:
         "retrieved_at": time.strftime("%Y-%m-%d %H:%M:%S"),
         "bytes": dest.stat().st_size,
     }
-    _write_metadata(dest.with_suffix(dest.suffix + ".json"), meta)
+    _write_metadata(meta_path, meta)
     print(f"Saved to: {dest}")
     return dest
 
@@ -150,14 +159,37 @@ def fetch_pwt(
     df = pd.read_excel(dest, sheet_name="Data")
     df = df.rename(columns={"countrycode": "iso3", "year": "year"})
     df["iso3"] = df["iso3"].astype(str).str.strip().str.upper()
+    meta_path = dest.with_suffix(dest.suffix + ".meta")
+    if meta_path.exists():
+        meta = json.loads(meta_path.read_text())
+    else:
+        meta = {"url": url, "retrieved_at": time.strftime("%Y-%m-%d %H:%M:%S"), "bytes": dest.stat().st_size}
+    meta["variables"] = list(df.columns)
+    _write_metadata(meta_path, meta)
     return df, url
 
 
 def prepare_pwt_subset(df: pd.DataFrame, start_year: int = 1970, end_year: int = 2020) -> pd.DataFrame:
-    keep_cols = ["iso3", "country", "year", "rgdpe", "pop", "hc"]
+    keep_cols = [
+        "iso3",
+        "country",
+        "year",
+        "rgdpe",
+        "pop",
+        "hc",
+        "rtfpna",
+        "rkna",
+        "csh_i",
+    ]
     available = [col for col in keep_cols if col in df.columns]
     subset = df[available].copy()
     subset = subset[(subset["year"] >= start_year) & (subset["year"] <= end_year)]
     if "rgdpe" in subset.columns and "pop" in subset.columns:
         subset["pwt_gdppc"] = subset["rgdpe"] / subset["pop"]
+    if "rtfpna" in subset.columns:
+        subset["pwt_tfp"] = subset["rtfpna"]
+    if "rkna" in subset.columns:
+        subset["pwt_capital"] = subset["rkna"]
+    if "csh_i" in subset.columns:
+        subset["pwt_inv_share"] = subset["csh_i"]
     return subset

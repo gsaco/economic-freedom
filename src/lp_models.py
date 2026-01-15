@@ -8,6 +8,7 @@ from typing import Iterable, List
 import numpy as np
 import pandas as pd
 from linearmodels.panel import PanelOLS
+from linearmodels.panel.utility import AbsorbingEffectError
 
 
 @dataclass
@@ -32,6 +33,8 @@ def run_local_projections(
     entity_col: str = "iso3",
     time_col: str = "year",
     add_time_fe: bool = True,
+    drop_absorbed: bool = False,
+    check_rank: bool = True,
 ) -> List[LPResult]:
     panel = prepare_lp_data(df, entity_col, time_col)
     results: List[LPResult] = []
@@ -41,14 +44,23 @@ def run_local_projections(
         data["lp_outcome"] = data.groupby(level=0)[outcome_col].shift(-h)
         needed = ["lp_outcome"] + shock_cols + control_cols
         data = data.dropna(subset=needed)
+        if data.empty:
+            continue
         exog = data[shock_cols + control_cols]
+        if exog.shape[1] == 0:
+            continue
         model = PanelOLS(
             data["lp_outcome"],
             exog,
             entity_effects=True,
             time_effects=add_time_fe,
+            drop_absorbed=drop_absorbed,
+            check_rank=check_rank,
         )
-        fit = model.fit(cov_type="clustered", cluster_entity=True)
+        try:
+            fit = model.fit(cov_type="clustered", cluster_entity=True)
+        except (AbsorbingEffectError, ValueError):
+            continue
         results.append(LPResult(horizon=h, model=model, fit=fit))
     return results
 
@@ -59,14 +71,22 @@ def summarize_lp_results(results: List[LPResult], shock_cols: List[str]) -> pd.D
         for term in shock_cols:
             if term not in res.fit.params:
                 continue
+            try:
+                std_err = res.fit.std_errors[term]
+                t_stat = res.fit.tstats[term]
+                p_value = res.fit.pvalues[term]
+            except np.linalg.LinAlgError:
+                std_err = np.nan
+                t_stat = np.nan
+                p_value = np.nan
             records.append(
                 {
                     "horizon": res.horizon,
                     "term": term,
                     "coef": res.fit.params[term],
-                    "std_err": res.fit.std_errors[term],
-                    "t_stat": res.fit.tstats[term],
-                    "p_value": res.fit.pvalues[term],
+                    "std_err": std_err,
+                    "t_stat": t_stat,
+                    "p_value": p_value,
                     "nobs": res.fit.nobs,
                 }
             )

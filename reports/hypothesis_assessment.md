@@ -6,7 +6,7 @@
 - H3. ¿La respuesta dinámica es no lineal según (i) magnitud del choque y (ii) estado inicial del país (nivel EFW e ingreso)?
 
 ## Evidencia descriptiva y patrones (con cifras)
-- Event-study (q90): crecimiento medio en t=0: positivo=0.120, negativo=0.006; en t=5: positivo=0.120, negativo=0.006 (ver `outputs/figures/event_study_growth.png` y `outputs/tables/event_study_growth.csv`).
+- Event-study (q90): crecimiento medio en t=0: positivo=0.120, negativo=0.006; en t=5: positivo=0.091, negativo=0.034 (ver `outputs/figures/event_study_growth.png` y `outputs/tables/event_study_growth.csv`).
 - LP lineal h=0: 0.066 (p=0.000); h=5: 0.018 (p=0.213) (ver `outputs/figures/lp_irf_linear.png`).
 - LP asimétrico h=10: ΔEFW+ -0.005 (p=0.808) vs ΔEFW- 0.047 (p=0.085) (ver `outputs/figures/lp_irf_asymmetric.png`).
 - LP magnitud h=5: ΔEFW 0.016 (p=0.371) y ΔEFW*Large 0.004 (p=0.834) (ver `outputs/figures/lp_irf_magnitude.png`).

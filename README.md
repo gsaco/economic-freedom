@@ -6,8 +6,12 @@
    - `source .venv/bin/activate`
 2. Install dependencies:
    - `pip install -r requirements.txt`
-3. Run the notebook pipeline:
-   - `jupytext --to ipynb notebooks/01_efw_macro_quinquennial_analysis.py`
-   - `jupyter notebook notebooks/01_efw_macro_quinquennial_analysis.ipynb`
+3. Run the full pipeline (data + notebooks):
+   - `python tools/run_pipeline.py`
 
-Outputs are written to `data/processed/`, `outputs/figures/`, `outputs/tables/`, and `reports/`.
+Notes:
+- The pipeline downloads and caches raw data in `data/raw/` with `.meta` files.
+- Processed panels go to `data/processed/`.
+- Figures/tables go to `outputs/figures/` and `outputs/tables/`.
+- Reports live in `reports/`.
+- If you only want to sync notebooks without executing, use `python tools/run_pipeline.py --skip-exec`.

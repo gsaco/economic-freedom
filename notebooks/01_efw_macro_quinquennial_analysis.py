@@ -469,7 +469,7 @@ for label, events in [("positive", positive_events), ("negative", negative_event
             how="left",
             suffixes=("", "_event"),
         )
-        mean_growth = merged["gdppc_growth_5y"].mean()
+        mean_growth = merged["gdppc_growth_5y_event"].mean()
         records.append({
             "label": label,
             "event_time": step * 5,
