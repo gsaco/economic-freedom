@@ -92,12 +92,28 @@ dmypy.json
 data/02_intermediate/worldbank_cache/
 *.log
 
-# Large data artifacts (regenerable)
+# Raw data (manual inputs not tracked)
 data/raw/
-data/processed/stacked_event_*.csv
+!data/raw/eu/
+!data/raw/eu/eu_milestones.csv
+!data/raw/wto/
+!data/raw/wto/wto_accessions.csv
+!data/raw/crosswalk/
+!data/raw/crosswalk/**
+
+# Intermediate caches
+data/interim/
+
+# Processed data (regenerable)
+data/processed/
+
+# Legacy artifacts / large binaries
 output/
-outputs/
 tesis.pdf
 
-# Keep .ipynb files but don't track them (they are generated from .py via jupytext)
-# Actually, we DO track .ipynb for convenience, but .py is canonical
+# R session artifacts
+.Rhistory
+.RData
+.Rproj.user
+
+# Track .ipynb files; .py is canonical via jupytext

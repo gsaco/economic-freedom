@@ -1,20 +1,46 @@
-# Economic Freedom (EFW) quinquennial pipeline
+# External Commitment Devices → EFW → Macro (Quinquennial Global Panel)
 
-## How to run
-1. Create and activate a virtual environment:
-   - `python -m venv .venv`
-   - `source .venv/bin/activate`
-2. Install dependencies:
-   - `pip install -r requirements.txt`
-3. Run the full pipeline (data + notebooks + report mirror):
-   - `python tools/run_all.py`
-4. If you only want notebook execution (no mirror/report):
-   - `python tools/run_pipeline.py`
+## Project Goal
+Build a Q1-grade empirical pipeline for a global quinquennial panel (1970-2020) to estimate how external commitment devices (EU/WTO) affect institutional quality (EFW) and macro outcomes, with reform vs reversal asymmetries, state dependence, nonlinearities, and episode robustness.
 
-Notes:
-- The pipeline downloads and caches raw data in `data/raw/` with `.meta` files.
-- Processed panels go to `data/processed/`.
-- Figures/tables go to `outputs/figures/` and `outputs/tables/`.
-- A mirrored inspection report is written to `output/report.md`.
-- Reports live in `reports/`.
-- If you only want to sync notebooks without executing, use `python tools/run_pipeline.py --skip-exec`.
+## Quickstart
+```bash
+python -m pip install -r requirements.txt
+make all
+```
+
+## Reproduce Results
+```bash
+make data
+make build
+make estimate
+make docs
+make notebooks
+```
+
+## Folder Map
+- `data/raw/`: cached raw inputs (EFW, EU, WTO, ACDB, WDI/PWT)
+- `data/processed/`: quinquennial panels and merged datasets
+- `outputs/figures/`: saved figures
+- `outputs/tables/`: saved tables
+- `docs/results/`: markdown reports with embedded figures
+- `notebooks/`: jupytext-paired notebooks
+- `src/`: ingestion, build, estimators, analysis, viz
+- `tools/`: pipeline orchestration
+- `tests/`: unit + integration tests
+- `legacy/`: archived old pipeline content
+
+## Data: Auto vs Manual
+Auto-download attempts:
+- EFW master dataset (Fraser Institute)
+- WDI indicators via World Bank API
+- PWT (Penn World Table)
+- WTO accession list via public web table (fallback to manual CSV)
+
+Manual placement if download is blocked:
+- `data/raw/efw/` (EFW CSV/XLSX)
+- `data/raw/macro/` (PWT CSV/XLSX)
+- `data/raw/wto/wto_accessions.csv` (WTO accessions)
+- `data/raw/wto_acdb/` (ACDB commitments export)
+
+See `docs/results/01_data_overview.md` for coverage and treatment lists.
