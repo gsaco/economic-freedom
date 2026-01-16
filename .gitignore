@@ -92,5 +92,12 @@ dmypy.json
 data/02_intermediate/worldbank_cache/
 *.log
 
+# Large data artifacts (regenerable)
+data/raw/
+data/processed/stacked_event_*.csv
+output/
+outputs/
+tesis.pdf
+
 # Keep .ipynb files but don't track them (they are generated from .py via jupytext)
 # Actually, we DO track .ipynb for convenience, but .py is canonical

@@ -1,43 +1,41 @@
-# Q1 paper pitch: Components of economic freedom, short-run growth, and downside risk (1970-2020, quinquennial)
+# Q1 paper pitch: Asymmetric economic freedom reforms and short-run growth dynamics (1970-2020, quinquennial)
 
 ## 1) Main research question
-Which components of economic freedom (EFW) drive short-run growth dynamics and downside risk, and are these relationships robust to regime measurement concerns and crisis episodes?
+Do positive vs. negative economic freedom reforms have asymmetric effects on quinquennial growth and downside risk, once we use clean-control stacked event studies and modern inference?
 
 ## 2) Contribution vs literature
-- Component-first panel (EFW areas + subcomponents) aligned to a strict quinquennial grid (1970-2020) with transparent shock definitions and decomposition.
-- Dynamic evidence using local projections with country and time FE, asymmetry (pos/neg shocks), regime splits, and downside-risk outcomes.
-- Reproducibility and multiple-testing discipline via a spec ledger with BH/FDR (`outputs/spec_ledger.csv`).
+- Shifts the contribution away from component disaggregation as a main result; components are a benchmark appendix only.
+- Uses clean-control stacked event studies with explicit reform timing, avoiding TWFE staggered-adoption bias.
+- Emphasizes asymmetry and downside risk rather than average correlations.
+- Implements joint bands, wild cluster bootstrap, placebo timing, and leave-one-event-out diagnostics.
 
 ## 3) Identification strategy (what variation identifies what)
-- Within-country variation in quinquennial changes of EFW components (country FE + time FE) identifies short-run associations net of common shocks.
-- Dynamic LPs (h = 0,1,2,3) capture contemporaneous vs forward effects at 5-year horizons.
-- Crisis event studies align crisis timing to quinquennial bins for stress-test diagnostics, not causal claims.
+- Reform timing is defined by large quinquennial changes in EFW (q90/q10) with a sustain rule and cooldown.
+- Stacked event-study design uses not-yet-treated clean controls (no events in the window), with country-stack and year FE.
+- Effects interpreted as dynamic within-country associations; causality is framed cautiously given potential endogeneity.
 
 ## 4) Main results (with evidence refs)
-- Summary EFW change has a strong contemporaneous association with GDPpc growth (h=0: 0.0587, p=1.6e-08). See `outputs/figures/moduleA_irf_linear_gdppc_growth_5y.png` and `outputs/tables/moduleA_lp_coefficients.csv`.
-- Component effects concentrate in area2 (legal system), area3 (sound money), and area5 (regulation) at h=0; effects decay at longer horizons. See `outputs/figures/moduleA_irf_areas_gdppc_growth_5y.png` and `outputs/tables/moduleA_component_leaderboard.csv`.
-- Asymmetry: negative shocks are more contractionary in implied terms (pos vs neg coefficients at h=0). See `outputs/figures/moduleA_irf_asym_gdppc_growth_5y.png`.
-- Downside risk: EFW changes reduce the probability of growth collapse at h=0 (p=0.013), with weak persistence. See `outputs/figures/moduleF_collapse_irf.png`.
-- Regime heterogeneity: stronger h=0 effects in autocracies than democracies (autocracy 0.071 vs democracy 0.030). See `outputs/figures/moduleE_irf_autocracy.png` and `outputs/figures/moduleE_irf_democracy.png`.
-- Crisis event studies show contemporaneous growth drops for systemic banking and sovereign crises, but crisis x EFW interactions are not significant. See `outputs/figures/moduleD_event_systemic_banking.png` and `outputs/figures/moduleD_crisis_interaction.png`.
+- **Positive reforms**: event_time 0 effect on 5y GDPpc growth is 0.064 (p=0.006). See `outputs/tables/stacked_event_irf_pos_gdppc_growth_5y.csv` and `outputs/figures/stacked_event_irf_pos_gdppc_growth_5y.png`.
+- **Negative reforms**: event_time 0 effect is -0.099 (p=0.230) and not precisely estimated. See `outputs/tables/stacked_event_irf_neg_gdppc_growth_5y.csv`.
+- **Post effect robustness** (positive reforms): wild bootstrap p=0.007, two-way cluster p=0.028, placebo timing p=0.035. See `outputs/tables/stacked_event_wildboot.csv`, `outputs/tables/stacked_event_two_way_cluster.csv`, `outputs/tables/stacked_event_placebo_timing.csv`.
+- **Pretrends**: joint lead tests show no evidence of pretrends (p>0.79). See `outputs/tables/stacked_event_pretrend_tests.csv` and `outputs/figures/stacked_event_pretrend_plot.png`.
+- **Downside risk**: growth-collapse effects are negative but not significant (pos event_time 0: -0.078, p=0.228). See `outputs/tables/stacked_event_irf_pos_growth_collapse.csv`.
 
 ## 5) Robustness checks passed/failed
 Passed:
-- Country FE + time FE; lagged outcomes and controls.
-- Multiple-testing control via BH/FDR in the spec ledger.
-- Regime splits and GDP measurement-error simulations (Module E).
-- Alternative outcomes: TFP growth, investment share, inflation (Module A).
+- Clean-control stacked design with joint bands (see `outputs/figures/stacked_event_joint_bands.png`).
+- Wild cluster bootstrap, placebo timing, and leave-one-event-out influence checks (see `outputs/tables/stacked_event_wildboot.csv`, `outputs/tables/stacked_event_placebo_timing.csv`, `outputs/tables/stacked_event_leave_one_out.csv`).
+- Sample sensitivity (year >= 1985, 1995) preserves positive reform effect (see `outputs/tables/stacked_event_sample_sensitivity.csv`).
 
 Not yet passed / weak:
-- Crisis interactions (Module D) and reform bundles (Module C) are not robust.
-- Complementarities (Module B) weak and sensitive to specification.
-- Persistence beyond h=0 is limited across most outcomes.
+- Negative reform effects are imprecise (low power / heterogeneity).
+- Tail-risk (collapse) effects are not robust in stacked design.
+- Balance table shows meaningful pre-differences in EFW levels; interpretation remains associative (see `outputs/tables/stacked_event_balance_pre.csv`).
 
 ## 6) Limitations and next steps
-- Endogeneity remains: contemporaneous effects may reflect simultaneous reforms and growth rather than causal impacts.
-- Measurement issues in autocracies require stronger external validation (night lights, alternative GDP sources).
-- Expand robustness to alternative shock definitions (year-specific quantiles vs pooled) and re-estimate growth using PWT GDP.
-- Improve identification by exploring reform narratives or external instruments (trade shocks, monetary anchor adoption) if data allow.
+- Endogeneity remains; the design improves timing and inference but is not a causal instrument.
+- Augment with external instruments or reform narratives (future work).
+- Add placebo outcomes and two-way clustered event-time SEs (see `docs/08_q1_must_do_plan.md`).
 
 ## Proposed paper angle (selected)
-Primary angle: EFW components (especially sound money and legal system) drive short-run growth and downside-risk reductions, with limited persistence and possible regime-dependent measurement bias. This is a cautious but publishable contribution that reframes EFW effects as short-run stabilization rather than long-run growth engines.
+Primary angle: **positive economic freedom reforms are followed by higher quinquennial growth in clean-control stacked event studies, while negative reforms are imprecise and tail-risk effects are weak**. The paper frames EFW as a short-run growth stabilizer under credible event-study diagnostics, with components relegated to a benchmark appendix.

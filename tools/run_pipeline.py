@@ -13,6 +13,10 @@ NOTEBOOKS = [
     "01_efw_macro_quinquennial_analysis",
     "02_components_bundles_crises",
     "03_q1_candidate_evidence",
+    "04_construct_shocks",
+    "05_build_stacked_event_data",
+    "06_estimate_lp_stacked",
+    "07_inference_bands_placebos",
 ]
 
 

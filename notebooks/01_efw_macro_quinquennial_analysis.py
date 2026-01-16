@@ -651,6 +651,8 @@ print("Tabla guardada:", TABLES / "high_impact_episodes.csv")
 # ## 13. Data dictionary
 
 # %%
+WRITE_REPORTS = False
+
 data_dict = [
     ("iso3", "Código ISO3 del país (EFW)."),
     ("year", "Año quinquenal (1970–2020)."),
@@ -680,8 +682,9 @@ dict_lines = ["# Diccionario de datos", "", "| Variable | Descripción |", "|---
 for var, desc in data_dict:
     dict_lines.append(f"| {var} | {desc} |")
 
-(REPORTS / "data_dictionary.md").write_text("\n".join(dict_lines))
-print("Diccionario guardado:", REPORTS / "data_dictionary.md")
+if WRITE_REPORTS:
+    (REPORTS / "data_dictionary.md").write_text("\n".join(dict_lines))
+    print("Diccionario guardado:", REPORTS / "data_dictionary.md")
 
 # %% [markdown]
 # ## 14. Reporte preliminar de hipótesis
@@ -774,5 +777,6 @@ lines.append("- Definir shocks negativos usando cuantiles por año y verificar r
 lines.append("- Estimar efectos separados por regiones WB e ingreso inicial (interacciones o submuestras).")
 lines.append("")
 
-(REPORTS / "hypothesis_assessment.md").write_text("\n".join(lines))
-print("Reporte guardado:", REPORTS / "hypothesis_assessment.md")
+if WRITE_REPORTS:
+    (REPORTS / "hypothesis_assessment.md").write_text("\n".join(lines))
+    print("Reporte guardado:", REPORTS / "hypothesis_assessment.md")
