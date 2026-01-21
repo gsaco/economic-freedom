@@ -1,7 +1,9 @@
-# External Commitment Devices → EFW → Macro (Quinquennial Global Panel)
+# Quinquennial EFW Atlas (Descriptive)
 
 ## Project Goal
-Build a Q1-grade empirical pipeline for a global quinquennial panel (1970-2020) to estimate how external commitment devices (EU/WTO) affect institutional quality (EFW) and macro outcomes, with reform vs reversal asymmetries, state dependence, nonlinearities, and episode robustness.
+Build a descriptive quinquennial atlas (1970-2020) of Economic Freedom of the World (EFW) and macro indicators.
+The pipeline reports coverage, distributions, ranks, maps, and co-movements without causal inference.
+See `docs/atlas_scope.md` for scope rules.
 
 ## Quickstart
 ```bash
@@ -13,34 +15,30 @@ make all
 ```bash
 make data
 make build
-make estimate
-make docs
 make notebooks
+make docs
 ```
 
 ## Folder Map
-- `data/raw/`: cached raw inputs (EFW, EU, WTO, ACDB, WDI/PWT)
-- `data/processed/`: quinquennial panels and merged datasets
-- `outputs/figures/`: saved figures
-- `outputs/tables/`: saved tables
-- `docs/results/`: markdown reports with embedded figures
-- `notebooks/`: jupytext-paired notebooks
-- `src/`: ingestion, build, estimators, analysis, viz
+- `data/01_raw/`: cached raw inputs (EFW, WDI cache, geodata)
+- `data/02_intermediate/`: cleaned intermediate extracts + metadata
+- `data/03_clean/`: final atlas panel + metadata
+- `output/figures/`: figures (PNG 500 dpi + PDF)
+- `output/tables/`: tables
+- `output/logs/`: run ledger and environment snapshots
+- `docs/results/`: descriptive atlas writeups
+- `notebooks/`: jupytext-paired atlas notebooks
+- `src/`: atlas utilities (paths, qc, io, maps, viz style)
 - `tools/`: pipeline orchestration
-- `tests/`: unit + integration tests
-- `legacy/`: archived old pipeline content
+- `archive/`: deprecated inference pipeline
 
 ## Data: Auto vs Manual
 Auto-download attempts:
 - EFW master dataset (Fraser Institute)
 - WDI indicators via World Bank API
-- PWT (Penn World Table)
-- WTO accession list via public web table (fallback to manual CSV)
+- Natural Earth geodata for maps
 
 Manual placement if download is blocked:
-- `data/raw/efw/` (EFW CSV/XLSX)
-- `data/raw/macro/` (PWT CSV/XLSX)
-- `data/raw/wto/wto_accessions.csv` (WTO accessions)
-- `data/raw/wto_acdb/` (ACDB commitments export)
+- `data/01_raw/efw/` (EFW CSV/XLSX)
 
-See `docs/results/01_data_overview.md` for coverage and treatment lists.
+See `docs/results/01_data_overview.md` for coverage and dataset notes.

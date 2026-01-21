@@ -1,22 +1,15 @@
-# Plan B/C Diagnostics
+# QA and Reproducibility
 
-Plan used for headline results: **B**
+Quality gates enforced by tests:
+- No inference imports in executed notebooks/modules.
+- Unique key check for (iso3c, year).
+- Year grid strictly matches quinquennial years.
+- Metadata JSON files exist for intermediate and final datasets.
+- Figures exported as PNG (500 dpi) and PDF.
 
-Failure triggers:
-[
-  "EU SDID pre-fit RMSPE ratio > 2"
-]
+Run ledger:
+- `output/logs/run_ledger.jsonl`
 
-If Plan B/C activated, see tagged estimator outputs in `outputs/tables/` and diagnostics in `outputs/diagnostics/`.
-
-
-References:
-- Economic Freedom of the World (Fraser Institute) documentation
-- Arkhangelsky et al. (2021) Synth-DID
-- Callaway & Sant'Anna (2021) DID; Sun & Abraham (2021) event studies
-- Ben-Michael et al. (2021) Augmented SCM
-- Schimmelfennig & Sedelmeier (2004) EU conditionality
-- EU Commission enlargement process documentation
-- Tang & Wei (2009) WTO accessions
-- Brotto (IMF WP 2024) WTO accession impacts
-- Chemutai & Escaith (2017) WTO commitments measurement
+Environment snapshots:
+- `output/logs/env_snapshot.json`
+- `output/logs/run_config.json`

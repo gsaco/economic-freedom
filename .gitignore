@@ -89,7 +89,9 @@ dmypy.json
 .vscode/
 
 # Project specific
-data/02_intermediate/worldbank_cache/
+data/01_raw/
+data/02_intermediate/
+data/03_clean/
 *.log
 
 # Raw data (manual inputs not tracked)

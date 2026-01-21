@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import subprocess
 import sys
 from pathlib import Path
 
@@ -8,81 +9,52 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.config import ensure_directories
-from src.ingest.efw import ingest_efw
-from src.ingest.wdi import ingest_wdi
-from src.ingest.pwt import ingest_pwt
-from src.ingest.eu_events import ingest_eu_events
-from src.ingest.wto_events import ingest_wto_events
-from src.ingest.wto_acdb import ingest_wto_acdb
-from src.build.outcomes import build_macro_outcomes
-from src.build.exposure import build_exposures
-from src.build.reforms import build_reforms
-from src.build.panel import build_panel
-from src.build.qa import (
-    check_baseline_no_leakage,
-    check_delta5,
-    check_exposure_bounds,
-    check_quinquennial_years,
-    check_unique_key,
-)
-from src.analysis.main_results import run_main
-from src.analysis.robustness import run_robustness
-from src.analysis.episodes import run_episode_robustness
-from src.analysis.heterogeneity import run_heterogeneity
-from src.viz.figures import generate_all_figures
-from src.viz.tables import table_main_effects
-from src.analysis.reporting import write_reports
+from src.paths import ensure_directories
+
+NOTEBOOK_ORDER = [
+    "00_env_setup",
+    "01_ingest_fraser",
+    "02_pull_worldbank",
+    "03_build_quinquennial_panel",
+    "04_descriptive_coverage_and_missingness",
+    "05_global_trends_and_distribution",
+    "06_maps_levels_and_changes",
+    "07_components_and_mobility",
+    "08_macro_co_movement",
+    "09_shock_episodes",
+]
+
+STAGE_NOTEBOOKS = {
+    "data": NOTEBOOK_ORDER[:3],
+    "build": [NOTEBOOK_ORDER[3]],
+    "notebooks": NOTEBOOK_ORDER,
+    "all": NOTEBOOK_ORDER,
+    "ci": NOTEBOOK_ORDER,
+}
 
 
-def run_data() -> None:
-    ingest_efw()
-    ingest_wdi()
-    ingest_pwt()
-    ingest_eu_events()
-    ingest_wto_events()
-    ingest_wto_acdb()
-
-
-def run_build() -> None:
-    build_macro_outcomes()
-    build_exposures()
-    build_reforms()
-    panel_path = build_panel()
-
-    panel = Path(panel_path)
-    if panel.exists():
-        df = __import__("pandas").read_parquet(panel)
-        check_unique_key(df, ["iso3", "year"])
-        check_quinquennial_years(df)
-        check_exposure_bounds(df, ["EU_neg_share", "EU_post_share", "WTO_neg_share", "WTO_post_share"])
-        if "efw_delta5" in df.columns:
-            check_delta5(df, "efw_overall", "efw_delta5")
-        check_baseline_no_leakage(df, "baseline_efw_eu", "EU_neg_share")
-
-
-def run_estimate() -> None:
-    diagnostics = run_main()
-    run_robustness()
-    run_episode_robustness()
-    run_heterogeneity()
-    generate_all_figures()
-    table_main_effects()
-    print(f"Plan used: {diagnostics.get('plan_used')}")
-
-
-def run_docs() -> None:
-    write_reports()
-
-
-def run_notebooks() -> None:
-    import subprocess
-
-    cmd = [sys.executable, "tools/run_notebooks.py"]
+def run_notebooks(notebook_stems: list[str]) -> None:
+    if not notebook_stems:
+        return
+    cmd = [
+        sys.executable,
+        "tools/run_notebooks.py",
+        "--notebooks",
+        ",".join(notebook_stems),
+    ]
     result = subprocess.run(cmd, check=False, capture_output=True, text=True)
     if result.returncode != 0:
         raise RuntimeError(
             f"Notebook execution failed:\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
+        )
+
+
+def run_docs() -> None:
+    cmd = [sys.executable, "tools/build_report.py"]
+    result = subprocess.run(cmd, check=False, capture_output=True, text=True)
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"Report build failed:\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
         )
 
 
@@ -97,16 +69,16 @@ def main() -> None:
 
     ensure_directories()
 
-    if args.stage in {"data", "all", "ci"}:
-        run_data()
-    if args.stage in {"build", "all", "ci"}:
-        run_build()
-    if args.stage in {"estimate", "all", "ci"}:
-        run_estimate()
+    if args.stage == "estimate":
+        raise SystemExit(
+            "Inference/estimation is disabled for the descriptive atlas pipeline."
+        )
+
+    if args.stage in STAGE_NOTEBOOKS:
+        run_notebooks(STAGE_NOTEBOOKS[args.stage])
+
     if args.stage in {"docs", "all"}:
         run_docs()
-    if args.stage in {"notebooks", "all"}:
-        run_notebooks()
 
     if args.stage == "ci":
         print("CI run complete")

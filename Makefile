@@ -7,7 +7,8 @@ build:
 	python tools/run_all.py --stage build
 
 estimate:
-	python tools/run_all.py --stage estimate
+	@echo "DEPRECATED: inference/estimation is disabled for the descriptive atlas pipeline."
+	@exit 1
 
 docs:
 	python tools/run_all.py --stage docs

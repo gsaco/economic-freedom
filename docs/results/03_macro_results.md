@@ -1,19 +1,20 @@
-# Macro Results
+# Macro Co-movement (Descriptive)
 
-TFP growth (EU SDID example):
+Scatterplots of EFW summary versus log GDP per capita (quinquennial):
 
-![](../../outputs/figures/fig_macro_tfp_eventstudy_eu.png)
+![](../../output/figures/comovement/scatter_levels.png)
 
-Interpretation: macro outcomes are reduced-form responses and should be read as associations conditional on the identification strategy.
+Quinquennial changes (EFW vs log GDP per capita):
 
+![](../../output/figures/comovement/scatter_changes.png)
 
-References:
-- Economic Freedom of the World (Fraser Institute) documentation
-- Arkhangelsky et al. (2021) Synth-DID
-- Callaway & Sant'Anna (2021) DID; Sun & Abraham (2021) event studies
-- Ben-Michael et al. (2021) Augmented SCM
-- Schimmelfennig & Sedelmeier (2004) EU conditionality
-- EU Commission enlargement process documentation
-- Tang & Wei (2009) WTO accessions
-- Brotto (IMF WP 2024) WTO accession impacts
-- Chemutai & Escaith (2017) WTO commitments measurement
+Correlation heatmap (levels):
+
+![](../../output/figures/comovement/correlation_heatmap_levels.png)
+
+Tables:
+- `output/tables/correlations_levels_changes.csv`
+
+Interpretation
+- Patterns shown here are descriptive co-movements only; no causal claims are made.
+- Missing data handling is explicit and pairwise for correlations.

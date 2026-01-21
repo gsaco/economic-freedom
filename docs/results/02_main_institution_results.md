@@ -1,26 +1,15 @@
-# Main Institutional Results
+# Coverage and Missingness
 
-EU SDID event studies and reform/reversal decomposition:
+## Coverage by Year and Region
+![](../../output/figures/coverage/efw_coverage_by_region.png)
 
-![](../../outputs/figures/fig_eu_sdid_efw_level_wave2004.png)
-![](../../outputs/figures/fig_eu_sdid_reforms_vs_reversals_wave2004.png)
+Coverage tables:
+- `output/tables/coverage_by_year_region_income.csv`
 
-WTO staggered DiD event study:
+## Missingness Maps
+Missingness maps for EFW summary and areas are stored in:
+- `output/figures/missingness_maps/`
 
-![](../../outputs/figures/fig_wto_did_eventstudy_efw.png)
-
-Main effects table:
-
-See `../../outputs/tables/table_main_effects.csv`.
-
-
-References:
-- Economic Freedom of the World (Fraser Institute) documentation
-- Arkhangelsky et al. (2021) Synth-DID
-- Callaway & Sant'Anna (2021) DID; Sun & Abraham (2021) event studies
-- Ben-Michael et al. (2021) Augmented SCM
-- Schimmelfennig & Sedelmeier (2004) EU conditionality
-- EU Commission enlargement process documentation
-- Tang & Wei (2009) WTO accessions
-- Brotto (IMF WP 2024) WTO accession impacts
-- Chemutai & Escaith (2017) WTO commitments measurement
+Interpretation
+- These diagnostics highlight the sample available for descriptive comparisons.
+- Early years have narrower coverage; later decades provide broader global representation.
