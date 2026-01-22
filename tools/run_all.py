@@ -24,16 +24,38 @@ NOTEBOOK_ORDER = [
     "09_shock_episodes",
 ]
 
+PAPER_NOTEBOOK_ORDER = [
+    "00_env_setup",
+    "01_ingest_fraser",
+    "02_pull_worldbank",
+    "03b_build_annual_panel",
+    "10_ingest_parlgov",
+    "11_construct_close_elections_rd_sample",
+    "12_define_positive_negative_shocks",
+    "13_construct_efw_shocks_and_outcomes",
+    "20b_rd_validity_vote_margin",
+    "24_postmortem_seatshare_rd",
+    "30_lpiv_irfs_pos_neg",
+    "31_asymmetry_tests",
+    "32_nonlinearity_magnitude_state",
+    "33_robustness_suite",
+    "34_top2_margin_variant",
+    "35_switch_only_variant",
+    "36_longer_post_windows",
+    "37_ned_presidential_variant",
+]
+
 STAGE_NOTEBOOKS = {
     "data": NOTEBOOK_ORDER[:3],
     "build": [NOTEBOOK_ORDER[3]],
     "notebooks": NOTEBOOK_ORDER,
     "all": NOTEBOOK_ORDER,
     "ci": NOTEBOOK_ORDER,
+    "paper": PAPER_NOTEBOOK_ORDER,
 }
 
 
-def run_notebooks(notebook_stems: list[str]) -> None:
+def run_notebooks(notebook_stems: list[str], *, allow_inference: bool = False) -> None:
     if not notebook_stems:
         return
     cmd = [
@@ -42,6 +64,8 @@ def run_notebooks(notebook_stems: list[str]) -> None:
         "--notebooks",
         ",".join(notebook_stems),
     ]
+    if allow_inference:
+        cmd.append("--allow-inference")
     result = subprocess.run(cmd, check=False, capture_output=True, text=True)
     if result.returncode != 0:
         raise RuntimeError(
@@ -62,7 +86,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--stage",
-        choices=["data", "build", "estimate", "docs", "notebooks", "all", "ci"],
+        choices=["data", "build", "estimate", "docs", "notebooks", "all", "ci", "paper"],
         default="all",
     )
     args = parser.parse_args()
@@ -75,7 +99,7 @@ def main() -> None:
         )
 
     if args.stage in STAGE_NOTEBOOKS:
-        run_notebooks(STAGE_NOTEBOOKS[args.stage])
+        run_notebooks(STAGE_NOTEBOOKS[args.stage], allow_inference=args.stage == "paper")
 
     if args.stage in {"docs", "all"}:
         run_docs()

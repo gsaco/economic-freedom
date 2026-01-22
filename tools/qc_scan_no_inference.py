@@ -31,15 +31,50 @@ EXCLUDE_DIRS = {
     "output",
     "outputs",
     "data",
+    "venv",
     ".venv",
     "__pycache__",
     ".git",
 }
 
+ALLOW_INFERENCE_PREFIXES = {
+    "notebooks/10_",
+    "notebooks/11_",
+    "notebooks/12_",
+    "notebooks/13_",
+    "notebooks/20_",
+    "notebooks/20b_",
+    "notebooks/21_",
+    "notebooks/22_",
+    "notebooks/23_",
+    "notebooks/24_",
+    "notebooks/30_",
+    "notebooks/31_",
+    "notebooks/32_",
+    "notebooks/33_",
+    "notebooks/34_",
+    "notebooks/35_",
+    "notebooks/36_",
+    "notebooks/37_",
+    "src/rd.py",
+    "src/iv_specs.py",
+    "src/lpiv.py",
+    "src/rd_localrand.py",
+    "src/shocks.py",
+    "src/elections_parlgov.py",
+}
+
 
 def _should_skip(path: Path) -> bool:
     parts = set(path.parts)
-    return not parts.isdisjoint(EXCLUDE_DIRS)
+    if not parts.isdisjoint(EXCLUDE_DIRS):
+        return True
+    root = Path(__file__).resolve().parents[1]
+    try:
+        rel = path.relative_to(root).as_posix()
+    except ValueError:
+        rel = path.as_posix()
+    return any(rel.startswith(prefix) for prefix in ALLOW_INFERENCE_PREFIXES)
 
 
 def scan_repo(root: Path) -> list[dict]:

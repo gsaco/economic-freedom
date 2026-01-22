@@ -117,6 +117,11 @@ def main() -> None:
         default="",
         help="Comma-separated list of notebook stems to run in order.",
     )
+    parser.add_argument(
+        "--allow-inference",
+        action="store_true",
+        help="Allow inference imports (statsmodels, linearmodels, etc.).",
+    )
     args = parser.parse_args()
 
     notebooks_dir = Path("notebooks")
@@ -126,8 +131,9 @@ def main() -> None:
         stems = [path.stem for path in sorted(notebooks_dir.glob("*.py"))]
 
     py_paths, nb_paths = _resolve_notebook_paths(notebooks_dir, stems)
-    for py_path in py_paths:
-        _assert_no_inference_imports(py_path)
+    if not args.allow_inference:
+        for py_path in py_paths:
+            _assert_no_inference_imports(py_path)
 
     sync_notebooks(py_paths)
     execute_notebooks(nb_paths)
