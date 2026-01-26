@@ -16,6 +16,7 @@ LOGS_DIR = OUTPUT_DIR / "logs"
 PAPER_FIGURES_DIR = OUTPUT_DIR / "paper_figures"
 PAPER_TABLES_DIR = OUTPUT_DIR / "paper_tables"
 PAPER_LOGS_DIR = OUTPUT_DIR / "paper_logs"
+SPEC_SEARCH_DIR = OUTPUT_DIR / "spec_search"
 
 DOCS_RESULTS_DIR = BASE_DIR / "docs" / "results"
 NOTEBOOKS_DIR = BASE_DIR / "notebooks"
@@ -39,6 +40,7 @@ def ensure_directories() -> None:
         PAPER_FIGURES_DIR,
         PAPER_TABLES_DIR,
         PAPER_LOGS_DIR,
+        SPEC_SEARCH_DIR,
         DOCS_RESULTS_DIR,
     ]
     for path in paths:

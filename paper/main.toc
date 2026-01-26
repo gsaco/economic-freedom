@@ -1,0 +1,87 @@
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Contributions}{4}{subsection.1.1}%
+\contentsline {paragraph}{First, we provide the first close-election RD estimates of economic freedom effects on macroeconomic outcomes.}{4}{section*.2}%
+\contentsline {paragraph}{Second, we implement a transparent specification search with pre-committed diagnostic thresholds.}{4}{section*.3}%
+\contentsline {paragraph}{Third, we document the asymmetry in electoral effects and interpret it substantively.}{5}{section*.4}%
+\contentsline {subsection}{\numberline {1.2}What This Paper Does Not Claim}{5}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Roadmap}{5}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Literature Review}{6}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Economic Freedom and Growth}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Political Economy of Economic Reform}{7}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Close-Election Regression Discontinuity Designs}{7}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Connection to This Paper}{8}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Theoretical Framework}{9}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Setup}{9}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Policy Determination}{9}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Electoral Determination of Government Ideology}{10}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Production and Growth}{11}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Testable Hypotheses}{11}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Interpretation of Local Effects}{12}{subsection.3.6}%
+\contentsline {paragraph}{Mandate Effects.}{12}{section*.5}%
+\contentsline {paragraph}{Marginal vs.\ Inframarginal Elections.}{12}{section*.6}%
+\contentsline {section}{\numberline {4}Data}{13}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Electoral Data: ParlGov}{13}{subsection.4.1}%
+\contentsline {paragraph}{Running Variable Construction.}{13}{section*.7}%
+\contentsline {paragraph}{Sample Restrictions.}{14}{section*.8}%
+\contentsline {subsection}{\numberline {4.2}Economic Freedom: Fraser Institute}{14}{subsection.4.2}%
+\contentsline {paragraph}{EFW Shock Operationalizations.}{14}{section*.9}%
+\contentsline {subsection}{\numberline {4.3}Macroeconomic Outcomes: World Bank WDI}{15}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Sample Construction and Summary Statistics}{15}{subsection.4.4}%
+\contentsline {paragraph}{Positive vs.\ Negative Shock Subsamples.}{16}{section*.12}%
+\contentsline {section}{\numberline {5}Empirical Methodology}{17}{section.5}%
+\contentsline {subsection}{\numberline {5.1}RD Design}{17}{subsection.5.1}%
+\contentsline {paragraph}{Identifying Assumption.}{17}{section*.13}%
+\contentsline {paragraph}{RD Estimand.}{17}{section*.14}%
+\contentsline {subsection}{\numberline {5.2}Estimation}{18}{subsection.5.2}%
+\contentsline {paragraph}{Kernel Weighting.}{18}{section*.15}%
+\contentsline {paragraph}{Polynomial Order.}{18}{section*.16}%
+\contentsline {paragraph}{Baseline Controls.}{18}{section*.17}%
+\contentsline {paragraph}{Standard Errors.}{18}{section*.18}%
+\contentsline {subsection}{\numberline {5.3}Bandwidth Selection}{19}{subsection.5.3}%
+\contentsline {paragraph}{Fixed Bandwidths.}{19}{section*.19}%
+\contentsline {paragraph}{Balance-Optimized Bandwidth.}{19}{section*.20}%
+\contentsline {paragraph}{Effective Sample Size.}{19}{section*.21}%
+\contentsline {subsection}{\numberline {5.4}Identification Diagnostics}{19}{subsection.5.4}%
+\contentsline {paragraph}{Test 1: Density Continuity (McCrary Test).}{19}{section*.22}%
+\contentsline {paragraph}{Test 2: Covariate Balance.}{19}{section*.23}%
+\contentsline {paragraph}{Test 3: Pre-Trend Placebo.}{20}{section*.24}%
+\contentsline {paragraph}{Test 4: First-Stage Strength.}{20}{section*.25}%
+\contentsline {paragraph}{Test 5: Minimum Sample Size.}{20}{section*.26}%
+\contentsline {subsection}{\numberline {5.5}Two-Stage Least Squares (2SLS)}{20}{subsection.5.5}%
+\contentsline {paragraph}{First Stage.}{20}{section*.27}%
+\contentsline {paragraph}{Second Stage.}{20}{section*.28}%
+\contentsline {paragraph}{Interpretation.}{20}{section*.29}%
+\contentsline {subsection}{\numberline {5.6}Specification Search}{21}{subsection.5.6}%
+\contentsline {paragraph}{Grid of Specifications.}{21}{section*.30}%
+\contentsline {paragraph}{Pass/Fail Reporting.}{21}{section*.31}%
+\contentsline {paragraph}{Effect Size Calculation.}{21}{section*.32}%
+\contentsline {section}{\numberline {6}Main Results}{21}{section.6}%
+\contentsline {subsection}{\numberline {6.1}The Identification Set}{22}{subsection.6.1}%
+\contentsline {paragraph}{Diagnostic Interpretation.}{23}{section*.35}%
+\contentsline {subsection}{\numberline {6.2}What Does Not Pass}{23}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}First-Stage Results}{23}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Reduced-Form and IV Results}{24}{subsection.6.4}%
+\contentsline {paragraph}{Reduced-Form Effects.}{25}{section*.40}%
+\contentsline {paragraph}{IV Estimates.}{25}{section*.41}%
+\contentsline {paragraph}{Economic Significance.}{25}{section*.42}%
+\contentsline {subsection}{\numberline {6.5}Effects on Secondary Outcomes}{26}{subsection.6.5}%
+\contentsline {section}{\numberline {7}Robustness Checks}{27}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Robustness Within the Core Design}{27}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Fragility to Control Set Expansion}{27}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Alternative EFW Definitions}{28}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Heterogeneity Analysis}{28}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Heterogeneity Results}{28}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Interpretation of Heterogeneity}{29}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Discussion}{30}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Interpretation of the ``Regulatory Effect''}{30}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Boundary Conditions and Limitations}{30}{subsection.9.2}%
+\contentsline {paragraph}{1. Local Effects.}{30}{section*.51}%
+\contentsline {paragraph}{2. Asymmetry.}{30}{section*.52}%
+\contentsline {paragraph}{3. Fragility.}{30}{section*.53}%
+\contentsline {section}{\numberline {10}Conclusion}{31}{section.10}%
+\contentsline {section}{\numberline {A}Appendix}{35}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}Data Definitions}{35}{subsection.A.1}%
+\contentsline {paragraph}{Running Variable.}{35}{section*.55}%
+\contentsline {paragraph}{EFW Index.}{35}{section*.56}%
+\contentsline {paragraph}{Cumulative Log GDP.}{35}{section*.57}%
+\contentsline {subsection}{\numberline {A.2}Country List}{35}{subsection.A.2}%

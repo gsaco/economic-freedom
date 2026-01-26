@@ -1,7 +1,4 @@
 # %% [markdown]
-# <span style="color:red; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:2em;">An Exception was encountered at '<a href="#papermill-error-cell">In [5]</a>'.</span>
-
-# %% [markdown]
 # # Switch-only variant (winner_market != incumbent_market)
 # Restrict to elections with cabinet orientation switch and re-estimate RD validity and LP-IV.
 
@@ -134,9 +131,6 @@ choice_path.write_text(json.dumps(window_choice, indent=2))
 
 window_pos = choice_pos.window or 0.03
 window_neg = choice_neg.window or 0.03
-
-# %% [markdown]
-# <span id="papermill-error-cell" style="color:red; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:2em;">Execution using papermill encountered an exception here and stopped:</span>
 
 # %%
 # Helper for rank failures

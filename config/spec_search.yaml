@@ -1,0 +1,173 @@
+defaults:
+  sample:
+    name: positive
+    running_var: running_var_vote
+    pooled: false
+  efw:
+    mode: prepost
+    efw_col: efw_summary
+    pre_window: [-3, -1]
+    post_window: [1, 3]
+    min_pre_obs: 2
+    min_post_obs: 2
+    standardize: false
+    winsorize: null
+  outcome:
+    name: log_gdp_cum
+    base_col: log_gdp_pc_const
+    transform: log_cum
+    horizons: [0, 1, 2, 3, 4, 5]
+    min_avg_obs: null
+  model:
+    model_type: lpiv
+    controls:
+      - lag1_log_gdp_pc_const
+      - lag1_trade_open_gdp
+      - lag1_inflation_cpi_ann_pct
+      - lag1_efw_summary
+    window: 0.03
+    windows_grid: [0.01, 0.02, 0.03, 0.04, 0.05]
+    select_window_by_balance: true
+    cutoff: 0.0
+    cluster: iso3c
+    year_fe: false
+    year_col: election_year
+    kernel: triangular
+    order: 1
+  diagnostics:
+    balance_vars:
+      - lag1_log_gdp_pc_const
+      - lag1_trade_open_gdp
+      - lag1_inflation_cpi_ann_pct
+      - lag1_efw_summary
+      - lag1_inv_share_gdp
+    balance_p: 0.15
+    density_bw: 0.1
+    pretrend_p: 0.1
+    fstat_min: 10.0
+    min_n: 10
+
+specs:
+  - name: baseline_pos
+
+  - name: baseline_neg
+    sample:
+      name: negative
+
+  - name: window_short_pos
+    efw:
+      pre_window: [-2, -1]
+      post_window: [1, 2]
+
+  - name: window_long_pos
+    efw:
+      pre_window: [-5, -1]
+      post_window: [1, 5]
+
+  - name: standardized_pos
+    efw:
+      standardize: true
+
+  - name: winsor_1_99_pos
+    efw:
+      winsorize: [0.01, 0.99]
+
+  - name: delta_pos
+    efw:
+      mode: delta
+
+  - name: level_pos
+    efw:
+      mode: level
+
+  - name: component_area1_pos
+    efw:
+      efw_col: efw_area1
+
+  - name: component_area5_pos
+    efw:
+      efw_col: efw_area5
+
+  - name: outcome_growth_avg_pos
+    outcome:
+      name: gdp_growth_avg
+      base_col: gdp_growth_ann_pct
+      transform: growth_avg
+      horizons: [1, 3, 5]
+
+  - name: outcome_investment_avg_pos
+    outcome:
+      name: inv_share_avg
+      base_col: inv_share_gdp
+      transform: avg
+      horizons: [1, 3, 5]
+
+  - name: outcome_inflation_avg_pos
+    outcome:
+      name: inflation_avg
+      base_col: inflation_cpi_ann_pct
+      transform: avg
+      horizons: [1, 3, 5]
+
+  - name: outcome_trade_avg_pos
+    outcome:
+      name: trade_open_avg
+      base_col: trade_open_gdp
+      transform: avg
+      horizons: [1, 3, 5]
+
+  - name: outcome_gov_cons_avg_pos
+    outcome:
+      name: gov_cons_avg
+      base_col: gov_cons_gdp
+      transform: avg
+      horizons: [1, 3, 5]
+
+  - name: outcome_priv_credit_avg_pos
+    outcome:
+      name: priv_credit_avg
+      base_col: priv_credit_gdp
+      transform: avg
+      horizons: [1, 3, 5]
+
+  - name: outcome_unemp_avg_pos
+    outcome:
+      name: unemp_rate_avg
+      base_col: unemp_rate
+      transform: avg
+      horizons: [1, 3, 5]
+
+  - name: controls_reduced_pos
+    model:
+      controls:
+        - lag1_log_gdp_pc_const
+
+  - name: year_fe_pos
+    model:
+      year_fe: true
+
+  - name: rd_iv_pos
+    model:
+      model_type: rd_iv
+      window: 0.03
+      select_window_by_balance: false
+
+  - name: nonlinear_large_shift_pos
+    group:
+      column: large_shift
+      value: 1
+
+  - name: state_low_efw_pos
+    group:
+      column: low_efw
+      value: 1
+
+  - name: state_low_income_pos
+    group:
+      column: low_income
+      value: 1
+
+  - name: magnitude_top_quartile_pos
+    group:
+      column: shock_abs_quartile
+      value: 3

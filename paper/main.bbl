@@ -1,0 +1,241 @@
+\begin{thebibliography}{36}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Acemoglu et~al.(2001)Acemoglu, Johnson, and
+  Robinson]{acemoglu2001colonial}
+Daron Acemoglu, Simon Johnson, and James~A Robinson.
+\newblock The colonial origins of comparative development: An empirical
+  investigation.
+\newblock \emph{American economic review}, 91\penalty0 (5):\penalty0
+  1369--1401, 2001.
+
+\bibitem[Acemoglu et~al.(2005)Acemoglu, Johnson, and
+  Robinson]{acemoglu2005institutions}
+Daron Acemoglu, Simon Johnson, and James~A Robinson.
+\newblock \emph{Institutions as a fundamental cause of long-run growth},
+  volume~1.
+\newblock Elsevier, 2005.
+
+\bibitem[Acemoglu et~al.(2012)Acemoglu, Johnson, and
+  Robinson]{acemoglu2012colonial}
+Daron Acemoglu, Simon Johnson, and James~A Robinson.
+\newblock The colonial origins of comparative development: An empirical
+  investigation: Reply.
+\newblock \emph{American Economic Review}, 102\penalty0 (6):\penalty0
+  3077--3110, 2012.
+
+\bibitem[Albouy(2012)]{albouy2012colonial}
+David~Y Albouy.
+\newblock The colonial origins of comparative development: An empirical
+  investigation: Comment.
+\newblock \emph{American Economic Review}, 102\penalty0 (6):\penalty0
+  3059--3076, 2012.
+
+\bibitem[Besley et~al.(2017)Besley, Folke, Persson, and
+  Rickne]{besley2017gender}
+Timothy Besley, Olle Folke, Torsten Persson, and Johanna Rickne.
+\newblock Gender quotas and the crisis of the mediocre man: Theory and evidence
+  from sweden.
+\newblock \emph{American Economic Review}, 107\penalty0 (8):\penalty0
+  2204--2242, 2017.
+
+\bibitem[Bhalotra and Clots-Figueras(2014)]{bhalotra2014health}
+Sonia Bhalotra and Irma Clots-Figueras.
+\newblock Women's political participation and child health in india.
+\newblock \emph{Journal of Development Economics}, 110:\penalty0 57--72, 2014.
+
+\bibitem[Brodeur et~al.(2020)Brodeur, Cook, and Heyes]{brodeur2020methods}
+Abel Brodeur, Nikolai Cook, and Anthony Heyes.
+\newblock Methods matter: P-hacking and publication bias in causal analysis in
+  economics.
+\newblock \emph{American Economic Review}, 110\penalty0 (11):\penalty0
+  3634--3660, 2020.
+
+\bibitem[Cattaneo et~al.(2015)Cattaneo, Frandsen, and
+  Titiunik]{cattaneo2015randomization}
+Matias~D Cattaneo, Brigham~R Frandsen, and Rocio Titiunik.
+\newblock Randomization inference in the regression discontinuity design: An
+  application to party advantages in the us senate.
+\newblock \emph{Journal of Causal Inference}, 3\penalty0 (1):\penalty0 1--24,
+  2015.
+
+\bibitem[Caughey and Sekhon(2011)]{caughey2011elections}
+Devin Caughey and Jasjeet~S Sekhon.
+\newblock Elections and the regression discontinuity design: Lessons from close
+  us house elections, 1942--2008.
+\newblock \emph{Political Analysis}, 19\penalty0 (4):\penalty0 385--408, 2011.
+
+\bibitem[Cheng et~al.(1997)Cheng, Fan, and Marron]{cheng1997automatic}
+Ming-Yen Cheng, Jianqing Fan, and James~Stephen Marron.
+\newblock Automatic boundary corrections for local polynomial estimators.
+\newblock \emph{Bernoulli}, pages 889--913, 1997.
+
+\bibitem[Christensen and Miguel(2018)]{christensen2018transparency}
+Garret Christensen and Edward Miguel.
+\newblock Transparency, reproducibility, and the credibility of economics
+  research.
+\newblock \emph{Journal of Economic Literature}, 56\penalty0 (3):\penalty0
+  920--980, 2018.
+
+\bibitem[Clots-Figueras(2012)]{clots2012women}
+Irma Clots-Figueras.
+\newblock Are female leaders good for education? evidence from india.
+\newblock \emph{American Economic Journal: Applied Economics}, 4\penalty0
+  (1):\penalty0 212--244, 2012.
+
+\bibitem[D{\"o}ring and Manow(2021)]{doring2021parlgov}
+Holger D{\"o}ring and Philip Manow.
+\newblock Parliaments and governments database (parlgov): Information on
+  parties, elections and cabinets in modern democracies, 2021.
+\newblock Development version.
+
+\bibitem[Eggers et~al.(2015)Eggers, Fowler, Hainmueller, Hall, and
+  Snyder~Jr]{eggers2015validity}
+Andrew~C Eggers, Anthony Fowler, Jens Hainmueller, Andrew~B Hall, and James~M
+  Snyder~Jr.
+\newblock On the validity of the regression discontinuity design for estimating
+  electoral effects: New evidence from over 40,000 close races.
+\newblock \emph{American Journal of Political Science}, 59\penalty0
+  (1):\penalty0 259--274, 2015.
+
+\bibitem[Fernandez and Rodrik(1991)]{fernandez1991resistance}
+Raquel Fernandez and Dani Rodrik.
+\newblock Resistance to reform: Status quo bias in the presence of
+  individual-specific uncertainty.
+\newblock \emph{American Economic Review}, 81\penalty0 (5):\penalty0
+  1146--1155, 1991.
+
+\bibitem[Ferreira and Gyourko(2009)]{ferreira2009votes}
+Fernando Ferreira and Joseph Gyourko.
+\newblock Do political parties matter? evidence from us cities.
+\newblock \emph{The Quarterly Journal of Economics}, 124\penalty0 (1):\penalty0
+  399--422, 2009.
+
+\bibitem[Garrett(1998)]{garrett1998partisan}
+Geoffrey Garrett.
+\newblock \emph{Partisan politics in the global economy}.
+\newblock Cambridge University Press, 1998.
+
+\bibitem[Gelman and Imbens(2019)]{gelman2019high}
+Andrew Gelman and Guido Imbens.
+\newblock Why high-order polynomials should not be used in regression
+  discontinuity designs.
+\newblock \emph{Journal of Business \& Economic Statistics}, 37\penalty0
+  (3):\penalty0 447--456, 2019.
+
+\bibitem[Gwartney et~al.(2004)Gwartney, Lawson, and
+  Holcombe]{gwartney2004economic}
+James Gwartney, Robert Lawson, and Randall~G Holcombe.
+\newblock Economic freedom, institutional quality, and cross-country
+  differences in income and growth.
+\newblock \emph{Cato Journal}, 24\penalty0 (3):\penalty0 205, 2004.
+
+\bibitem[Gwartney et~al.(2023)Gwartney, Lawson, Hall, and
+  Murphy]{gwartney2023economic}
+James Gwartney, Robert Lawson, Joshua Hall, and Ryan Murphy.
+\newblock \emph{Economic Freedom of the World: 2023 Annual Report}.
+\newblock Fraser Institute, 2023.
+
+\bibitem[Hall(2015)]{hall2015does}
+Andrew~B Hall.
+\newblock What happens when extremists win primaries?
+\newblock \emph{American Political Science Review}, 109\penalty0 (1):\penalty0
+  18--42, 2015.
+
+\bibitem[Hall and Jones(1999)]{hall1999why}
+Robert~E Hall and Charles~I Jones.
+\newblock Why do some countries produce so much more output per worker than
+  others?
+\newblock \emph{The Quarterly Journal of Economics}, 114\penalty0 (1):\penalty0
+  83--116, 1999.
+
+\bibitem[Hibbs(1977)]{hibbs1977political}
+Douglas~A Hibbs.
+\newblock Political parties and macroeconomic policy.
+\newblock \emph{American Political Science Review}, 71\penalty0 (4):\penalty0
+  1467--1487, 1977.
+
+\bibitem[La~Porta et~al.(1999)La~Porta, Lopez-de Silanes, Shleifer, and
+  Vishny]{laporta1999quality}
+Rafael La~Porta, Florencio Lopez-de Silanes, Andrei Shleifer, and Robert
+  Vishny.
+\newblock The quality of government.
+\newblock \emph{Journal of Law, Economics, and Organization}, 15\penalty0
+  (1):\penalty0 222--279, 1999.
+
+\bibitem[Lee(2008)]{lee2008randomized}
+David~S Lee.
+\newblock Randomized experiments from non-random selection in us house
+  elections.
+\newblock \emph{Journal of Econometrics}, 142\penalty0 (2):\penalty0 675--697,
+  2008.
+
+\bibitem[McCrary(2008)]{mccrary2008manipulation}
+Justin McCrary.
+\newblock Manipulation of the running variable in the regression discontinuity
+  design: A density test.
+\newblock \emph{Journal of Econometrics}, 142\penalty0 (2):\penalty0 698--714,
+  2008.
+
+\bibitem[Mian et~al.(2010)Mian, Sufi, and Trebbi]{mian2010political}
+Atif Mian, Amir Sufi, and Francesco Trebbi.
+\newblock The political economy of the us mortgage default crisis.
+\newblock \emph{American Economic Review}, 100\penalty0 (5):\penalty0
+  1967--1998, 2010.
+
+\bibitem[Murphy et~al.(2019)Murphy, O'Reilly, and Lawson]{murphy2019economic}
+Ryan Murphy, Colin O'Reilly, and Robert Lawson.
+\newblock Economic freedom indices.
+\newblock \emph{Oxford Research Encyclopedia of Economics and Finance}, 2019.
+
+\bibitem[North(1990)]{north1990institutions}
+Douglass~C North.
+\newblock \emph{Institutions, institutional change and economic performance}.
+\newblock Cambridge university press, 1990.
+
+\bibitem[Persson and Tabellini(2000)]{persson2000political}
+Torsten Persson and Guido Tabellini.
+\newblock \emph{Political economics: explaining economic policy}.
+\newblock MIT press, 2000.
+
+\bibitem[Pettersson-Lidbom(2008)]{pettersson2008parties}
+Per Pettersson-Lidbom.
+\newblock Do parties matter for economic outcomes? a regression-discontinuity
+  approach.
+\newblock \emph{Journal of the European Economic Association}, 6\penalty0
+  (5):\penalty0 1037--1056, 2008.
+
+\bibitem[Potrafke(2017)]{potrafke2017partisan}
+Niklas Potrafke.
+\newblock Partisan politics: The empirical evidence from oecd panel studies.
+\newblock \emph{Journal of Comparative Economics}, 45\penalty0 (4):\penalty0
+  712--750, 2017.
+
+\bibitem[Rodrik(1996)]{rodrik1996understanding}
+Dani Rodrik.
+\newblock Understanding economic policy reform.
+\newblock In \emph{Journal of Economic Literature}, volume~34, pages 9--41.
+  1996.
+
+\bibitem[Rodrik(2000)]{rodrik2000institutions}
+Dani Rodrik.
+\newblock Institutions for high-quality growth: what they are and how to
+  acquire them.
+\newblock \emph{Studies in Comparative International Development}, 35\penalty0
+  (3):\penalty0 3--31, 2000.
+
+\bibitem[Sachs(2001)]{sachs2001tropical}
+Jeffrey~D Sachs.
+\newblock Tropical underdevelopment.
+\newblock \emph{NBER Working Paper}, \penalty0 (w8119), 2001.
+
+\bibitem[Stock and Yogo(2005)]{stock2005testing}
+James~H Stock and Motohiro Yogo.
+\newblock \emph{Testing for weak instruments in linear IV regression}.
+\newblock Cambridge University Press New York, 2005.
+
+\end{thebibliography}
