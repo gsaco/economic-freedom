@@ -20,6 +20,7 @@ class RDEstimate:
     bandwidth: float
     order: int
     cutoff: float
+    method: str
 
 
 def select_bandwidth(series: pd.Series, quantile: float = 0.3, max_bw: float | None = None) -> float:
@@ -68,7 +69,58 @@ def rd_estimate(
     kernel: str = "triangular",
     order: int = 1,
     cluster: str | None = None,
+    method: str = "cct",
+    bwselect: str = "mserd",
 ) -> RDEstimate:
+    if method == "cct":
+        try:
+            import rdrobust  # type: ignore
+        except Exception:
+            method = "wls"
+
+    if method == "cct":
+        frame = df[[outcome, running]].copy()
+        if cluster and cluster in df.columns:
+            frame[cluster] = df[cluster]
+        frame = frame.dropna(subset=[outcome, running]).copy()
+        if frame.empty:
+            raise ValueError("No valid observations for RD estimation.")
+
+        kernel_map = {"triangular": "tri", "uniform": "uni", "epanechnikov": "epa"}
+        kernel_opt = kernel_map.get(kernel, kernel)
+        h_arg = bandwidth if bandwidth is not None else None
+        res = rdrobust.rdrobust(
+            frame[outcome].to_numpy(),
+            frame[running].to_numpy(),
+            c=cutoff,
+            p=order,
+            kernel=kernel_opt,
+            bwselect=bwselect if h_arg is None else "mserd",
+            h=h_arg,
+            cluster=frame[cluster].to_numpy() if cluster and cluster in frame.columns else None,
+        )
+
+        coef = float(res.coef.loc["Robust", "Coeff"])
+        se = float(res.se.loc["Robust", "Std. Err."])
+        pvalue = float(res.pv.loc["Robust", "P>|t|"])
+        n_left = int(res.N_h[0])
+        n_right = int(res.N_h[1])
+        bw = float(np.nanmean(res.bws.loc["h"]))
+
+        return RDEstimate(
+            outcome=outcome,
+            coef=coef,
+            se=se,
+            pvalue=pvalue,
+            n_obs=n_left + n_right,
+            n_left=n_left,
+            n_right=n_right,
+            bandwidth=bw,
+            order=order,
+            cutoff=cutoff,
+            method="cct",
+        )
+
     if bandwidth is None:
         bandwidth = select_bandwidth(df[running])
     if bandwidth is None or np.isnan(bandwidth):
@@ -106,6 +158,7 @@ def rd_estimate(
         bandwidth=float(bandwidth),
         order=order,
         cutoff=cutoff,
+        method="wls",
     )
 
 
@@ -161,6 +214,7 @@ def rd_iv(
         bandwidth=float(bandwidth),
         order=order,
         cutoff=cutoff,
+        method="2sls",
     )
 
 

@@ -1,4 +1,10 @@
-.PHONY: data build estimate docs notebooks test all
+.PHONY: setup lint test run repro clean data build estimate docs notebooks all
+
+setup:
+	python -m pip install -r requirements.txt
+
+lint:
+	python -m ruff check src tests
 
 data:
 	python tools/run_all.py --stage data
@@ -18,6 +24,17 @@ notebooks:
 
 test:
 	pytest
+
+run:
+	python tools/run_all.py --stage paper
+
+repro:
+	make clean
+	make run
+	make test
+
+clean:
+	rm -rf output outputs data/02_intermediate data/03_clean data/04_analysis
 
 all:
 	python tools/run_all.py --stage all

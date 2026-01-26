@@ -1,7 +1,6 @@
 # %% [markdown]
-# # RD-IV main results
-# This notebook estimates the local IV (fuzzy RD) effect of EFW on medium-run
-# outcomes using close elections as the instrument.
+# # RD-IV main results (Wald ratio)
+# Compute local IV effects as the ratio of RD reduced-form to RD first-stage.
 
 # %%
 from __future__ import annotations
@@ -9,6 +8,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 from IPython.display import display
 
@@ -18,63 +18,67 @@ if not (ROOT / "src").exists() and (ROOT.parent / "src").exists():
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.paths import ANALYSIS_DIR, PAPER_TABLES_DIR
-from src.rd import rd_iv, select_bandwidth
+from src.paths import PAPER_TABLES_DIR
 from src.viz_style import set_style
 
 # %%
 set_style()
 
-sample_path = ANALYSIS_DIR / "close_elections_sample.parquet"
-if not sample_path.exists():
-    raise FileNotFoundError("Missing close-election sample. Run 11_construct_close_elections_rd_sample first.")
+first_stage_path = PAPER_TABLES_DIR / "rd_first_stage.csv"
+reduced_form_path = PAPER_TABLES_DIR / "rd_reduced_form.csv"
 
-sample = pd.read_parquet(sample_path)
+for path in [first_stage_path, reduced_form_path]:
+    if not path.exists():
+        raise FileNotFoundError(f"Missing required input: {path}")
 
-RUNNING = "running_var"
-bandwidth = select_bandwidth(sample[RUNNING], quantile=0.3, max_bw=0.2)
-if pd.isna(bandwidth):
-    raise ValueError("Unable to select RD bandwidth.")
+first_stage = pd.read_csv(first_stage_path)
+reduced_form = pd.read_csv(reduced_form_path)
 
-# %%
-outcomes = [
-    "gdp_growth_h3",
-    "gdp_growth_h5",
-    "inv_share_avg_h3",
-    "inv_share_avg_h5",
-]
+PRIMARY_HORIZONS = [1, 2, 4]
 
 rows = []
-for outcome in outcomes:
-    if outcome not in sample.columns:
-        continue
-    estimate = rd_iv(
-        sample.dropna(subset=[outcome, "efw_post_1_3"]),
-        outcome,
-        RUNNING,
-        endogenous="efw_post_1_3",
-        bandwidth=bandwidth,
-        cluster="iso3c",
-    )
-    rows.append(
-        {
-            "outcome": outcome,
-            "coef": estimate.coef,
-            "se": estimate.se,
-            "pvalue": estimate.pvalue,
-            "n_obs": estimate.n_obs,
-            "bandwidth": estimate.bandwidth,
-        }
-    )
+for outcome in ["log_gdp_cum", "inv_share_avg", "inflation_path"]:
+    for h in PRIMARY_HORIZONS:
+        tau_e = first_stage.loc[
+            (first_stage["outcome"] == "efw_summary") & (first_stage["horizon"] == h)
+        ]
+        tau_y = reduced_form.loc[(reduced_form["outcome"] == outcome) & (reduced_form["horizon"] == h)]
+        if tau_e.empty or tau_y.empty:
+            continue
+
+        tau_e_val = float(tau_e["coef"].iloc[0])
+        tau_e_se = float(tau_e["se"].iloc[0])
+        tau_y_val = float(tau_y["coef"].iloc[0])
+        tau_y_se = float(tau_y["se"].iloc[0])
+
+        if not np.isfinite(tau_e_val) or tau_e_val == 0:
+            continue
+
+        beta = tau_y_val / tau_e_val
+        # Delta method (ignores covariance)
+        se_beta = np.sqrt((tau_y_se / tau_e_val) ** 2 + (tau_y_val * tau_e_se / (tau_e_val**2)) ** 2)
+
+        rows.append(
+            {
+                "outcome": outcome,
+                "horizon": h,
+                "beta": float(beta),
+                "se": float(se_beta),
+                "tau_e": tau_e_val,
+                "tau_y": tau_y_val,
+                "n_left": int(tau_e["n_left"].iloc[0]) if "n_left" in tau_e.columns else np.nan,
+                "n_right": int(tau_e["n_right"].iloc[0]) if "n_right" in tau_e.columns else np.nan,
+            }
+        )
 
 iv_df = pd.DataFrame(rows)
 PAPER_TABLES_DIR.mkdir(parents=True, exist_ok=True)
 iv_path = PAPER_TABLES_DIR / "rd_iv_main.csv"
 iv_df.to_csv(iv_path, index=False)
-display(iv_df.style.set_caption("RD-IV estimates (EFW -> outcomes)"))
+
+display(iv_df.style.set_caption("RD-IV (Wald) estimates"))
 
 # %% [markdown]
 # ## Interpretation
-# The IV estimates translate the discontinuity in EFW induced by close
-# elections into local effects on growth and investment, interpreted as a
-# LATE for compliers near the cutoff.
+# The IV estimates use the Wald ratio of RD reduced-form to first-stage
+# discontinuities at the cutoff (primary horizons h=1,2,4).

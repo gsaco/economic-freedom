@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import math
 import time
 from dataclasses import asdict
 from datetime import datetime, timezone
@@ -12,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 from src.lpiv import LPIVResult, first_stage, iv_estimate, reduced_form
-from src.paths import ANALYSIS_DIR, CLEAN_DIR, OUTPUT_DIR
+from src.paths import ANALYSIS_DIR, CLEAN_DIR
 from src.rd import RDEstimate, density_discontinuity, rd_estimate, rd_iv, select_bandwidth
 from src.rd_localrand import balance_table, select_window_by_balance
 from src.shocks import ShockSpec, build_event_panel
@@ -346,6 +345,7 @@ def _empty_rd(outcome: str, bandwidth: float | None, order: int, cutoff: float) 
         bandwidth=float(bandwidth) if bandwidth is not None else float("nan"),
         order=order,
         cutoff=cutoff,
+        method="wls",
     )
 
 

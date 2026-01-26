@@ -18,7 +18,8 @@ if not (ROOT / "src").exists() and (ROOT.parent / "src").exists():
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.paths import ANALYSIS_DIR, CLEAN_DIR, PAPER_TABLES_DIR
+from src.crisis import load_systemic_crisis_years
+from src.paths import ANALYSIS_DIR, CLEAN_DIR, INTERMEDIATE_DIR, PAPER_TABLES_DIR, RAW_DIR
 from src.shocks import ShockSpec, build_event_panel
 from src.viz_style import set_style
 
@@ -31,14 +32,26 @@ if not panel_path.exists():
 
 pos_path = ANALYSIS_DIR / "rd_sample_pos.parquet"
 neg_path = ANALYSIS_DIR / "rd_sample_neg.parquet"
+full_path = ANALYSIS_DIR / "close_elections_vote_margin.parquet"
 
-for path in [pos_path, neg_path]:
+for path in [pos_path, neg_path, full_path]:
     if not path.exists():
         raise FileNotFoundError(f"Missing RD sample: {path}")
 
 panel = pd.read_parquet(panel_path)
 sample_pos = pd.read_parquet(pos_path)
 sample_neg = pd.read_parquet(neg_path)
+sample_all = pd.read_parquet(full_path)
+efw_area_cols = [col for col in panel.columns if col.startswith("efw_area")]
+
+crisis_path = RAW_DIR / "crisis" / "laeven_valencia_2020.xlsx"
+country_meta_path = INTERMEDIATE_DIR / "country_metadata.parquet"
+country_meta = pd.read_parquet(country_meta_path) if country_meta_path.exists() else pd.DataFrame()
+crisis_years = (
+    load_systemic_crisis_years(crisis_path, country_meta=country_meta)
+    if crisis_path.exists()
+    else pd.DataFrame()
+)
 
 # %%
 shock_spec = ShockSpec(pre_window=(-3, -1), post_window=(1, 3), min_pre_obs=2, min_post_obs=2)
@@ -53,6 +66,8 @@ panel_pos = build_event_panel(
     horizons=horizons,
     pretrend_horizons=pretrend_horizons,
     shock_spec=shock_spec,
+    crisis_years=crisis_years,
+    efw_extra_cols=tuple(efw_area_cols),
 )
 
 panel_neg = build_event_panel(
@@ -62,6 +77,19 @@ panel_neg = build_event_panel(
     horizons=horizons,
     pretrend_horizons=pretrend_horizons,
     shock_spec=shock_spec,
+    crisis_years=crisis_years,
+    efw_extra_cols=tuple(efw_area_cols),
+)
+
+panel_all = build_event_panel(
+    panel,
+    sample_all,
+    event_year_col="election_year",
+    horizons=horizons,
+    pretrend_horizons=pretrend_horizons,
+    shock_spec=shock_spec,
+    crisis_years=crisis_years,
+    efw_extra_cols=tuple(efw_area_cols),
 )
 
 # %%
@@ -81,13 +109,15 @@ ANALYSIS_DIR.mkdir(parents=True, exist_ok=True)
 
 pos_event_path = ANALYSIS_DIR / "rd_event_panel_pos.parquet"
 neg_event_path = ANALYSIS_DIR / "rd_event_panel_neg.parquet"
+all_event_path = ANALYSIS_DIR / "rd_event_panel.parquet"
 
 panel_pos.to_parquet(pos_event_path, index=False)
 panel_neg.to_parquet(neg_event_path, index=False)
+panel_all.to_parquet(all_event_path, index=False)
 
 # %%
 summary_rows = []
-for name, frame in [("positive", panel_pos), ("negative", panel_neg)]:
+for name, frame in [("positive", panel_pos), ("negative", panel_neg), ("full", panel_all)]:
     shock = frame["shock_efw"]
     summary_rows.append(
         {

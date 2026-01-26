@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import io
 import json
 import zipfile
 from dataclasses import dataclass
@@ -184,4 +183,3 @@ def parlgov_metadata(bundle: ParlGovBundle, zip_path: Path, codebook_path: Path 
 def write_parlgov_metadata(metadata: dict, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(metadata, indent=2))
-
