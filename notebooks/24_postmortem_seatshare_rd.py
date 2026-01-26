@@ -38,6 +38,20 @@ panel = pd.read_parquet(panel_path)
 events = pd.read_parquet(sample_path)
 
 # %%
+if "running_var_seat" not in events.columns or events["running_var_seat"].notna().sum() == 0:
+    PAPER_TABLES_DIR.mkdir(parents=True, exist_ok=True)
+    summary_path = PAPER_TABLES_DIR / "postmortem_summary.csv"
+    pd.DataFrame(
+        [
+            {
+                "metric": "seatshare_unavailable",
+                "note": "Seat-share running variable not available for current elections source.",
+            }
+        ]
+    ).to_csv(summary_path, index=False)
+    raise SystemExit("Seat-share running variable unavailable; skipping postmortem.")
+
+# %%
 # Attach lagged covariates for balance checks
 panel_with_cov = build_event_panel(panel, events, event_year_col="election_year", horizons=(0,))
 

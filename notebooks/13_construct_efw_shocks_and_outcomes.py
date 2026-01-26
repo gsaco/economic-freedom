@@ -95,12 +95,24 @@ panel_all = build_event_panel(
 # %%
 # Pre-registered heterogeneity splits
 combined = pd.concat([panel_pos, panel_neg], ignore_index=True)
-median_lr_distance = combined["lr_distance_abs"].median()
+if "lr_distance_abs" in combined.columns and combined["lr_distance_abs"].notna().any():
+    magnitude_col = "lr_distance_abs"
+elif "top2_margin_abs" in combined.columns and combined["top2_margin_abs"].notna().any():
+    magnitude_col = "top2_margin_abs"
+else:
+    magnitude_col = None
+    combined["shock_abs"] = combined["shock_efw"].abs()
+    magnitude_col = "shock_abs"
+
+median_lr_distance = combined[magnitude_col].median()
 median_efw = combined["lag1_efw_summary"].median()
 median_income = combined["lag1_log_gdp_pc_const"].median()
 
 for frame in [panel_pos, panel_neg]:
-    frame["large_shift"] = (frame["lr_distance_abs"] >= median_lr_distance).astype(int)
+    if magnitude_col not in frame.columns:
+        frame["shock_abs"] = frame["shock_efw"].abs()
+        magnitude_col = "shock_abs"
+    frame["large_shift"] = (frame[magnitude_col] >= median_lr_distance).astype(int)
     frame["low_efw"] = (frame["lag1_efw_summary"] <= median_efw).astype(int)
     frame["low_income"] = (frame["lag1_log_gdp_pc_const"] <= median_income).astype(int)
 

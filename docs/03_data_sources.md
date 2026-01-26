@@ -15,15 +15,15 @@ This file documents the datasets referenced in `plan.tex`, how the pipeline acce
   3. Treat 5 areas as separate latent dimensions rather than a single scalar.
 
 ## Elections and margins
-### 1) CLEA (global legislative)
+### 1) CLEA (global legislative) — **primary**
 - **Provider / link:** Constituency‑Level Elections Archive (electiondataarchive.org).
-- **Coverage:** Global constituency‑level returns; legislative elections.
+- **Coverage:** Global constituency‑level returns; legislative elections. Plan notes 2,181 elections in 183 countries (Oct 15, 2025 update).
 - **Unit:** constituency‑level returns (aggregable to national vote/seat totals).
-- **Access method:** Manual download to `data/raw/elections/clea/` (not currently scripted).
+- **Access method:** Local CLEA drop in `data/01_raw/clea/` plus `clea_manifest.json` mapping columns. Current file: `clea_lc_20251015.sav` with manifest `data/01_raw/clea/clea_manifest.json`. The pipeline does **not** bypass access controls.
 - **License/constraints:** Heterogeneous source licensing; attribution required.
 - **Limitations:** Legislative focus; coalition mapping required; varying electoral rules.
 
-### 2) ParlGov (EU/OECD parliamentary)
+### 2) ParlGov (EU/OECD parliamentary) — fallback Tier‑1
 - **Provider / link:** ParlGov data releases / GitHub/Dataverse.
 - **Coverage:** EU/OECD democracies 1900–2023.
 - **Unit:** country‑election, party vote/seat shares, cabinets.
@@ -31,11 +31,11 @@ This file documents the datasets referenced in `plan.tex`, how the pipeline acce
 - **License/constraints:** Open academic data; verify per release.
 - **Limitations:** EU/OECD only; coalition mapping required.
 
-### 3) DPI (political institutions)
+### 3) DPI (political institutions) — ideology fallback
 - **Provider / link:** World Bank DPI (DPI2020 catalog).
 - **Coverage:** 1975–2020, ~180 countries.
 - **Unit:** country‑year.
-- **Access method:** Manual download to `data/01_raw/dpi/` (not currently scripted).
+- **Access method:** Manual download to `data/01_raw/dpi/`. **Current repo file is `dpi2012.xls`**, used as a fallback ideology source.
 - **Limitations:** Limited margin information; ideology measures coarse.
 
 **Ranked fallback options for elections/margins**
@@ -44,7 +44,7 @@ This file documents the datasets referenced in `plan.tex`, how the pipeline acce
 3. Reconcile multiple sources by agreement rule; exclude discordant cases.
 
 ## Market‑orientation scoring (more‑market vs less‑market)
-1. **V‑Dem V‑Party (preferred):** party economic positions; requires download and ID matching.
+1. **V‑Dem V‑Party (preferred):** party economic positions; local file `data/01_raw/vparty/CPD_V-Party_CSV_v2/V-Dem-CPD-Party-V2.csv`.
 2. **DPI ideology categories:** coarse left/center/right labels; broader coverage.
 3. **Manifesto Project (MARPOR):** manifestoR/API key required.
 
@@ -63,12 +63,12 @@ This file documents the datasets referenced in `plan.tex`, how the pipeline acce
 - **Provider / link:** Groningen Growth and Development Centre.
 - **Coverage:** PWT 10.0 (1950–2019), PWT 11.0 (through 2023).
 - **Unit:** country‑year.
-- **Access method:** Manual download to `data/raw/pwt/`.
+- **Access method:** Manual download to `data/01_raw/pwt/`.
 - **License:** CC BY 4.0 (PWT 10.0).
 
 ## Crisis and tail events
 - **Laeven–Valencia Systemic Banking Crises Database** (1970–2011 update).
-- **Access method:** Manual download to `data/raw/crisis/`.
+- **Access method:** Manual download to `data/01_raw/crisis/`.
 - **Fallback:** construct tail proxies from macro series (inflation spikes, drawdowns).
 
 ## Pre‑treatment state variables
@@ -77,7 +77,7 @@ This file documents the datasets referenced in `plan.tex`, how the pipeline acce
 - **Openness and vulnerability:** trade openness, external debt, inflation history (WDI).
 
 ## Local data paths (expected)
-- Raw: `data/01_raw/` and `data/raw/`
+- Raw: `data/01_raw/`
 - Intermediate: `data/02_intermediate/`
 - Cleaned/analysis: `data/03_clean/`, `data/04_analysis/`
 

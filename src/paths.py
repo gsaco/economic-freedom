@@ -27,6 +27,10 @@ QUINQUENNIAL_YEARS = list(range(1970, 2021, 5))
 def ensure_directories() -> None:
     paths = [
         RAW_DIR / "efw",
+        RAW_DIR / "clea",
+        RAW_DIR / "dpi",
+        RAW_DIR / "vparty",
+        RAW_DIR / "crisis",
         RAW_DIR / "wdi_cache",
         RAW_DIR / "world_bank",
         RAW_DIR / "geodata",

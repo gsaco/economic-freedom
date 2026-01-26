@@ -180,31 +180,44 @@ for sample_name, frame, instrument_base, window in [
     ("positive", panel_pos, "z_pos", window_pos),
     ("negative", panel_neg, "z_neg", window_neg),
 ]:
-    alt = frame.copy()
-    alt["z_alt"] = (alt["running_var_vote_alt"] > 0).astype(int)
-    if sample_name == "negative":
-        alt["z_alt"] = (alt["running_var_vote_alt"] < 0).astype(int)
-    est = safe_iv_estimate(
-        alt,
-        outcome_col="log_gdp_cum_h3",
-        endog_col="shock_efw",
-        running_col="running_var_vote_alt",
-        instrument_col="z_alt",
-        controls=controls,
-        window=window,
-        cluster="iso3c",
-    )
-    rows.append(
-        {
-            "check": "alt_threshold",
-            "sample": sample_name,
-            "horizon": 3,
-            "window": window,
-            "coef": est.coef,
-            "se": est.se,
-            "n_obs": est.n_obs,
-        }
-    )
+    if "running_var_vote_alt" in frame.columns and frame["running_var_vote_alt"].notna().any():
+        alt = frame.copy()
+        alt["z_alt"] = (alt["running_var_vote_alt"] > 0).astype(int)
+        if sample_name == "negative":
+            alt["z_alt"] = (alt["running_var_vote_alt"] < 0).astype(int)
+        est = safe_iv_estimate(
+            alt,
+            outcome_col="log_gdp_cum_h3",
+            endog_col="shock_efw",
+            running_col="running_var_vote_alt",
+            instrument_col="z_alt",
+            controls=controls,
+            window=window,
+            cluster="iso3c",
+        )
+        rows.append(
+            {
+                "check": "alt_threshold",
+                "sample": sample_name,
+                "horizon": 3,
+                "window": window,
+                "coef": est.coef,
+                "se": est.se,
+                "n_obs": est.n_obs,
+            }
+        )
+    else:
+        rows.append(
+            {
+                "check": "alt_threshold",
+                "sample": sample_name,
+                "horizon": 3,
+                "window": window,
+                "coef": np.nan,
+                "se": np.nan,
+                "n_obs": 0,
+            }
+        )
 
 # Outcome variant: GDP growth average
 for sample_name, frame, instrument, window in [

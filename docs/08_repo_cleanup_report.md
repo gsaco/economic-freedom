@@ -844,3 +844,70 @@ These files are legacy atlas or unrelated analysis materials not required by `pl
 ./src/viz_style.py
 ./src/rd.py
 ```
+
+## 2026-01-26T02:10:06Z — CLEA-first pipeline updates
+- Added CLEA ingestion + ideology mapping: src/clea.py, src/ideology.py, notebooks/10_ingest_clea.py.
+- Added LP reduced-form fallback: notebooks/22b_lp_reduced_form.py, output/paper_tables/lp_reduced_form.csv.
+- Added CLEA manifest template: docs/clea_manifest_template.json.
+- Added tests: tests/test_clea_manifest.py, tests/test_lp_reduced_form_presence.py.
+- No additional legacy files were archived in this update.
+
+### Repo tree snapshot (max depth 2)
+.
+./ vri
+./.codex
+./.codex/skills
+./.git
+./.git/branches
+./.git/hooks
+./.git/info
+./.git/logs
+./.git/objects
+./.git/refs
+./.pytest_cache
+./.pytest_cache/v
+./.ruff_cache
+./.ruff_cache/0.14.13
+./.venv
+./.venv/bin
+./.venv/etc
+./.venv/include
+./.venv/lib
+./.venv/share
+./archive
+./archive/legacy_pre_plan
+./config
+./data
+./data/01_raw
+./data/02_intermediate
+./data/03_clean
+./data/04_analysis
+./data/interim
+./data/processed
+./data/raw
+./docs
+./docs/data
+./docs/methods
+./docs/results
+./notebooks
+./output
+./output/figures
+./output/logs
+./output/paper_figures
+./output/paper_logs
+./output/paper_tables
+./output/spec_search
+./output/tables
+./paper
+./src
+./src/__pycache__
+./src/spec_search
+./tests
+./tests/__pycache__
+./tools
+./venv
+./venv/bin
+./venv/etc
+./venv/include
+./venv/lib
+./venv/share

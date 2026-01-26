@@ -9750,3 +9750,882 @@ Command: find . -maxdepth 2 -type d | sort
 ./venv/lib
 ./venv/share
 Command: git add -A
+Command: git commit -m "chore: checkpoint before executing plan.tex"
+[v3 befd030] chore: checkpoint before executing plan.tex
+ 162 files changed, 22228 insertions(+), 12904 deletions(-)
+ rewrite README.md (96%)
+ rename {data => archive/legacy_pre_plan/data}/04_analysis/ned_parliamentary_sample.parquet (100%)
+ rename {data => archive/legacy_pre_plan/data}/04_analysis/ned_parliamentary_sample_cov50.parquet (100%)
+ rename {data => archive/legacy_pre_plan/data}/04_analysis/ned_parliamentary_sample_cov80.parquet (100%)
+ rename {data => archive/legacy_pre_plan/data}/04_analysis/ned_presidential_sample.parquet (100%)
+ rename {data => archive/legacy_pre_plan/data}/04_analysis/ned_presidential_sample_cov50.parquet (100%)
+ rename {data => archive/legacy_pre_plan/data}/04_analysis/ned_presidential_sample_cov80.parquet (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/atlas_scope.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/00_index.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/01_data_overview.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/02_main_institution_results.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/03_macro_results.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/04_state_dependence.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/05_robustness_placebos.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/06_robustness_episodes.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/07_planB_if_needed.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/08_main_conclusions.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/09_postmortem_seatshare_rd.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/10_rd_validity_vote_margin.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/11_lpiv_irfs.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/12_asymmetry_nonlinearity_robustness.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/13_overall_assessment.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/14_top2_margin_results.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/15_switch_only_variant.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/16_longer_post_windows.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/17_alternatives_summary.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/18_external_data_options.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/19_ned_presidential_variant.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/20_clea_attempt.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/21_dpi_attempt.md (100%)
+ rename {docs => archive/legacy_pre_plan/docs}/results/22_nelda_attempt.md (100%)
+ rename main.aux => archive/legacy_pre_plan/latex/main.aux (100%)
+ rename main.bbl => archive/legacy_pre_plan/latex/main.bbl (100%)
+ rename main.blg => archive/legacy_pre_plan/latex/main.blg (100%)
+ rename main.out => archive/legacy_pre_plan/latex/main.out (100%)
+ rename main.pdf => archive/legacy_pre_plan/latex/main.pdf (100%)
+ rename main.toc => archive/legacy_pre_plan/latex/main.toc (100%)
+ rename plan.aux => archive/legacy_pre_plan/latex/plan.aux (100%)
+ rename plan.out => archive/legacy_pre_plan/latex/plan.out (100%)
+ rename plan.pdf => archive/legacy_pre_plan/latex/plan.pdf (100%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/03_build_quinquennial_panel.ipynb (56%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/03_build_quinquennial_panel.py (100%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/04_descriptive_coverage_and_missingness.ipynb (97%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/04_descriptive_coverage_and_missingness.py (100%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/05_global_trends_and_distribution.ipynb (63%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/05_global_trends_and_distribution.py (100%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/06_maps_levels_and_changes.ipynb (99%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/06_maps_levels_and_changes.py (100%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/07_components_and_mobility.ipynb (79%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/07_components_and_mobility.py (100%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/08_macro_co_movement.ipynb (95%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/08_macro_co_movement.py (100%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/09_shock_episodes.ipynb (97%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/09_shock_episodes.py (100%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/20_rd_validity_checks.ipynb (100%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/20_rd_validity_checks.py (100%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/23_robustness_and_placebos.ipynb (100%)
+ rename {notebooks => archive/legacy_pre_plan/notebooks}/23_robustness_and_placebos.py (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/did_test_diag.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/did_wto_diag_baseline.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/did_wto_diag_episodes_drop_1990s.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/did_wto_diag_episodes_drop_2008.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/did_wto_diag_episodes_post_2000.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/did_wto_diag_placebo_timing.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/did_wto_diag_planb.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/plan_diagnostics.json (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/sdid_eu_diag_baseline.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/sdid_eu_diag_episodes_drop_1990s.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/sdid_eu_diag_episodes_drop_2008.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/sdid_eu_diag_episodes_post_2000.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/sdid_eu_diag_placebo_timing.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/sdid_eu_diag_planb.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/diagnostics/sdid_test_diag.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/figures/fig_dose_response_wto_commitment_depth.png (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/figures/fig_eu_sdid_efw_level_wave2004.png (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/figures/fig_eu_sdid_reforms_vs_reversals_wave2004.png (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/figures/fig_macro_tfp_eventstudy_eu.png (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/figures/fig_state_dependence_by_baseline_efw.png (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/figures/fig_wto_did_eventstudy_efw.png (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/augsynth_eu_baseline.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/augsynth_eu_planb.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/augsynth_test.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/did_test.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/did_wto_baseline.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/did_wto_episodes_drop_1990s.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/did_wto_episodes_drop_2008.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/did_wto_episodes_post_2000.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/did_wto_placebo_timing.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/did_wto_planb.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/episode_interactions.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/estimates_eu_baseline_20260116.parquet (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/estimates_eu_episodes_drop_2008_20260116.parquet (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/estimates_eu_placebo_timing_20260116.parquet (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/estimates_eu_planb_20260116.parquet (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/estimates_wto_baseline_20260116.parquet (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/estimates_wto_episodes_drop_1990s_20260116.parquet (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/estimates_wto_episodes_drop_2008_20260116.parquet (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/estimates_wto_episodes_post_2000_20260116.parquet (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/estimates_wto_placebo_timing_20260116.parquet (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/estimates_wto_planb_20260116.parquet (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/gsc_eu_baseline.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/gsc_eu_planb.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/gsc_test.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/heterogeneity_state_dependence.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/sdid_eu_baseline.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/sdid_eu_episodes_drop_1990s.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/sdid_eu_episodes_drop_2008.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/sdid_eu_episodes_post_2000.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/sdid_eu_placebo_timing.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/sdid_eu_planb.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/sdid_test.csv (100%)
+ rename {outputs => archive/legacy_pre_plan/outputs}/tables/table_main_effects.csv (100%)
+ create mode 100644 data/04_analysis/rd_event_panel.parquet
+ create mode 100644 docs/00_assumptions.md
+ create mode 100644 docs/01_traceability_matrix.md
+ create mode 100644 docs/02_repo_contract.md
+ create mode 100644 docs/03_data_sources.md
+ create mode 100644 docs/04_methods_and_estimands.md
+ create mode 100644 docs/06_results_manifest.md
+ create mode 100644 docs/07_validation_and_tests.md
+ create mode 100644 docs/08_repo_cleanup_report.md
+ rewrite notebooks/03b_build_annual_panel.ipynb (63%)
+ rewrite notebooks/21_rd_first_stage_and_reduced_form.ipynb (96%)
+ create mode 100644 notebooks/22_exclusion_sensitivity_bounds.ipynb
+ create mode 100644 notebooks/22_exclusion_sensitivity_bounds.py
+ rewrite notebooks/22_rd_iv_main_results.ipynb (68%)
+ rewrite notebooks/22_rd_iv_main_results.py (72%)
+ create mode 100644 src/crisis.py
+ create mode 100644 tests/test_exclusion_bounds_presence.py
+ create mode 100644 tests/test_tail_outcomes_presence.py
+Command: python - <<'PY' (read plan.tex, report hash)
+plan.tex bytes 95895
+sha256 80e6733b90aeceae59d6f0d759495c03546a31ec721b463343078e1bb8836cf2
+
+## 2026-01-26T01:54:41Z — Phase 1 edits (CLEA + ideology pipeline)
+Edits: added src/clea.py, src/ideology.py, notebooks/10_ingest_clea.py; updated notebooks/11_construct_close_elections_rd_sample.py, notebooks/33_robustness_suite.py, notebooks/24_postmortem_seatshare_rd.py, tools/run_all.py, requirements.txt
+Command: make lint
+python -m ruff check src tests
+All checks passed!
+Command: make run
+python tools/run_all.py --stage paper
+Traceback (most recent call last):
+  File "/Users/gabrielsaco/Documents/GitHub/economic-freedom/tools/run_all.py", line 117, in <module>
+    main()
+  File "/Users/gabrielsaco/Documents/GitHub/economic-freedom/tools/run_all.py", line 107, in main
+    run_notebooks(STAGE_NOTEBOOKS[args.stage], allow_inference=args.stage == "paper")
+  File "/Users/gabrielsaco/Documents/GitHub/economic-freedom/tools/run_all.py", line 76, in run_notebooks
+    raise RuntimeError(
+RuntimeError: Notebook execution failed:
+STDOUT:
+[jupytext] Reading notebooks/00_env_setup.py in format py
+[jupytext] Loading notebooks/00_env_setup.ipynb
+[jupytext] Updating notebooks/00_env_setup.ipynb
+[jupytext] Updating the timestamp of notebooks/00_env_setup.py
+[jupytext] Reading notebooks/01_ingest_fraser.py in format py
+[jupytext] Loading notebooks/01_ingest_fraser.ipynb
+[jupytext] Updating notebooks/01_ingest_fraser.ipynb
+[jupytext] Updating the timestamp of notebooks/01_ingest_fraser.py
+[jupytext] Reading notebooks/02_pull_worldbank.py in format py
+[jupytext] Loading notebooks/02_pull_worldbank.ipynb
+[jupytext] Updating notebooks/02_pull_worldbank.ipynb
+[jupytext] Updating the timestamp of notebooks/02_pull_worldbank.py
+[jupytext] Reading notebooks/03b_build_annual_panel.py in format py
+[jupytext] Loading notebooks/03b_build_annual_panel.ipynb
+[jupytext] Updating notebooks/03b_build_annual_panel.ipynb
+[jupytext] Updating the timestamp of notebooks/03b_build_annual_panel.py
+[jupytext] Reading notebooks/10_ingest_clea.py in format py
+[jupytext] Updating notebooks/10_ingest_clea.ipynb
+[jupytext] Updating the timestamp of notebooks/10_ingest_clea.py
+[jupytext] Reading notebooks/10_ingest_parlgov.py in format py
+[jupytext] Loading notebooks/10_ingest_parlgov.ipynb
+[jupytext] Updating notebooks/10_ingest_parlgov.ipynb
+[jupytext] Updating the timestamp of notebooks/10_ingest_parlgov.py
+[jupytext] Reading notebooks/11_construct_close_elections_rd_sample.py in format py
+[jupytext] Loading notebooks/11_construct_close_elections_rd_sample.ipynb
+[jupytext] Updating notebooks/11_construct_close_elections_rd_sample.ipynb
+[jupytext] Updating the timestamp of notebooks/11_construct_close_elections_rd_sample.py
+[jupytext] Reading notebooks/12_define_positive_negative_shocks.py in format py
+[jupytext] Loading notebooks/12_define_positive_negative_shocks.ipynb
+[jupytext] Updating notebooks/12_define_positive_negative_shocks.ipynb
+[jupytext] Updating the timestamp of notebooks/12_define_positive_negative_shocks.py
+[jupytext] Reading notebooks/13_construct_efw_shocks_and_outcomes.py in format py
+[jupytext] Loading notebooks/13_construct_efw_shocks_and_outcomes.ipynb
+[jupytext] Updating notebooks/13_construct_efw_shocks_and_outcomes.ipynb
+[jupytext] Updating the timestamp of notebooks/13_construct_efw_shocks_and_outcomes.py
+[jupytext] Reading notebooks/21_rd_first_stage_and_reduced_form.py in format py
+[jupytext] Loading notebooks/21_rd_first_stage_and_reduced_form.ipynb
+[jupytext] Updating notebooks/21_rd_first_stage_and_reduced_form.ipynb
+[jupytext] Updating the timestamp of notebooks/21_rd_first_stage_and_reduced_form.py
+[jupytext] Reading notebooks/22_rd_iv_main_results.py in format py
+[jupytext] Loading notebooks/22_rd_iv_main_results.ipynb
+[jupytext] Updating notebooks/22_rd_iv_main_results.ipynb
+[jupytext] Updating the timestamp of notebooks/22_rd_iv_main_results.py
+[jupytext] Reading notebooks/22b_lp_reduced_form.py in format py
+[jupytext] Updating notebooks/22b_lp_reduced_form.ipynb
+[jupytext] Updating the timestamp of notebooks/22b_lp_reduced_form.py
+[jupytext] Reading notebooks/22_exclusion_sensitivity_bounds.py in format py
+[jupytext] Loading notebooks/22_exclusion_sensitivity_bounds.ipynb
+[jupytext] Updating notebooks/22_exclusion_sensitivity_bounds.ipynb
+[jupytext] Updating the timestamp of notebooks/22_exclusion_sensitivity_bounds.py
+[jupytext] Reading notebooks/20b_rd_validity_vote_margin.py in format py
+[jupytext] Loading notebooks/20b_rd_validity_vote_margin.ipynb
+[jupytext] Updating notebooks/20b_rd_validity_vote_margin.ipynb
+[jupytext] Updating the timestamp of notebooks/20b_rd_validity_vote_margin.py
+[jupytext] Reading notebooks/24_postmortem_seatshare_rd.py in format py
+[jupytext] Loading notebooks/24_postmortem_seatshare_rd.ipynb
+[jupytext] Updating notebooks/24_postmortem_seatshare_rd.ipynb
+[jupytext] Updating the timestamp of notebooks/24_postmortem_seatshare_rd.py
+[jupytext] Reading notebooks/30_lpiv_irfs_pos_neg.py in format py
+[jupytext] Loading notebooks/30_lpiv_irfs_pos_neg.ipynb
+[jupytext] Updating notebooks/30_lpiv_irfs_pos_neg.ipynb
+[jupytext] Updating the timestamp of notebooks/30_lpiv_irfs_pos_neg.py
+[jupytext] Reading notebooks/31_asymmetry_tests.py in format py
+[jupytext] Loading notebooks/31_asymmetry_tests.ipynb
+[jupytext] Updating notebooks/31_asymmetry_tests.ipynb
+[jupytext] Updating the timestamp of notebooks/31_asymmetry_tests.py
+[jupytext] Reading notebooks/32_nonlinearity_magnitude_state.py in format py
+[jupytext] Loading notebooks/32_nonlinearity_magnitude_state.ipynb
+[jupytext] Updating notebooks/32_nonlinearity_magnitude_state.ipynb
+[jupytext] Updating the timestamp of notebooks/32_nonlinearity_magnitude_state.py
+[jupytext] Reading notebooks/33_robustness_suite.py in format py
+[jupytext] Loading notebooks/33_robustness_suite.ipynb
+[jupytext] Updating notebooks/33_robustness_suite.ipynb
+[jupytext] Updating the timestamp of notebooks/33_robustness_suite.py
+[jupytext] Reading notebooks/34_top2_margin_variant.py in format py
+[jupytext] Loading notebooks/34_top2_margin_variant.ipynb
+[jupytext] Updating notebooks/34_top2_margin_variant.ipynb
+[jupytext] Updating the timestamp of notebooks/34_top2_margin_variant.py
+[jupytext] Reading notebooks/35_switch_only_variant.py in format py
+[jupytext] Loading notebooks/35_switch_only_variant.ipynb
+[jupytext] Updating notebooks/35_switch_only_variant.ipynb
+[jupytext] Updating the timestamp of notebooks/35_switch_only_variant.py
+[jupytext] Reading notebooks/36_longer_post_windows.py in format py
+[jupytext] Loading notebooks/36_longer_post_windows.ipynb
+[jupytext] Updating notebooks/36_longer_post_windows.ipynb
+[jupytext] Updating the timestamp of notebooks/36_longer_post_windows.py
+[jupytext] Reading notebooks/37_ned_presidential_variant.py in format py
+[jupytext] Loading notebooks/37_ned_presidential_variant.ipynb
+[jupytext] Updating notebooks/37_ned_presidential_variant.ipynb
+[jupytext] Updating the timestamp of notebooks/37_ned_presidential_variant.py
+
+STDERR:
+
+Executing:   0%|          | 0/6 [00:00<?, ?cell/s]
+Executing:  17%|█▋        | 1/6 [00:00<00:04,  1.10cell/s]
+Executing:  33%|███▎      | 2/6 [00:01<00:02,  1.48cell/s]
+Executing: 100%|██████████| 6/6 [00:01<00:00,  3.55cell/s]
+
+Executing:   0%|          | 0/8 [00:00<?, ?cell/s]
+Executing:  12%|█▎        | 1/8 [00:00<00:03,  1.89cell/s]
+Executing:  25%|██▌       | 2/8 [00:01<00:03,  1.94cell/s]
+Executing:  50%|█████     | 4/8 [00:03<00:04,  1.05s/cell]
+Executing:  75%|███████▌  | 6/8 [00:03<00:01,  1.65cell/s]
+Executing:  88%|████████▊ | 7/8 [00:04<00:00,  1.50cell/s]
+Executing: 100%|██████████| 8/8 [00:05<00:00,  1.58cell/s]
+
+Executing:   0%|          | 0/8 [00:00<?, ?cell/s]
+Executing:  12%|█▎        | 1/8 [00:00<00:04,  1.71cell/s]
+Executing:  25%|██▌       | 2/8 [00:01<00:03,  1.85cell/s]
+Executing:  50%|█████     | 4/8 [00:01<00:00,  4.28cell/s]
+Executing:  88%|████████▊ | 7/8 [00:01<00:00,  5.69cell/s]
+Executing: 100%|██████████| 8/8 [00:01<00:00,  4.41cell/s]
+
+Executing:   0%|          | 0/8 [00:00<?, ?cell/s]
+Executing:  12%|█▎        | 1/8 [00:00<00:05,  1.34cell/s]
+Executing:  25%|██▌       | 2/8 [00:01<00:03,  1.70cell/s]
+Executing:  75%|███████▌  | 6/8 [00:01<00:00,  6.35cell/s]
+Executing: 100%|██████████| 8/8 [00:01<00:00,  5.00cell/s]
+
+Executing:   0%|          | 0/5 [00:00<?, ?cell/s]
+Executing:  20%|██        | 1/5 [00:00<00:02,  1.91cell/s]
+Executing:  40%|████      | 2/5 [00:00<00:01,  2.05cell/s]
+Executing:  80%|████████  | 4/5 [00:01<00:00,  4.10cell/s]
+Executing:  80%|████████  | 4/5 [00:01<00:00,  2.86cell/s]
+Traceback (most recent call last):
+  File "/Users/gabrielsaco/Documents/GitHub/economic-freedom/tools/run_notebooks.py", line 143, in <module>
+    main()
+  File "/Users/gabrielsaco/Documents/GitHub/economic-freedom/tools/run_notebooks.py", line 139, in main
+    execute_notebooks(nb_paths)
+  File "/Users/gabrielsaco/Documents/GitHub/economic-freedom/tools/run_notebooks.py", line 73, in execute_notebooks
+    pm.execute_notebook(
+  File "/Users/gabrielsaco/anaconda3/lib/python3.11/site-packages/papermill/execute.py", line 131, in execute_notebook
+    raise_for_execution_errors(nb, output_path)
+  File "/Users/gabrielsaco/anaconda3/lib/python3.11/site-packages/papermill/execute.py", line 251, in raise_for_execution_errors
+    raise error
+papermill.exceptions.PapermillExecutionError: 
+---------------------------------------------------------------------------
+Exception encountered at "In [3]":
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[3], line 1
+----> 1 assert_unique_key(bundle.elections, ["election_id"])
+      3 for name, path in paths.items():
+      4     if not path.exists():
+
+NameError: name 'bundle' is not defined
+
+
+make: *** [run] Error 1
+
+## 2026-01-26T02:01:37Z — Fix CLEA ingest notebook guard
+Edits: notebooks/10_ingest_clea.py (ensure skip path does not execute assert when manifest missing)
+Command: make run
+python tools/run_all.py --stage paper
+Command: make test
+pytest
+============================= test session starts ==============================
+platform darwin -- Python 3.11.9, pytest-8.4.1, pluggy-1.5.0
+rootdir: /Users/gabrielsaco/Documents/GitHub/economic-freedom
+plugins: nbmake-1.5.5, hypothesis-6.150.2, langsmith-0.4.43, typeguard-4.4.4, anyio-4.7.0, zarr-3.1.5, cov-7.0.0
+collected 18 items
+
+tests/test_clea_manifest.py s                                            [  5%]
+tests/test_close_elections_unique_keys.py .                              [ 11%]
+tests/test_exclusion_bounds_presence.py .                                [ 16%]
+tests/test_figures_exported.py .                                         [ 22%]
+tests/test_first_stage_presence.py .                                     [ 27%]
+tests/test_integration.py F                                              [ 33%]
+tests/test_iso3_merge_coverage.py .                                      [ 38%]
+tests/test_lp_reduced_form_presence.py .                                 [ 44%]
+tests/test_metadata_exists.py .                                          [ 50%]
+tests/test_no_regression_imports.py F                                    [ 55%]
+tests/test_panel_keys_unique.py .                                        [ 61%]
+tests/test_rd_window_choice.py .                                         [ 66%]
+tests/test_running_variable_continuity_basic.py .                        [ 72%]
+tests/test_shock_presence.py .                                           [ 77%]
+tests/test_spec_search.py ..                                             [ 88%]
+tests/test_tail_outcomes_presence.py .                                   [ 94%]
+tests/test_year_grid.py .                                                [100%]
+
+=================================== FAILURES ===================================
+_______________________________ test_run_all_ci ________________________________
+
+    def test_run_all_ci():
+        result = subprocess.run([
+            "python",
+            "tools/run_all.py",
+            "--stage",
+            "ci",
+        ], capture_output=True, text=True)
+>       assert result.returncode == 0, result.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "/Users/gabrielsaco/Documents/GitHub/economic-freedom/tools/run_all.py", line 117, in <module>
+E             main()
+E           File "/Users/gabrielsaco/Documents/GitHub/economic-freedom/tools/run_all.py", line 107, in main
+E             run_notebooks(STAGE_NOTEBOOKS[args.stage], allow_inference=args.stage == "paper")
+E           File "/Users/gabrielsaco/Documents/GitHub/economic-freedom/tools/run_all.py", line 76, in run_notebooks
+E             raise RuntimeError(
+E         RuntimeError: Notebook execution failed:
+E         STDOUT:
+E         
+E         STDERR:
+E         Traceback (most recent call last):
+E           File "/Users/gabrielsaco/Documents/GitHub/economic-freedom/tools/run_notebooks.py", line 143, in <module>
+E             main()
+E           File "/Users/gabrielsaco/Documents/GitHub/economic-freedom/tools/run_notebooks.py", line 133, in main
+E             py_paths, nb_paths = _resolve_notebook_paths(notebooks_dir, stems)
+E                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/Users/gabrielsaco/Documents/GitHub/economic-freedom/tools/run_notebooks.py", line 107, in _resolve_notebook_paths
+E             raise FileNotFoundError(f"Notebook script missing: {py_path}")
+E         FileNotFoundError: Notebook script missing: notebooks/03_build_quinquennial_panel.py
+E         
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['python', 'tools/run_all.py', '--stage', 'ci'], returncode=1, stdout='', stderr='Traceback (mos...script missing: {py_path}")\nFileNotFoundError: Notebook script missing: notebooks/03_build_quinquennial_panel.py\n\n').returncode
+
+tests/test_integration.py:12: AssertionError
+__________________________ test_no_regression_imports __________________________
+
+    def test_no_regression_imports():
+        result = subprocess.run(
+            ["python", "tools/qc_scan_no_inference.py"],
+            capture_output=True,
+            text=True,
+        )
+>       assert result.returncode == 0, result.stderr or result.stdout
+E       AssertionError: Inference patterns detected. See regression_code_manifest.json
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['python', 'tools/qc_scan_no_inference.py'], returncode=1, stdout='', stderr='Inference patterns detected. See regression_code_manifest.json\n').returncode
+
+tests/test_no_regression_imports.py:10: AssertionError
+=============================== warnings summary ===============================
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+  /Users/gabrielsaco/anaconda3/lib/python3.11/site-packages/statsmodels/regression/linear_model.py:1992: RuntimeWarning: divide by zero encountered in scalar divide
+    self.het_scale = self.nobs/(self.df_resid)*(self.wresid**2)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_integration.py::test_run_all_ci - AssertionError: Traceback...
+FAILED tests/test_no_regression_imports.py::test_no_regression_imports - Asse...
+============= 2 failed, 15 passed, 1 skipped, 5 warnings in 3.89s ==============
+make: *** [test] Error 1
+
+## 2026-01-26T02:04:08Z — Fix tests after make test failure
+Edits: tools/run_all.py (NOTEBOOK_ORDER updated), tools/qc_scan_no_inference.py (allow notebooks/22b_)
+Command: make test
+pytest
+============================= test session starts ==============================
+platform darwin -- Python 3.11.9, pytest-8.4.1, pluggy-1.5.0
+rootdir: /Users/gabrielsaco/Documents/GitHub/economic-freedom
+plugins: nbmake-1.5.5, hypothesis-6.150.2, langsmith-0.4.43, typeguard-4.4.4, anyio-4.7.0, zarr-3.1.5, cov-7.0.0
+collected 18 items
+
+tests/test_clea_manifest.py s                                            [  5%]
+tests/test_close_elections_unique_keys.py .                              [ 11%]
+tests/test_exclusion_bounds_presence.py .                                [ 16%]
+tests/test_figures_exported.py .                                         [ 22%]
+tests/test_first_stage_presence.py .                                     [ 27%]
+tests/test_integration.py .                                              [ 33%]
+tests/test_iso3_merge_coverage.py .                                      [ 38%]
+tests/test_lp_reduced_form_presence.py .                                 [ 44%]
+tests/test_metadata_exists.py .                                          [ 50%]
+tests/test_no_regression_imports.py .                                    [ 55%]
+tests/test_panel_keys_unique.py .                                        [ 61%]
+tests/test_rd_window_choice.py .                                         [ 66%]
+tests/test_running_variable_continuity_basic.py .                        [ 72%]
+tests/test_shock_presence.py .                                           [ 77%]
+tests/test_spec_search.py ..                                             [ 88%]
+tests/test_tail_outcomes_presence.py .                                   [ 94%]
+tests/test_year_grid.py .                                                [100%]
+
+=============================== warnings summary ===============================
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+  /Users/gabrielsaco/anaconda3/lib/python3.11/site-packages/statsmodels/regression/linear_model.py:1992: RuntimeWarning: divide by zero encountered in scalar divide
+    self.het_scale = self.nobs/(self.df_resid)*(self.wresid**2)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 17 passed, 1 skipped, 5 warnings in 17.06s ==================
+Command: make repro
+make clean
+rm -rf output outputs data/02_intermediate data/03_clean data/04_analysis
+make run
+python tools/run_all.py --stage paper
+make test
+pytest
+============================= test session starts ==============================
+platform darwin -- Python 3.11.9, pytest-8.4.1, pluggy-1.5.0
+rootdir: /Users/gabrielsaco/Documents/GitHub/economic-freedom
+plugins: nbmake-1.5.5, hypothesis-6.150.2, langsmith-0.4.43, typeguard-4.4.4, anyio-4.7.0, zarr-3.1.5, cov-7.0.0
+collected 18 items
+
+tests/test_clea_manifest.py s                                            [  5%]
+tests/test_close_elections_unique_keys.py .                              [ 11%]
+tests/test_exclusion_bounds_presence.py .                                [ 16%]
+tests/test_figures_exported.py .                                         [ 22%]
+tests/test_first_stage_presence.py .                                     [ 27%]
+tests/test_integration.py F                                              [ 33%]
+tests/test_iso3_merge_coverage.py .                                      [ 38%]
+tests/test_lp_reduced_form_presence.py .                                 [ 44%]
+tests/test_metadata_exists.py s                                          [ 50%]
+tests/test_no_regression_imports.py .                                    [ 55%]
+tests/test_panel_keys_unique.py s                                        [ 61%]
+tests/test_rd_window_choice.py .                                         [ 66%]
+tests/test_running_variable_continuity_basic.py .                        [ 72%]
+tests/test_shock_presence.py .                                           [ 77%]
+tests/test_spec_search.py ..                                             [ 88%]
+tests/test_tail_outcomes_presence.py .                                   [ 94%]
+tests/test_year_grid.py s                                                [100%]
+
+=================================== FAILURES ===================================
+_______________________________ test_run_all_ci ________________________________
+
+    def test_run_all_ci():
+        result = subprocess.run([
+            "python",
+            "tools/run_all.py",
+            "--stage",
+            "ci",
+        ], capture_output=True, text=True)
+        assert result.returncode == 0, result.stderr
+    
+>       assert Path("data/03_clean/panel_quinquennial_atlas.parquet").exists()
+E       AssertionError: assert False
+E        +  where False = exists()
+E        +    where exists = PosixPath('data/03_clean/panel_quinquennial_atlas.parquet').exists
+E        +      where PosixPath('data/03_clean/panel_quinquennial_atlas.parquet') = Path('data/03_clean/panel_quinquennial_atlas.parquet')
+
+tests/test_integration.py:14: AssertionError
+=============================== warnings summary ===============================
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+  /Users/gabrielsaco/anaconda3/lib/python3.11/site-packages/statsmodels/regression/linear_model.py:1992: RuntimeWarning: divide by zero encountered in scalar divide
+    self.het_scale = self.nobs/(self.df_resid)*(self.wresid**2)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_integration.py::test_run_all_ci - AssertionError: assert False
+============= 1 failed, 13 passed, 4 skipped, 5 warnings in 16.86s =============
+make[1]: *** [test] Error 1
+make: *** [repro] Error 2
+
+## 2026-01-26T02:06:53Z — Fix integration test after make repro failure
+Edits: tests/test_integration.py (expect annual panel only)
+Command: make repro
+make clean
+rm -rf output outputs data/02_intermediate data/03_clean data/04_analysis
+make run
+python tools/run_all.py --stage paper
+make test
+pytest
+============================= test session starts ==============================
+platform darwin -- Python 3.11.9, pytest-8.4.1, pluggy-1.5.0
+rootdir: /Users/gabrielsaco/Documents/GitHub/economic-freedom
+plugins: nbmake-1.5.5, hypothesis-6.150.2, langsmith-0.4.43, typeguard-4.4.4, anyio-4.7.0, zarr-3.1.5, cov-7.0.0
+collected 18 items
+
+tests/test_clea_manifest.py s                                            [  5%]
+tests/test_close_elections_unique_keys.py .                              [ 11%]
+tests/test_exclusion_bounds_presence.py .                                [ 16%]
+tests/test_figures_exported.py .                                         [ 22%]
+tests/test_first_stage_presence.py .                                     [ 27%]
+tests/test_integration.py .                                              [ 33%]
+tests/test_iso3_merge_coverage.py .                                      [ 38%]
+tests/test_lp_reduced_form_presence.py .                                 [ 44%]
+tests/test_metadata_exists.py s                                          [ 50%]
+tests/test_no_regression_imports.py .                                    [ 55%]
+tests/test_panel_keys_unique.py s                                        [ 61%]
+tests/test_rd_window_choice.py .                                         [ 66%]
+tests/test_running_variable_continuity_basic.py .                        [ 72%]
+tests/test_shock_presence.py .                                           [ 77%]
+tests/test_spec_search.py ..                                             [ 88%]
+tests/test_tail_outcomes_presence.py .                                   [ 94%]
+tests/test_year_grid.py s                                                [100%]
+
+=============================== warnings summary ===============================
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+tests/test_spec_search.py::test_run_spec_smoke
+  /Users/gabrielsaco/anaconda3/lib/python3.11/site-packages/statsmodels/regression/linear_model.py:1992: RuntimeWarning: divide by zero encountered in scalar divide
+    self.het_scale = self.nobs/(self.df_resid)*(self.wresid**2)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 14 passed, 4 skipped, 5 warnings in 17.55s ==================
+
+## 2026-01-26T02:10:20Z — CLEA availability note
+Note: data/01_raw/clea/clea_manifest.json was not present; CLEA ingest skipped and pipeline used ParlGov fallback for close-elections sample.
+
+## 2026-01-26T10:56:40Z — User-provided datasets
+Moved CPD_V-Party_CSV_v2.zip -> data/01_raw/vparty/
+Moved clea_lc_20251015.sav_.zip -> data/01_raw/clea/
+
+## 2026-01-26T11:01:31Z — CLEA/V-Party integration
+Command: unzip data/01_raw/vparty/CPD_V-Party_CSV_v2.zip
+Command: unzip data/01_raw/clea/clea_lc_20251015.sav_.zip
+Created data/01_raw/clea/clea_manifest.json (CLEA column mapping)
+Command: make lint
+python -m ruff check src tests
+All checks passed!
+Command: make run
+python tools/run_all.py --stage paper
+
+## 2026-01-26T11:37:02Z — CLEA + V-Party full rerun (part-by-part)
+Command: python notebooks/00_env_setup.py
+<pandas.io.formats.style.Styler object at 0x10eb91e90>
+<pandas.io.formats.style.Styler object at 0x10dedbd10>
+<pandas.io.formats.style.Styler object at 0x10eb59910>
+Command: python notebooks/01_ingest_fraser.py
+<pandas.io.formats.style.Styler object at 0x11285ab90>
+<pandas.io.formats.style.Styler object at 0x112b6fe10>
+<pandas.io.formats.style.Styler object at 0x112c00310>
+Figure(1440x720)
+Figure(1920x1440)
+Command: python notebooks/02_pull_worldbank.py
+<pandas.io.formats.style.Styler object at 0x10e2a45d0>
+<pandas.io.formats.style.Styler object at 0x10ec87b90>
+<pandas.io.formats.style.Styler object at 0x10ec9bd90>
+Figure(1920x960)
+Command: python notebooks/03b_build_annual_panel.py
+<pandas.io.formats.style.Styler object at 0x1162ab410>
+<pandas.io.formats.style.Styler object at 0x116246810>
+<pandas.io.formats.style.Styler object at 0x117cb6f90>
+Command: python notebooks/10_ingest_clea.py
+
+## Mon Jan 26 07:55:55 -05 2026
+
+Command: date
+Output:
+Mon Jan 26 07:55:55 -05 2026
+
+Command: find . -maxdepth 2 -print
+Output:
+.
+./paper
+./paper/main.bbl
+./paper/main.pdf
+./paper/references.bib
+./paper/main.toc
+./paper/main.tex
+./paper/main.out
+./paper/paper.bib
+./paper/main.aux
+./paper/main.log
+./paper/main.blg
+./NELDA 6.0.zip
+./tools
+./tools/qc_scan_no_inference.py
+./tools/build_report.py
+./tools/run_spec_grid.py
+./tools/build_ned_samples.py
+./tools/run_all.py
+./tools/convert_clea_sav_to_parquet.py
+./tools/run_notebooks.py
+./.DS_Store
+./requirements.txt
+./archive
+./archive/legacy_pre_plan
+./.pytest_cache
+./.pytest_cache/CACHEDIR.TAG
+./.pytest_cache/README.md
+./.pytest_cache/.gitignore
+./.pytest_cache/v
+./config
+./config/spec_search_identification.yaml
+./config/spec_search_ned_parl_cov80.yaml
+./config/spec_search_parlgov_model_sweep.yaml
+./config/spec_search.yaml
+./config/spec_search_ned_pres_cov80.yaml
+./config/spec_search_ned_parl_cov50.yaml
+./config/spec_search_parlgov_outcome_sweep.yaml
+./config/spec_search_parlgov_groups_v2.yaml
+./config/spec_search_ned_pres_cov50.yaml
+./config/spec_search_parlgov_groups.yaml
+./references.bib
+./Makefile
+./.ruff_cache
+./.ruff_cache/0.14.13
+./.ruff_cache/CACHEDIR.TAG
+./.ruff_cache/.gitignore
+./tests
+./tests/test_first_stage_presence.py
+./tests/test_close_elections_unique_keys.py
+./tests/conftest.py
+./tests/test_no_regression_imports.py
+./tests/test_iso3_merge_coverage.py
+./tests/test_lp_reduced_form_presence.py
+./tests/test_running_variable_continuity_basic.py
+./tests/test_metadata_exists.py
+./tests/test_tail_outcomes_presence.py
+./tests/test_exclusion_bounds_presence.py
+./tests/test_year_grid.py
+./tests/__pycache__
+./tests/test_clea_manifest.py
+./tests/test_figures_exported.py
+./tests/test_spec_search.py
+./tests/test_panel_keys_unique.py
+./tests/test_rd_window_choice.py
+./tests/test_integration.py
+./tests/test_shock_presence.py
+./ETAD_v_1_0_0.csv
+./output
+./output/paper_logs
+./output/tables
+./output/paper_tables
+./output/spec_search
+./output/logs
+./output/figures
+./output/paper_figures
+./docs
+./docs/00_assumptions.md
+./docs/04_methods_and_estimands.md
+./docs/07_validation_and_tests.md
+./docs/methods
+./docs/05_execution_log.md
+./docs/02_repo_contract.md
+./docs/01_traceability_matrix.md
+./docs/results
+./docs/08_repo_cleanup_report.md
+./docs/clea_manifest_template.json
+./docs/data
+./docs/03_data_sources.md
+./docs/06_results_manifest.md
+./jupytext.toml
+./README.md
+./plan.tex
+./parliamentary_elections_v2.dta
+./.gitignore
+./.venv
+./.venv/bin
+./.venv/include
+./.venv/etc
+./.venv/pyvenv.cfg
+./.venv/.gitignore
+./.venv/lib
+./.venv/share
+./venv
+./venv/bin
+./venv/include
+./venv/etc
+./venv/pyvenv.cfg
+./venv/lib
+./venv/share
+./.git
+./.git/REBASE_HEAD
+./.git/ORIG_HEAD
+./.git/config
+./.git/objects
+./.git/HEAD
+./.git/info
+./.git/logs
+./.git/description
+./.git/hooks
+./.git/refs
+./.git/index
+./.git/branches
+./.git/packed-refs
+./.git/COMMIT_EDITMSG
+./.git/FETCH_HEAD
+./presidential_elections_v2.dta
+./ vri
+./ vri/CV_Saco.pdf
+./ vri/GabrielSaco.pdf
+./ vri/Carta DW.pdf
+./ vri/Presupuesto.pdf
+./ vri/Presentacion.pdf
+./data
+./data/fraser.xlsx
+./data/01_raw
+./data/04_analysis
+./data/.DS_Store
+./data/03_clean
+./data/interim
+./data/processed
+./data/raw
+./data/02_intermediate
+./notebooks
+./notebooks/01_ingest_fraser.ipynb
+./notebooks/33_robustness_suite.py
+./notebooks/20b_rd_validity_vote_margin.py
+./notebooks/10_ingest_parlgov.py
+./notebooks/34_top2_margin_variant.py
+./notebooks/24_postmortem_seatshare_rd.py
+./notebooks/12_define_positive_negative_shocks.py
+./notebooks/35_switch_only_variant.py
+./notebooks/13_construct_efw_shocks_and_outcomes.ipynb
+./notebooks/22b_lp_reduced_form.py
+./notebooks/02_pull_worldbank.ipynb
+./notebooks/31_asymmetry_tests.py
+./notebooks/30_lpiv_irfs_pos_neg.py
+./notebooks/20b_rd_validity_vote_margin.ipynb
+./notebooks/22_rd_iv_main_results.ipynb
+./notebooks/03b_build_annual_panel.ipynb
+./notebooks/02_pull_worldbank.py
+./notebooks/22b_lp_reduced_form.ipynb
+./notebooks/34_top2_margin_variant.ipynb
+./notebooks/22_exclusion_sensitivity_bounds.py
+./notebooks/01_ingest_fraser.py
+./notebooks/24_postmortem_seatshare_rd.ipynb
+./notebooks/37_ned_presidential_variant.ipynb
+./notebooks/32_nonlinearity_magnitude_state.ipynb
+./notebooks/36_longer_post_windows.ipynb
+./notebooks/11_construct_close_elections_rd_sample.py
+./notebooks/03b_build_annual_panel.py
+./notebooks/22_exclusion_sensitivity_bounds.ipynb
+./notebooks/32_nonlinearity_magnitude_state.py
+./notebooks/10_ingest_parlgov.ipynb
+./notebooks/12_define_positive_negative_shocks.ipynb
+./notebooks/00_env_setup.ipynb
+./notebooks/35_switch_only_variant.ipynb
+./notebooks/21_rd_first_stage_and_reduced_form.py
+./notebooks/30_lpiv_irfs_pos_neg.ipynb
+./notebooks/00_env_setup.py
+./notebooks/36_longer_post_windows.py
+./notebooks/10_ingest_clea.ipynb
+./notebooks/11_construct_close_elections_rd_sample.ipynb
+./notebooks/33_robustness_suite.ipynb
+./notebooks/13_construct_efw_shocks_and_outcomes.py
+./notebooks/21_rd_first_stage_and_reduced_form.ipynb
+./notebooks/31_asymmetry_tests.ipynb
+./notebooks/37_ned_presidential_variant.py
+./notebooks/22_rd_iv_main_results.py
+./notebooks/10_ingest_clea.py
+./src
+./src/io_worldbank.py
+./src/maps.py
+./src/lpiv.py
+./src/elections_parlgov.py
+./src/crisis.py
+./src/config.py
+./src/paths.py
+./src/qc.py
+./src/ideology.py
+./src/__init__.py
+./src/spec_search
+./src/__pycache__
+./src/shocks.py
+./src/iv_specs.py
+./src/clea.py
+./src/elections.py
+./src/rd_localrand.py
+./src/viz_style.py
+./src/rd.py
+
+Command: git status -s
+Output:
+ D .codex/skills/execute-plan-tex/SKILL.md
+ D AGENTS.md
+ M data/04_analysis/close_elections_sample.parquet
+ M data/04_analysis/close_elections_vote_margin.parquet
+ M data/04_analysis/rd_event_panel.parquet
+ M data/04_analysis/rd_event_panel_neg.parquet
+ M data/04_analysis/rd_event_panel_pos.parquet
+ M data/04_analysis/rd_sample_neg.parquet
+ M data/04_analysis/rd_sample_pos.parquet
+ M docs/00_assumptions.md
+ M docs/01_traceability_matrix.md
+ M docs/02_repo_contract.md
+ M docs/03_data_sources.md
+ M docs/04_methods_and_estimands.md
+ M docs/05_execution_log.md
+ M docs/06_results_manifest.md
+ M docs/07_validation_and_tests.md
+ M docs/08_repo_cleanup_report.md
+ M notebooks/00_env_setup.ipynb
+ M notebooks/01_ingest_fraser.ipynb
+ M notebooks/02_pull_worldbank.ipynb
+ M notebooks/03b_build_annual_panel.ipynb
+ M notebooks/10_ingest_parlgov.ipynb
+ M notebooks/11_construct_close_elections_rd_sample.ipynb
+ M notebooks/11_construct_close_elections_rd_sample.py
+ M notebooks/12_define_positive_negative_shocks.ipynb
+ M notebooks/13_construct_efw_shocks_and_outcomes.ipynb
+ M notebooks/13_construct_efw_shocks_and_outcomes.py
+ M notebooks/20b_rd_validity_vote_margin.ipynb
+ M notebooks/21_rd_first_stage_and_reduced_form.ipynb
+ M notebooks/22_exclusion_sensitivity_bounds.ipynb
+ M notebooks/22_rd_iv_main_results.ipynb
+ M notebooks/24_postmortem_seatshare_rd.ipynb
+ M notebooks/24_postmortem_seatshare_rd.py
+ M notebooks/30_lpiv_irfs_pos_neg.ipynb
+ M notebooks/31_asymmetry_tests.ipynb
+ M notebooks/32_nonlinearity_magnitude_state.ipynb
+ M notebooks/33_robustness_suite.ipynb
+ M notebooks/33_robustness_suite.py
+ M notebooks/34_top2_margin_variant.ipynb
+ M notebooks/35_switch_only_variant.ipynb
+ M notebooks/36_longer_post_windows.ipynb
+ M notebooks/37_ned_presidential_variant.ipynb
+ M requirements.txt
+ M src/elections_parlgov.py
+ M src/paths.py
+ M tests/test_integration.py
+ M tools/qc_scan_no_inference.py
+ M tools/run_all.py
+?? ETAD_v_1_0_0.csv
+?? NELDA 6.0.zip
+?? data/04_analysis/ned_parliamentary_sample_cov50.parquet
+?? data/04_analysis/ned_parliamentary_sample_cov80.parquet
+?? data/04_analysis/ned_presidential_sample_cov50.parquet
+?? data/04_analysis/ned_presidential_sample_cov80.parquet
+?? docs/clea_manifest_template.json
+?? docs/results/
+?? notebooks/10_ingest_clea.ipynb
+?? notebooks/10_ingest_clea.py
+?? notebooks/22b_lp_reduced_form.ipynb
+?? notebooks/22b_lp_reduced_form.py
+?? parliamentary_elections_v2.dta
+?? presidential_elections_v2.dta
+?? src/clea.py
+?? src/ideology.py
+?? tests/test_clea_manifest.py
+?? tests/test_lp_reduced_form_presence.py
+?? tools/convert_clea_sav_to_parquet.py

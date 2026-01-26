@@ -7,6 +7,7 @@ This file lists generated tables/figures and the commands that produce them.
 - `output/paper_tables/rd_reduced_form.csv` — RD reduced‑form macro outcomes
 - `output/paper_tables/rd_tail_outcomes.csv` — RD tail outcomes (worst growth, inflation spikes, drawdown, crisis start)
 - `output/paper_tables/rd_iv_main.csv` — RD‑IV (Wald ratio) estimates (primary horizons)
+- `output/paper_tables/lp_reduced_form.csv` — LP reduced‑form (winner effects; fallback when IV weak)
 - `output/paper_tables/rd_exclusion_bounds.csv` — exclusion sensitivity grid (delta → beta)
 - `output/paper_tables/rd_exclusion_bounds_summary.csv` — exclusion bounds summary
 - `output/paper_tables/asymmetry_tests.csv` — asymmetry tests

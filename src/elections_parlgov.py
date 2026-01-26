@@ -4,6 +4,17 @@ import numpy as np
 import pandas as pd
 
 
+def _attach_left_right(
+    results: pd.DataFrame,
+    parties: pd.DataFrame,
+    *,
+    left_right_col: str = "left_right",
+) -> pd.DataFrame:
+    if left_right_col in results.columns:
+        return results.copy()
+    return results.merge(parties[["party_id", left_right_col]], on="party_id", how="left")
+
+
 def compute_market_seat_shares(
     results: pd.DataFrame,
     parties: pd.DataFrame,
@@ -11,7 +22,7 @@ def compute_market_seat_shares(
     threshold: float,
     seat_col: str = "seats",
 ) -> pd.DataFrame:
-    frame = results.merge(parties[["party_id", "left_right"]], on="party_id", how="left")
+    frame = _attach_left_right(results, parties, left_right_col="left_right")
     frame = frame.dropna(subset=[seat_col]).copy()
     frame["market_party"] = frame["left_right"] >= threshold
     totals = frame.groupby("election_id")[seat_col].sum().rename("seat_total")
@@ -28,7 +39,7 @@ def compute_market_vote_shares(
     threshold: float,
     vote_share_col: str = "vote_share",
 ) -> pd.DataFrame:
-    frame = results.merge(parties[["party_id", "left_right"]], on="party_id", how="left")
+    frame = _attach_left_right(results, parties, left_right_col="left_right")
     frame = frame.dropna(subset=[vote_share_col]).copy()
     frame["vote_share"] = frame[vote_share_col].astype(float)
     frame["market_party"] = frame["left_right"] >= threshold
@@ -51,7 +62,7 @@ def compute_bloc_ideology_distance(
     threshold: float,
     weight_col: str = "vote_share",
 ) -> pd.DataFrame:
-    frame = results.merge(parties[["party_id", "left_right"]], on="party_id", how="left")
+    frame = _attach_left_right(results, parties, left_right_col="left_right")
     frame = frame.dropna(subset=[weight_col, "left_right"]).copy()
     frame["weight"] = frame[weight_col].astype(float)
     frame["market_party"] = frame["left_right"] >= threshold
@@ -80,7 +91,7 @@ def compute_top2_margin_by_bloc(
     threshold: float,
     vote_share_col: str = "vote_share",
 ) -> pd.DataFrame:
-    frame = results.merge(parties[["party_id", "left_right"]], on="party_id", how="left")
+    frame = _attach_left_right(results, parties, left_right_col="left_right")
     frame = frame.dropna(subset=[vote_share_col, "left_right"]).copy()
     frame["vote_share_raw"] = frame[vote_share_col].astype(float)
     scale = 100.0 if frame["vote_share_raw"].max() > 1.0 else 1.0

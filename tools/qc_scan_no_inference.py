@@ -46,6 +46,7 @@ ALLOW_INFERENCE_PREFIXES = {
     "notebooks/20b_",
     "notebooks/21_",
     "notebooks/22_",
+    "notebooks/22b_",
     "notebooks/23_",
     "notebooks/24_",
     "notebooks/30_",
