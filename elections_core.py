@@ -1270,8 +1270,10 @@ def build_master(paths: PipelinePaths, logger: logging.Logger, strict: bool = Fa
     combined = compute_market_margin(combined)
 
     def key_for_row(row):
-        iso = row.get("iso3") or ""
-        office = row.get("office_type") or ""
+        iso_val = row.get("iso3")
+        iso = "" if pd.isna(iso_val) else str(iso_val)
+        office_val = row.get("office_type")
+        office = "" if pd.isna(office_val) else str(office_val)
         if pd.notna(row.get("date")):
             date_str = row.get("date").strftime("%Y-%m-%d")
         else:
