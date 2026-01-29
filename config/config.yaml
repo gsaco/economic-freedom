@@ -1,0 +1,45 @@
+project:
+  name: economic-freedom-elections-cleanroom
+  created: 2026-01-28
+paths:
+  raw: data/raw
+  external: data/external
+  interim: data/interim
+  processed: data/processed
+  reports: reports
+  audit: reports/audit
+  manifests: reports/manifests
+  manual_patch: manual_patch.csv
+  cow2iso: cow2iso.csv
+  partyfacts_core: partyfacts-core-parties.csv
+  partyfacts_external: partyfacts-external-parties.csv
+params:
+  country_match:
+    min_score: 90
+    min_score_low: 80
+    tie_delta: 0.5
+  party_match:
+    min_score: 90
+    min_score_low: 80
+    tie_delta: 0.5
+    year_window: 10  # max window for candidate pool bounds
+  ideology:
+    source_priority: [vparty, ches, elff, parlgov]
+    year_windows:
+      vparty: 4
+      ches: 4
+      elff: 8
+      parlgov: null
+  dedupe:
+    source_rank: [ned_pres, ned_parl, clea_lc]
+    prefer_date_precision: [day, month, year]
+  efw:
+    horizons: [0,1,2,3,4,5,6,7,8]
+  standardization:
+    share_proportion_threshold: 1.5
+    stable_sort: mergesort
+  flags:
+    nelda_competitive_values:
+      yes: ["yes"]
+      no: ["no"]
+      unclear: ["unclear", "N/A"]

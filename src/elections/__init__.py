@@ -1,0 +1,1 @@
+"""Cleanroom elections pipeline package."""

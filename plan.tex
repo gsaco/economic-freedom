@@ -1,0 +1,563 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage{microtype}
+
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\onehalfspacing
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+% ----------------------------
+% Notation shortcuts
+% ----------------------------
+\newcommand{\EFW}{\mathrm{EFW}}
+\newcommand{\GDP}{\mathrm{GDP}}
+\newcommand{\ITT}{\mathrm{ITT}}
+\newcommand{\LATE}{\mathrm{LATE}}
+\newcommand{\RD}{\mathrm{RD}}
+\newcommand{\IV}{\mathrm{IV}}
+\newcommand{\TwoSLS}{\mathrm{2SLS}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\clust}{\mathrm{clust}}
+\newcommand{\mc}{\mathcal}
+\newcommand{\se}{\mathrm{se}}
+\newcommand{\reform}{\mathrm{reform}}
+\newcommand{\reversal}{\mathrm{reversal}}
+\newcommand{\state}{\mathrm{state}}
+\newcommand{\RDcut}{0}
+
+% Canonical IDs (internal)
+\newcommand{\cid}{c}
+\newcommand{\eid}{e}
+\newcommand{\iso}{\texttt{iso3}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE \textbf{Close Elections, Economic Freedom, and Macro Performance:}}\\
+{\LARGE \textbf{A Cross-Country RD Spine with a Local-Projections Dynamic Module}}\\
+\vspace{0.3em}
+{\large Publication-grade proposal (identification-first; conservative claims)}\\
+\vspace{0.3em}
+{\large January 26, 2026}
+\end{center}
+
+\vspace{0.8em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{0) Executive Pitch}
+\textit{(Constraint: $\leq$ 1 page; tight pitch + most defensible takeaway.)}
+
+\textbf{Core question.} Do quasi-random changes in the \emph{market orientation} of elected governments---induced by razor-thin national elections---shift a country's economic institutions (measured by $\EFW$) and, through any channel(s), alter macroeconomic performance over the subsequent 1--8 years?
+
+\textbf{Design spine.} The empirical core is a cross-country regression discontinuity design (RD) on close elections. The running variable is an ideology-based victory margin $m_{\cid \eid}$ between the ``more-market'' and ``less-market'' top competitors in a national election; treatment is a more-market victory $D_{\cid \eid}=\1[m_{\cid \eid}\ge 0]$. We pair this RD with \textbf{local projections} (LP) to estimate dynamic responses of (i) $\EFW$ and its sub-areas, and (ii) macro outcomes, at horizons $h\in\{1,2,4,8\}$.
+
+\textbf{Two-part structure (and discipline about what is and is not claimed).}
+\begin{enumerate}[leftmargin=1.2em]
+\item \textbf{Part 1 (politics $\rightarrow$ institutions).} Reduced-form RD: close more-market victory $\rightarrow$ subsequent changes in $\EFW$ (first-stage / mechanism evidence). This is the most defensible causal claim in the project, subject to standard RD assumptions.
+\item \textbf{Part 2 (institutions $\rightarrow$ macro).} Baseline is again reduced-form RD/LP: close more-market victory $\rightarrow$ macro dynamics. We then \textbf{optionally} layer an $\IV$ interpretation: use the close-election shock to instrument for $\Delta \EFW$ and report local-Wald / $\IV$-LP estimates as \emph{interpretive}, explicitly conditional on exclusion and monotonicity assumptions that may fail in political settings.
+\end{enumerate}
+
+\textbf{Why this is publishable (Q1 referee-proof posture).}
+\begin{itemize}[leftmargin=1.2em]
+\item \textbf{Master dataset contribution:} a canonical, audited master linking \emph{all} political datasets in \texttt{Archive.zip} (CLEA, DPI, NED, NELDA, ParlGov, V-Party) into a single election--party--government spine with explicit crosswalks, merge diagnostics, and quality flags.
+\item \textbf{Identification discipline:} clear separation of (i) reduced-form effects of close political shocks, (ii) first-stage evidence for institutional change, and (iii) optional $\IV$ interpretation with weak-instrument-robust inference and falsification.
+\item \textbf{Modern dynamics:} LP is default for dynamic effects, enabling pre-specified tests of asymmetry (reforms vs reversals), state dependence (interaction with baseline regimes), and nonlinearities (thresholds/splines), while keeping the estimand explicit.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{1) Research Questions and Estimands}
+
+\subsection*{1.1 Notation and objects}
+Countries are indexed by $\cid$, elections by $\eid$ within country, and the election year by $t(\cid,\eid)$ with election date $d(\cid,\eid)$.
+Let $p$ index parties/candidates. Let $\EFW_{\cid,t}$ be the Economic Freedom of the World index in country $\cid$ and calendar year $t$ (overall and sub-areas).
+
+Define a \textbf{market-orientation score} $I_{p,t}$ for each party (or candidate's party) at the time of the election, built from party-ideology datasets (Section~3.3). A contest between the top two competitors in election $(\cid,\eid)$ yields a ``more-market'' side (higher $I$) and ``less-market'' side (lower $I$).
+
+\subsection*{1.2 Estimands (Part 1: close win $\rightarrow \Delta \EFW$)}
+Let $m_{\cid \eid}$ denote the \emph{ideology-based victory margin} between the more-market and less-market top competitors at the decisive round. Define treatment
+\[
+D_{\cid \eid} \equiv \1[m_{\cid \eid}\ge \RDcut].
+\]
+For horizon $h\ge 0$, define the \textbf{cumulative institutional response}
+\[
+\Delta \EFW_{\cid \eid}(h) \equiv \EFW_{\cid,\, t(\cid,\eid)+h} - \EFW_{\cid,\, t(\cid,\eid)-1}.
+\]
+The main Part 1 estimand is the RD \textbf{local average treatment effect of a close more-market victory} on cumulative institutional change:
+\[
+\tau^{\EFW}(h) \equiv \lim_{m\downarrow 0}\E[\Delta \EFW_{\cid \eid}(h)\mid m_{\cid \eid}=m] - \lim_{m\uparrow 0}\E[\Delta \EFW_{\cid \eid}(h)\mid m_{\cid \eid}=m].
+\]
+We estimate $\tau^{\EFW}(h)$ for overall $\EFW$ and for pre-registered sub-areas.
+
+\subsection*{1.3 Estimands (Part 2: close win $\rightarrow$ macro dynamics; optional $\IV$ interpretation)}
+Let $y_{\cid,t}$ be a macro outcome (e.g., log real GDP per capita, inflation, investment share). Define horizon-specific outcome transforms (LP form)
+\[
+Y_{\cid \eid}(h) \equiv y_{\cid,\, t(\cid,\eid)+h} - y_{\cid,\, t(\cid,\eid)-1}.
+\]
+\textbf{Reduced-form (causal under RD):}
+\[
+\tau^{y}(h) \equiv \lim_{m\downarrow 0}\E[Y_{\cid \eid}(h)\mid m_{\cid \eid}=m] - \lim_{m\uparrow 0}\E[Y_{\cid \eid}(h)\mid m_{\cid \eid}=m].
+\]
+\textbf{Optional $\IV$ interpretation (local Wald).} For any horizon $h$ where the first stage is nontrivial, define the local Wald ratio
+\[
+\beta^{\IV}(h) \equiv \frac{\tau^{y}(h)}{\tau^{\EFW}(h)}.
+\]
+We report $\beta^{\IV}(h)$ only as an \emph{interpretive} estimand, explicitly conditional on an exclusion restriction (close-win affects $y$ only through $\EFW$) and monotonicity. Because political shocks plausibly move many policies besides $\EFW$, this $\IV$ layer is not the baseline claim.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{2) Identification Strategy --- Part 1}
+
+\subsection*{2.1 RD identifying assumptions and why they are plausible here}
+The design uses close elections as quasi-random assignment. The key identifying condition is continuity of potential outcomes and potential institutional trajectories in the running variable $m_{\cid \eid}$ at the cutoff:
+\[
+\E[\Delta \EFW_{\cid \eid}(h)(0)\mid m] \text{ and } \E[\Delta \EFW_{\cid \eid}(h)(1)\mid m] \text{ continuous at } m=0.
+\]
+We focus on elections with high-quality competition using pre-specified quality flags from \texttt{NED} and \texttt{NELDA} (Section~3.3), reducing scope for manipulated or non-competitive contests.
+
+\subsection*{2.2 Constructing the running variable (margin) and treatment}
+We define $m_{\cid \eid}$ from official vote/seat shares of the top two competitors at the decisive round, after classifying them by market orientation $I_{p,t}$. Construction uses \textbf{all} political datasets in \texttt{Archive.zip}:
+
+\begin{itemize}[leftmargin=1.2em]
+\item \textbf{NED (core election results spine).} National parliamentary and presidential elections with party/candidate vote and seat shares, election dates, and flags for coups/inconsequential elections (\texttt{Archive.zip/ned/presidential\_elections\_v2.dta}, \texttt{Archive.zip/ned/parliamentary\_elections\_v2.dta}; codebook \texttt{Archive.zip/ned/codebook\_elections\_database\_v2.pdf}). Variables used include \texttt{vote\_share1\_*}, \texttt{vote\_share2\_*}, \texttt{seat\_share\_*}, \texttt{country\_cow}, and \texttt{flag\_*} fields.
+\item \textbf{V-Party (primary economic ideology for parties).} Party economic left--right scale \texttt{v2pariglef} (0=far-left to 6=far-right) from \texttt{Archive.zip/vparty/CPD\_V-Party\_CSV\_v2/V-Dem-CPD-Party-V2.csv}, with documentation in \texttt{.../V-Dem\_V-Party\_Codebook\_V2.pdf} (section ``Economic left-right scale (v2pariglef)''). We interpret higher values as more-market orientation (codebook clarification explicitly references privatization/lower taxes/less regulation on the right).
+\item \textbf{ParlGov (government formation + alternative ideology scaling).} Coalition/cabinet formation and party positions from \texttt{Archive.zip/parlgov/parlgov.zip}: \texttt{cabinet.csv}, \texttt{cabinet\_party.csv} (PM party indicator \texttt{pm}), \texttt{election.csv}, \texttt{election\_result.csv} (vote share \texttt{vote\_share}, seats \texttt{seats}), and computed party-position view \texttt{viewcalc\_party\_position.csv} (e.g., \texttt{state\_market}, \texttt{left\_right}). Used for (i) validating which party governs after parliamentary elections, (ii) coalition-weighted ideology, and (iii) cross-checking ideology classification.
+\item \textbf{DPI (institutional baselines and coarse ideology).} Country-year political institutions and coarse right/left coding of executives/government (\texttt{Archive.zip/dpi/dpi2012.xls}), including \texttt{system}, \texttt{execme}, \texttt{checks}, \texttt{checks\_lax}, \texttt{military}, and ideology fields such as \texttt{execrlc}, \texttt{gov1rlc}, \texttt{opp1rlc}. Used as predetermined state variables and a robustness ideology proxy.
+\item \textbf{NELDA (election quality/competition flags).} Election-level indicators for whether opposition was allowed (\texttt{nelda3}), multiple parties legal (\texttt{nelda4}), choice of candidates (\texttt{nelda5}), and other irregularity/repression measures in \texttt{Archive.zip/nelda/nelda\_id\_q\_wide.tab} with definitions in \texttt{Archive.zip/nelda/NELDA\_codebook\_2011.pdf}. Used to define a pre-specified ``competitive election'' sample and quality flags.
+\item \textbf{CLEA (validation and alternative margin construction).} Constituency-level election results with party vote shares and seats (\texttt{Archive.zip/clea/clea\_lc\_20251015.sav}; key fields documented in \texttt{Archive.zip/clea/clea\_manifest.json}). Used to (i) validate national aggregates (vote/seat totals), (ii) construct alternative close-election margins for parliamentary contests from aggregated party vote shares (\texttt{pv1}/\texttt{pvs1}) and seats (\texttt{seat}), and (iii) generate district-magnitude heterogeneity measures via \texttt{mag}.
+\end{itemize}
+
+\subsection*{2.3 ``Competitive close election'' sample definition (pre-specified)}
+Baseline RD sample restrictions are applied \emph{before} looking at outcomes:
+\begin{enumerate}[leftmargin=1.2em]
+\item \textbf{Exclude} elections flagged as coups or inconsequential in NED (\texttt{flag\_coup==1} or \texttt{flag\_inconsequential==1}).
+\item \textbf{Require} multiparty competition using NELDA (\texttt{nelda3==1}, \texttt{nelda4==1}, \texttt{nelda5==1}); if a NELDA match is unavailable for an election, keep but flag and treat as a robustness dimension.
+\item Restrict to a symmetric bandwidth around $m=0$ chosen by standard RD selectors, with sensitivity analysis over a grid of bandwidth multipliers (Section~4).
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{3) Data Sources}
+
+\subsection*{3.1 Political datasets in \texttt{Archive.zip} (used without exception)}
+Table~\ref{tab:pol_sources} lists the six political datasets shipped in \texttt{Archive.zip} and how each enters the master dataset.
+
+\begin{longtable}{p{0.16\linewidth}p{0.28\linewidth}p{0.44\linewidth}}
+\caption{Political datasets in \texttt{Archive.zip}: role in master dataset}\label{tab:pol_sources}\\
+\toprule
+\textbf{Folder} & \textbf{Files (key)} & \textbf{How used in this project (explicit)}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Folder} & \textbf{Files (key)} & \textbf{How used in this project (explicit)}\\
+\midrule
+\endhead
+\texttt{clea/} &
+\texttt{clea\_lc\_20251015.sav}, \texttt{clea\_manifest.json} &
+Validation + alternative margin construction for parliamentary elections; aggregation checks (vote/seat totals), district magnitude heterogeneity; complements NED and ParlGov.\\
+\texttt{dpi/} &
+\texttt{dpi2012.xls} &
+Country-year political institutions and coarse ideology; baseline covariates/states ($\state$) for heterogeneity; robustness ideology proxy; treatment-channel diagnostics.\\
+\texttt{ned/} &
+\texttt{presidential\_elections\_v2.dta}, \texttt{parliamentary\_elections\_v2.dta} (+ codebook) &
+Core election-results spine: dates, vote/seat shares for top competitors, and quality flags (coup/inconsequential, unopposed/indirect, etc.). Primary source for $m_{\cid \eid}$.\\
+\texttt{nelda/} &
+\texttt{nelda\_id\_q\_wide.tab} (+ codebook) &
+Election competitiveness/irregularity flags used to define baseline ``competitive'' sample and quality diagnostics; complements NED flags.\\
+\texttt{parlgov/} &
+\texttt{parlgov.zip} (tables/views) (+ codebook) &
+Government formation and coalition composition (PM party); alternative vote/seat shares; party position scales (e.g., \texttt{state\_market}) for ideology cross-checks; merges into party and election tables.\\
+\texttt{vparty/} &
+\texttt{V-Dem-CPD-Party-V2.csv} (+ PDFs) &
+Primary party economic ideology score (\texttt{v2pariglef}); party-year vote/seat shares for validation; party attributes for heterogeneity/failure-mode probing (e.g., populism/anti-pluralism indices, where used).\\
+\bottomrule
+\end{longtable}
+
+\subsection*{3.2 External (internet) datasets (only when additive)}
+The ZIP contains political/election data but not $\EFW$ or macro outcomes. We therefore integrate \emph{four} high-quality external datasets, each chosen because it (i) materially improves measurement of institutions or outcomes, (ii) has transparent documentation, and (iii) is feasible to archive in a replication package (version + hash).
+
+\begin{enumerate}[leftmargin=1.2em]
+\item \textbf{Economic Freedom of the World (EFW) dataset (Fraser Institute).} Annual institutional outcomes. The EFW materials report coverage of \emph{up to 165 jurisdictions} and data extending \emph{as far back as 1970}, with the latest year reported as \emph{2023} in the 2025 annual report. Used as the institutional outcome in Part 1 and as the endogenous ``institutional shock'' in the optional $\IV$ layer.\\
+\emph{Access:} free download (CSV/Excel) from \texttt{efotw}. \emph{Constraints:} citation required; archive the exact download.\\
+\footnote{\url{https://efotw.org/economic-freedom/dataset} and \url{https://www.fraserinstitute.org/sites/default/files/economic-freedom-of-the-world-2025.pdf}.}
+\item \textbf{World Development Indicators (WDI) (World Bank).} Primary macro outcomes $y_{\cid,t}$ (GDP per capita levels/growth, inflation, investment, trade openness, etc.). The WDI catalog reports temporal coverage \emph{1960--2024}.\\
+\emph{Access:} World Bank API / bulk download. \emph{License:} CC BY 4.0. \emph{Limitation:} revisions and definition changes; we store vintage and cross-check with PWT.\\
+\footnote{\url{https://datacatalog.worldbank.org/search/dataset/0037712/world-development-indicators}.}
+\item \textbf{Penn World Table (PWT) v10.01 (University of Groningen / GGDC).} Robustness macro series with explicit vintage files (PPP-adjusted real GDP per capita, productivity, capital stock, human capital). The Dataverse entry reports coverage \emph{1950--2019} and license \emph{CC BY 4.0}.\\
+\emph{Access:} Dataverse DOI download; easy to pin version. \emph{Limitation:} model-based constructs; used as robustness not sole source.\\
+\footnote{\url{https://dataverse.nl/dataset.xhtml?persistentId=doi:10.34894/QT5BCC}.}
+\item \textbf{Systemic Banking Crises Database (Laeven--Valencia, IMF).} Crisis/tail indicators (banking/currency/sovereign debt crises) to study whether institutional changes affect tail risk and to define baseline ``crisis state'' regimes. IMF publications describe coverage of systemic banking crises episodes during \emph{1970--2017} in the 2018 update.\\
+\emph{Access:} IMF working paper page/PDF; archive downloaded files. \emph{Constraints:} follow IMF terms; cite the underlying paper.\\
+\footnote{\url{https://www.imf.org/en/Publications/WP/Issues/2018/09/14/systemic-banking-crises-revisited-46232}.}
+\end{enumerate}
+
+\subsection*{3.3 Master Dataset Construction (canonical schema + merge plan + audit checks)}
+\textbf{Goal.} Build a single master dataset that can (i) support RD estimation at the election-event level, and (ii) support LP-style horizon regressions with consistent covariates and outcomes. The master has three linked layers: \textbf{(a) country}, \textbf{(b) party}, \textbf{(c) election-event}.
+
+\subsubsection*{3.3.1 Canonical schema (tables and primary keys)}
+\textbf{Country table} $\mc{C}$ (one row per country):
+\begin{itemize}[leftmargin=1.2em]
+\item \textbf{Primary key:} \texttt{country\_id} (internal), with canonical code \texttt{iso3}.
+\item \textbf{Crosswalk fields:} \texttt{cow\_code} (from NED \texttt{country\_cow}), \texttt{ifs\_code} (from DPI \texttt{ifs}), \texttt{vdem\_country\_id} (from V-Party \texttt{country\_id}), \texttt{parlgov\_country\_id} (from ParlGov \texttt{country\_id}), \texttt{clea\_ctr} (from CLEA \texttt{ctr}), \texttt{nelda\_ccode} (from NELDA \texttt{ccode}), \texttt{ned\_country\_abb} (from NED \texttt{country\_abb}).
+\item \textbf{Names:} harmonized \texttt{country\_name\_std} plus dataset-specific names to support audits.
+\end{itemize}
+
+\textbf{Party table} $\mc{P}$ (one row per party ID, time-varying attributes stored in party-year table):
+\begin{itemize}[leftmargin=1.2em]
+\item \textbf{Primary key:} \texttt{party\_id} (internal).
+\item \textbf{Crosswalk fields:} \texttt{v2paid} (V-Party), \texttt{parlgov\_party\_id}, \texttt{clea\_pty}, plus name variants: \texttt{party\_name\_std}, \texttt{party\_name\_raw\_vparty}, \texttt{party\_name\_raw\_parlgov}, \texttt{party\_name\_raw\_ned}, \texttt{party\_name\_raw\_clea}.
+\end{itemize}
+
+\textbf{Party-year table} $\mc{P}_t$ (party $\times$ year):
+\begin{itemize}[leftmargin=1.2em]
+\item \textbf{Keys:} (\texttt{party\_id}, \texttt{country\_id}, \texttt{year}).
+\item \textbf{Ideology:} canonical \texttt{ideo\_econ} (primary from V-Party \texttt{v2pariglef}); secondary \texttt{ideo\_state\_market} and \texttt{ideo\_left\_right} (from ParlGov \texttt{viewcalc\_party\_position.csv}); tertiary coarse categories from DPI when party mapping is unavailable.
+\item \textbf{Electoral strength:} vote/seat shares when available (V-Party party-year shares; ParlGov election results; CLEA aggregates), primarily for validation and as controls in some robustness checks.
+\end{itemize}
+
+\textbf{Election-event table} $\mc{E}$ (one row per election contest used for RD/LP):
+\begin{itemize}[leftmargin=1.2em]
+\item \textbf{Primary key:} \texttt{election\_id} (internal), constructed from (\texttt{country\_id}, election date, \texttt{office\_type}, \texttt{round}).
+\item \textbf{Core fields:} \texttt{office\_type} $\in\{$presidential, parliamentary$\}$; \texttt{date} (ISO); \texttt{year}; \texttt{round} (final decisive); \texttt{incumbent\_bloc} (when available).
+\item \textbf{Top competitors:} standardized IDs \texttt{winner\_party\_id}, \texttt{runnerup\_party\_id}; plus raw names; leader/candidate names where available (NED presidential \texttt{candidate\_*}).
+\item \textbf{RD objects:} running variable \texttt{margin\_market} $=m_{\cid \eid}$; treatment \texttt{D\_market\_win}; bandwidth-ready fields (absolute margin, bin indicators).
+\item \textbf{Quality flags:} NED flags (\texttt{flag\_coup}, \texttt{flag\_inconsequential}, \texttt{flag\_unopposed}/\texttt{flag\_indirect}); NELDA competitiveness flags (\texttt{nelda3}, \texttt{nelda4}, \texttt{nelda5}) and selected irregularity indicators; CLEA/ParlGov validation flags (Section~3.3.4).
+\item \textbf{Baseline states ($t-1$):} predetermined macro and institutional covariates $\bX_{\cid,t-1}$, including $\EFW_{\cid,t-1}$, GDP per capita, inflation regime, and DPI institutional measures.
+\end{itemize}
+
+\subsubsection*{3.3.2 Crosswalk strategy (country codes, party IDs, election matching)}
+\textbf{Country crosswalk (ISO3 as canonical).}
+\begin{enumerate}[leftmargin=1.2em]
+\item Anchor on \textbf{NED} because it supplies both numeric COW code (\texttt{country\_cow}) and a stable country name (\texttt{country}) across the full election series. Map NED countries to ISO3 using a deterministic name match plus audited fuzzy matching against \texttt{external\_country\_iso.csv} in ParlGov (\texttt{Archive.zip/parlgov/parlgov.zip/external\_country\_iso.csv}). Ambiguous matches are resolved by a small manually curated override list stored with the project (audit-logged).
+\item Propagate ISO3 to \textbf{NELDA} and \textbf{V-Party} via COW code links (NELDA \texttt{ccode}; V-Party \texttt{COWcode}).
+\item Map \textbf{DPI} via a parallel name-based crosswalk (\texttt{countryname}) and retain \texttt{ifs} code as a secondary identifier for audit.
+\item Map \textbf{CLEA} via \texttt{ctr\_n} name and retain \texttt{ctr} as secondary identifier.
+\end{enumerate}
+
+\textbf{Party ID crosswalk (internal party\_id).}
+\begin{enumerate}[leftmargin=1.2em]
+\item Use \textbf{V-Party} (\texttt{v2paid}) as the primary anchor for party IDs where available (broad country coverage and explicit party coding units PDF in \texttt{Archive.zip/vparty/.../V-Dem\_Party\_Coding\_Units\_V2.pdf}).
+\item For \textbf{ParlGov} countries, link ParlGov \texttt{party.csv} (\texttt{party\_id}, \texttt{name}, \texttt{name\_english}) to V-Party parties within the same country using standardized party names and year overlap; store match confidence scores and manual overrides.
+\item For \textbf{NED} and \textbf{CLEA}, link raw party strings/codes (\texttt{party\_1}, \texttt{pty\_n}) to the internal \texttt{party\_id} using (country, election date/year, name) matching. When ambiguity persists, fall back to ``top-two only'' matching within each election (local matching) and flag low-confidence links for exclusion/robustness.
+\end{enumerate}
+
+\textbf{Election matching across datasets.}
+Election-event table is built from NED as the backbone, then matched to:
+\begin{itemize}[leftmargin=1.2em]
+\item ParlGov election/cabinet entries via (ISO3/country, date within tolerance window, parliamentary office type); used to confirm government formation (PM party) and coalition.
+\item NELDA election records via (COW code, year, type, and election date where available), used solely for quality flags (not outcomes).
+\item CLEA elections via (country, year, month; plus chamber type), used for validation and alternative margin computations.
+\end{itemize}
+
+\subsubsection*{3.3.3 Canonical variables (what goes into the master)}
+\textbf{Running variable and RD-ready margins.}
+\begin{itemize}[leftmargin=1.2em]
+\item \texttt{margin\_market} ($m_{\cid \eid}$): vote-share margin between more-market and less-market top competitors in the decisive round (presidential: final round vote shares; parliamentary: seat-share or aggregated vote-share margin depending on availability; both stored).
+\item \texttt{margin\_abs} $=|m_{\cid \eid}|$, \texttt{bin\_margin} for McCrary-style density and heaping checks.
+\item \texttt{bandwidth\_flag} fields for each pre-registered bandwidth rule (CCT/IK and multiples).
+\end{itemize}
+
+\textbf{Political objects.}
+\begin{itemize}[leftmargin=1.2em]
+\item \texttt{winner\_party\_id}, \texttt{runnerup\_party\_id}; \texttt{winner\_leader\_name} when available (NED presidential \texttt{candidate\_*}; ParlGov PM when available).
+\item \texttt{ideo\_winner} and \texttt{ideo\_runnerup}: election-time ideology scores, primarily from V-Party \texttt{v2pariglef}.
+\item \texttt{govt\_formation\_validated}: indicator that the election winner actually forms government (parliamentary); validated via ParlGov cabinet PM party. Non-validated cases are retained but flagged for robustness.
+\end{itemize}
+
+\textbf{$\EFW$ objects.}
+We ingest Fraser's annual $\EFW$ dataset and map its provided fields into canonical names:
+\begin{itemize}[leftmargin=1.2em]
+\item \texttt{efw\_overall} ($\EFW_{\cid,t}$) and \texttt{efw\_area1}--\texttt{efw\_area5} (five areas), plus a pre-specified subset of component/subcomponent measures where consistently available.
+\item \texttt{d\_efw\_1y} ($\EFW_{\cid,t}-\EFW_{\cid,t-1}$) and \texttt{d\_efw\_cum(h)} ($\EFW_{\cid,t+h}-\EFW_{\cid,t-1}$) for LP/RD horizons.
+\end{itemize}
+
+\textbf{Macro outcomes.}
+Primary outcomes come from WDI, with PWT as robustness:
+\begin{itemize}[leftmargin=1.2em]
+\item Levels and growth: log real GDP per capita; GDP per capita growth; log price level / inflation (as available).
+\item Investment and real activity: investment share, trade openness, unemployment (where coverage allows).
+\item Tail/crisis outcomes: crisis incidence indicators from Laeven--Valencia; additional tail measures based on distributional cutoffs of growth/inflation (pre-specified).
+\end{itemize}
+
+\subsubsection*{3.3.4 Reproducibility and audit layer (non-negotiable checks)}
+The master dataset build produces machine-readable audit artifacts:
+\begin{enumerate}[leftmargin=1.2em]
+\item \textbf{Merge-rate tables} for each join (country crosswalk, party crosswalk, election matching), reporting matched/unmatched counts and shares by dataset and by year.
+\item \textbf{Duplicate detection} for elections: within-country near-duplicate dates and repeated election types; explicit resolution rules stored in a log.
+\item \textbf{Internal invariants:} (i) NED vote/seat shares monotone ordering of top competitors; (ii) CLEA constituency-party vote shares sum checks within election; (iii) ParlGov cabinet dates ordered and PM uniqueness; (iv) NELDA competition indicators consistent with NED flags where overlapping.
+\item \textbf{Quality flags} propagated to estimation samples: non-competitive elections (NELDA), coups/inconsequential (NED), coalition anomalies (ParlGov), and low-confidence party matches (party crosswalk). Baseline RD uses only high-quality elections; all others enter as robustness strata.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{4) Empirical Specifications}
+
+\subsection*{4.1 Baseline reduced-form RD (Part 1 and Part 2)}
+For each horizon $h$ and outcome $Z_{\cid \eid}(h)$ (either $\Delta \EFW_{\cid \eid}(h)$ or $Y_{\cid \eid}(h)$), estimate:
+\begin{equation}
+Z_{\cid \eid}(h) = \alpha_h + \tau_h D_{\cid \eid} + g_{h}^{-}(m_{\cid \eid})\cdot \1[m_{\cid \eid}<0] + g_{h}^{+}(m_{\cid \eid})\cdot \1[m_{\cid \eid}\ge 0] + \bX_{\cid,\, t(\cid,\eid)-1}'\gamma_h + u_{\cid \eid h},
+\label{eq:rd}
+\end{equation}
+where $g_h^{-},g_h^{+}$ are local polynomials of order 1 or 2 with robust bias correction, and $\bX_{\cid,t-1}$ is a pre-specified set of predetermined covariates (macro baselines, DPI institutional baselines, election-type fixed effects).
+
+\textbf{Estimation and inference.} We use modern RD inference (robust bias-corrected CIs; multiple bandwidths; clustering at the country level when pooling across countries) as in \citet{CalonicoEtal2014,CalonicoEtal2019}. The default bandwidth is the MSE-optimal selector with sensitivity to $\{0.5,1,2\}\times$ that bandwidth.
+
+\subsection*{4.2 First-stage validation (Part 1 as the mechanism core)}
+Part 1 is primarily the first-stage validation:
+\[
+\Delta \EFW_{\cid \eid}(h) \text{ on } D_{\cid \eid} \text{ using (\ref{eq:rd}) for } h\in\{0,1,2,4,8\}.
+\]
+We require: (i) pre-trends in $\EFW$ absent in placebo horizons ($h<0$), and (ii) stronger effects in sub-areas plausibly tied to the ideology shift (pre-specified using party platform proxies), while acknowledging that $\EFW$ aggregates many policies.
+
+\subsection*{4.3 OPTIONAL IV-RD / local Wald (interpretation layer only)}
+Where the first stage is strong, we optionally estimate a local Wald ratio:
+\[
+\widehat{\beta}^{\IV}(h) = \frac{\widehat{\tau}^{y}(h)}{\widehat{\tau}^{\EFW}(h)}.
+\]
+\textbf{Discipline:} we present this only as an interpretation (not baseline identification) because close elections can change many policies besides those captured by $\EFW$ (violating exclusion). We therefore:
+\begin{itemize}[leftmargin=1.2em]
+\item report $\IV$ estimates alongside reduced form and first stage;
+\item emphasize weak-$\IV$ robust inference (Anderson--Rubin tests, weak-instrument-robust CIs) when the first stage is modest;
+\item use falsification outcomes likely affected by politics but not by $\EFW$ components to probe exclusion.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{PART 2 (REQUIRED) --- EFW $\rightarrow$ Macro}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{5) Part 2 Identification}
+
+\subsection*{5.1 Baseline (required): reduced-form dynamic effects via local projections}
+For each horizon $h\in\{1,2,4,8\}$, define $Y_{\cid \eid}(h)=y_{\cid,t+h}-y_{\cid,t-1}$ and estimate the horizon-specific reduced-form RD-LP:
+\begin{equation}
+Y_{\cid \eid}(h) = \alpha_h + \tau^{y}(h)\, D_{\cid \eid} + g_{h}^{-}(m_{\cid \eid})\cdot \1[m_{\cid \eid}<0] + g_{h}^{+}(m_{\cid \eid})\cdot \1[m_{\cid \eid}\ge 0] + \bX_{\cid,\,t-1}'\gamma_h + \eta_{\cid \eid h}.
+\label{eq:lp_rf}
+\end{equation}
+This is a \textbf{local projection} because each horizon $h$ is estimated in a separate regression, yielding an impulse-response-style sequence $\{\tau^{y}(h)\}_h$ \citep{Jorda2005}. We interpret $\tau^{y}(h)$ causally under RD continuity, without attributing the effect solely to $\EFW$.
+
+\subsection*{5.2 First-stage dynamics (required): close win $\rightarrow \Delta \EFW$ via local projections}
+Analogously, estimate for each horizon:
+\begin{equation}
+\Delta \EFW_{\cid \eid}(h) = \alpha^{\EFW}_h + \pi(h)\, D_{\cid \eid} + g_{h}^{\EFW,-}(m_{\cid \eid})\cdot \1[m_{\cid \eid}<0] + g_{h}^{\EFW,+}(m_{\cid \eid})\cdot \1[m_{\cid \eid}\ge 0] + \bX_{\cid,\,t-1}'\kappa_h + \nu_{\cid \eid h}.
+\label{eq:lp_fs}
+\end{equation}
+This is the mechanism/``first stage'' module. It provides evidence about whether close elections generate meaningful institutional movements, and at what horizons and in which $\EFW$ sub-areas.
+
+\subsection*{5.3 OPTIONAL: IV local projections (institutions $\rightarrow$ macro under extra assumptions)}
+If (and only if) (\ref{eq:lp_fs}) shows a nontrivial first stage, we optionally estimate an $\IV$-LP:
+\begin{equation}
+Y_{\cid \eid}(h) = \alpha_h + \beta(h)\, \widehat{\Delta \EFW}_{\cid \eid}(0) + g_{h}^{-}(m_{\cid \eid})\cdot \1[m_{\cid \eid}<0] + g_{h}^{+}(m_{\cid \eid})\cdot \1[m_{\cid \eid}\ge 0] + \bX_{\cid,\,t-1}'\gamma_h + \tilde{\eta}_{\cid \eid h},
+\label{eq:lp_iv}
+\end{equation}
+where $\Delta \EFW_{\cid \eid}(0)\equiv \EFW_{\cid,t}-\EFW_{\cid,t-1}$ is the one-year institutional shock at election time, instrumented by $D_{\cid \eid}$ within the close-election window.
+
+\textbf{Interpretation discipline.} $\beta(h)$ is interpreted as the dynamic response of $y$ to a one-unit $\EFW$ shock \emph{only} under:
+(i) exclusion (close-win affects $y$ only through $\Delta \EFW$),
+(ii) monotonicity (more-market victory weakly increases $\EFW$ for compliers),
+and (iii) stable unit treatment value. These may fail; hence this module is optional and presented as such.
+
+\textbf{Weak-IV robust inference.} For (\ref{eq:lp_iv}) we pre-specify reporting of: first-stage $F$-statistics (cluster-robust), Anderson--Rubin confidence sets for $\beta(h)$, and weak-IV-robust tests when relevant.
+
+\subsection*{5.4 Horizon set, outcome families, and multiple testing}
+We pre-specify:
+\begin{itemize}[leftmargin=1.2em]
+\item horizons $h\in\{1,2,4,8\}$ (years after election year $t$);
+\item outcome families (primary: GDP per capita growth; secondary: inflation; tertiary: investment/trade; tail: crisis indicators);
+\item family-wise error rate control within each family across horizons via Holm adjustment (reported alongside unadjusted).
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{6) REQUIRED MODULE A --- Asymmetry of EFW effects}
+
+This module is implemented \textbf{within the LP framework} as the default.
+
+\subsection*{6.1 Asymmetry in institutional shocks (reforms vs reversals)}
+Define the election-time $\EFW$ shock and its sign decomposition:
+\[
+\Delta \EFW_{\cid \eid}(0) \equiv \EFW_{\cid,t}-\EFW_{\cid,t-1},\quad 
+\Delta \EFW^{+}_{\cid \eid}\equiv \max(\Delta \EFW_{\cid \eid}(0),0),\quad
+\Delta \EFW^{-}_{\cid \eid}\equiv \min(\Delta \EFW_{\cid \eid}(0),0).
+\]
+We estimate asymmetric LP responses in two complementary ways:
+
+\textbf{(A) Descriptive (non-IV) LP with country controls.}
+\begin{equation}
+Y_{\cid \eid}(h) = \alpha_h + \beta^{+}(h)\Delta \EFW^{+}_{\cid \eid} + \beta^{-}(h)\Delta \EFW^{-}_{\cid \eid} + \bX_{\cid,\,t-1}'\gamma_h + \eta_{\cid \eid h}.
+\label{eq:lp_asym_desc}
+\end{equation}
+This is not causal; it characterizes whether reforms and reversals exhibit different dynamic correlations.
+
+\textbf{(B) Optional IV-LP asymmetry.} Instrument $\Delta \EFW^{+}_{\cid \eid}$ and $\Delta \EFW^{-}_{\cid \eid}$ using $D_{\cid \eid}$ interacted with predicted sign of the first-stage within the close-election window (implemented via a two-equation system with weak-IV robust inference). Because sign prediction can be fragile, this is explicitly secondary.
+
+\subsection*{6.2 Pre-specified test}
+Primary asymmetry test is $H_0:\beta^{+}(h)=\beta^{-}(h)$ for each $h$, with Holm adjustment across horizons.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{7) REQUIRED MODULE B --- State dependence of EFW effects}
+
+\subsection*{7.1 Baseline state variables}
+We define baseline states $\state_{\cid,t-1}$ using predetermined measures:
+\begin{itemize}[leftmargin=1.2em]
+\item baseline institutional level $\EFW_{\cid,t-1}$ (high vs low freedom),
+\item inflation regime (high vs low inflation, based on WDI inflation in $t-1$),
+\item political constraints/checks (\texttt{checks} from DPI in $t-1$),
+\item crisis state (Laeven--Valencia crisis in $t-1$).
+\end{itemize}
+
+\subsection*{7.2 State-dependent local projections}
+For any binary state indicator $S_{\cid,t-1}\in\{0,1\}$, estimate:
+\begin{equation}
+Y_{\cid \eid}(h) = \alpha_h + \tau_0(h)D_{\cid \eid} + \tau_1(h)\big(D_{\cid \eid}\times S_{\cid,t-1}\big)
++ g_{h}^{-}(m_{\cid \eid})\1[m<0] + g_{h}^{+}(m_{\cid \eid})\1[m\ge 0] + \bX_{\cid,\,t-1}'\gamma_h + \eta_{\cid \eid h}.
+\label{eq:lp_state}
+\end{equation}
+$\tau_0(h)$ is the reduced-form effect in the baseline state ($S=0$) and $\tau_0(h)+\tau_1(h)$ in state $S=1$. We analogously estimate state dependence for the first stage (\ref{eq:lp_fs}).
+
+Optional $\IV$-LP state dependence replaces $D_{\cid \eid}$ with instrumented $\Delta \EFW_{\cid \eid}(0)$ and uses weak-IV robust inference.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{8) REQUIRED MODULE C --- Nonlinearities of EFW effects}
+
+\subsection*{8.1 Threshold and spline implementations (LP-default)}
+We implement nonlinearities in two pre-specified forms.
+
+\textbf{(A) Threshold at baseline $\EFW$.} Let $H_{\cid,t-1}=\1[\EFW_{\cid,t-1}\ge \mathrm{median}]$. Estimate (\ref{eq:lp_state}) with $S\equiv H$ and interpret as a threshold model.
+
+\textbf{(B) Spline in baseline $\EFW$.} Let $s(\EFW_{\cid,t-1})$ be a restricted cubic spline with 3 knots at pre-specified quantiles (25/50/75). Estimate:
+\begin{equation}
+Y_{\cid \eid}(h)=\alpha_h+\tau(h)D_{\cid \eid}+\big(D_{\cid \eid}\times s(\EFW_{\cid,t-1})\big)'\theta_h + \text{RD terms} + \bX_{\cid,\,t-1}'\gamma_h+\eta_{\cid \eid h}.
+\label{eq:lp_spline}
+\end{equation}
+We report marginal effects evaluated at selected $\EFW_{\cid,t-1}$ percentiles.
+
+\subsection*{8.2 Nonlinearity tests and multiple testing}
+For each horizon, test the joint significance of interaction terms (threshold: $\tau_1(h)=0$; spline: $\theta_h=\mathbf{0}$), with Holm correction across horizons.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{9) Novelty}
+
+\begin{itemize}[leftmargin=1.2em]
+\item \textbf{Data integration novelty:} a master election--party--government dataset that \emph{uses every dataset in the archive} and makes cross-dataset consistency auditable (merge rates, duplicates, invariants, and quality flags).
+\item \textbf{Identification novelty:} a clean separation of RD reduced form, RD ``first stage'' on $\EFW$, and an explicitly optional $\IV$ interpretation---aligned with skeptical referee priors about exclusion in political instruments.
+\item \textbf{Method novelty:} LP as the default dynamic estimator within RD windows, enabling transparent impulse-response style estimates plus pre-specified asymmetry/state-dependence/nonlinearity tests.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{10) Threats / Failure Modes}
+
+\begin{enumerate}[leftmargin=1.2em]
+\item \textbf{Party-ideology misclassification near the cutoff.} Mis-mapping parties to market orientation can bias $m_{\cid \eid}$. Mitigation: ideology cross-validation across V-Party and ParlGov; audit flags for low-confidence party links; robustness to alternative ideology sources (DPI coarse rlc).
+\item \textbf{Coalition/parliamentary ambiguity.} ``Winner'' may not form government. Mitigation: validate PM party via ParlGov cabinets; baseline focuses on cases where government formation aligns; retain others as robustness with explicit flag.
+\item \textbf{Manipulation of close elections.} Mitigation: McCrary density tests on $m_{\cid \eid}$; heaping tests; placebo on predetermined covariates; restriction to competitive elections using NELDA and NED flags.
+\item \textbf{Exclusion failure for $\IV$ layer.} Close elections likely change many policies besides $\EFW$. Mitigation: keep $\IV$ optional; emphasize reduced form; probe channels using $\EFW$ sub-areas and non-$\EFW$ placebo outcomes; use weak-IV robust inference.
+\item \textbf{Macro data revisions and comparability.} Mitigation: primary outcomes from WDI, robustness with PWT (explicit vintages) and crisis databases; document vintage used; compare results across sources.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{11) Paper Output Plan}
+
+\begin{itemize}[leftmargin=1.2em]
+\item \textbf{Paper 1 (main):} Close elections $\rightarrow$ institutional dynamics ($\EFW$ and sub-areas), with RD/LP; includes master dataset and audit artifacts as replication package.
+\item \textbf{Paper 2 (companion, optional):} Macro dynamics following close ideological shocks; emphasizes reduced form and heterogeneity; optional $\IV$ interpretation as an appendix with weak-IV robust methods.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Appendix A: Concrete implementation notes (non-ETL; feasibility-focused)}
+\begin{itemize}[leftmargin=1.2em]
+\item All raw files remain immutable; each processing step writes a new versioned artifact.
+\item A data dictionary is generated from the canonical schema, listing raw-to-canonical mappings and match-confidence flags for country and party crosswalks.
+\item Estimation code produces a ``referee table'' of RD diagnostics: bandwidths, effective sample sizes, density tests, covariate balance, and placebo horizons.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Appendix B: Pre-analysis plan style pre-specification (discipline against fishing)}
+Pre-specified elements: horizon set, baseline competitive-election sample definition, primary outcome family (GDP per capita growth), baseline RD polynomial order, bandwidth selection rule, and Holm familywise correction within outcome families across horizons.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Appendix C: Detailed falsification and robustness menu (implementable checklist)}
+\begin{enumerate}[leftmargin=1.2em]
+\item Placebo cutoffs: shift cutoff to $\pm 2$pp and re-estimate.
+\item Placebo outcomes: pre-election outcomes ($h<0$), and outcomes plausibly unrelated to market orientation but sensitive to politics (flagged ex ante).
+\item Alternative margin definitions: NED seat-share margin vs CLEA aggregated vote-share margin (parliamentary); first-round vs second-round margins when applicable (presidential).
+\item Alternative ideology sources: V-Party vs ParlGov state\_market; DPI coarse rlc categories.
+\item Leave-one-region-out and leave-one-country-out sensitivity (pooled estimates).
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Appendix D: Data-access quick reference (provider, constraints, and replication posture)}
+\begin{itemize}[leftmargin=1.2em]
+\item \textbf{Archive.zip datasets:} replication package will cite and re-use the exact archived files listed in Table~\ref{tab:pol_sources}.
+\item \textbf{EFW:} downloadable for free; replication package will store the exact downloaded version and hash.\footnote{\url{https://efotw.org/economic-freedom/dataset}}
+\item \textbf{WDI:} open data under CC BY 4.0; access via World Bank API; replication package stores downloaded extracts and indicator codes.\footnote{\url{https://databank.worldbank.org/source/world-development-indicators}}
+\item \textbf{PWT:} CC BY 4.0; replication package includes the precise DOI version used.\footnote{\url{https://dataverse.nl/dataset.xhtml?persistentId=doi:10.34894/QT5BCC}}
+\item \textbf{Laeven--Valencia crises:} IMF publication page; replication package stores downloaded files and citation.\footnote{\url{https://www.imf.org/en/Publications/WP/Issues/2018/09/14/systemic-banking-crises-revisited-46232}}
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Appendix E: Minimal bibliography skeleton (compiles; expand in paper)}
+\begin{thebibliography}{99}
+
+\bibitem[Calonico et~al.(2014)Calonico, Cattaneo, and Titiunik]{CalonicoEtal2014}
+Calonico, S., M.~D. Cattaneo, and R.~Titiunik. 2014.
+\newblock Robust nonparametric confidence intervals for regression-discontinuity designs.
+\newblock \emph{Econometrica} 82(6): 2295--2326.
+
+\bibitem[Calonico et~al.(2019)Calonico, Cattaneo, Farrell, and Titiunik]{CalonicoEtal2019}
+Calonico, S., M.~D. Cattaneo, M.~H. Farrell, and R.~Titiunik. 2019.
+\newblock Regression discontinuity designs using covariates.
+\newblock \emph{Review of Economics and Statistics} 101(3): 442--451. (Exact bibliographic details to be verified; placeholder.)
+
+\bibitem[Jord\`a(2005)]{Jorda2005}
+Jord\`a, \`O. 2005.
+\newblock Estimation and inference of impulse responses by local projections.
+\newblock \emph{American Economic Review} 95(1): 161--182.
+
+\bibitem[Hyde and Marinov(2012)]{HydeMarinov2012}
+Hyde, S.~D., and N.~Marinov. 2012.
+\newblock Which elections can be lost?
+\newblock \emph{Political Analysis} 20(2): 191--210. (Used for NELDA citation; verify year/issue.)
+
+\bibitem[D\"oring and Manow(2023)]{DoeringManow2023}
+D\"oring, H., and P.~Manow. 2023.
+\newblock \emph{ParlGov database (version Nov 2023)}. (Dataset; exact citation string to be added.)
+
+\bibitem[V-Dem Institute(2022)]{VParty2022}
+V-Dem Institute. 2022.
+\newblock \emph{V-Dem V-Party Dataset v2}. University of Gothenburg. DOI: 10.23696/vpartydsv2.
+
+\bibitem[National Elections Database(2025)]{NEDv2}
+National Elections Database. 2025.
+\newblock \emph{Elections Database v2.0 (presidential and parliamentary) and codebook}. CC BY 4.0. (Use exact citation from \texttt{Archive.zip/ned/codebook\_elections\_database\_v2.pdf}.)
+
+\bibitem[World Bank(2025)]{WDI2025}
+World Bank. 2025.
+\newblock \emph{World Development Indicators}. Open Data (CC BY 4.0).
+
+\bibitem[Fraser Institute(2025)]{EFW2025}
+Fraser Institute. 2025.
+\newblock \emph{Economic Freedom Dataset}, published in \emph{Economic Freedom of the World: 2025 Annual Report}. (Use exact citation string from the report.)
+
+\bibitem[Feenstra et~al.(2015)]{PWT2015}
+Feenstra, R.~C., R.~Inklaar, and M.~P. Timmer. 2015.
+\newblock The next generation of the {P}enn {W}orld {T}able.
+\newblock \emph{American Economic Review} 105(10): 3150--3182.
+
+\bibitem[Laeven and Valencia(2013)]{LaevenValencia2013}
+Laeven, L., and F.~Valencia. 2013.
+\newblock Systemic banking crises database.
+\newblock \emph{IMF Economic Review} 61(2): 225--270. (Plus IMF updates.)
+
+\end{thebibliography}
+
+\end{document}

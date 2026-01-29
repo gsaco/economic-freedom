@@ -267,6 +267,17 @@ MANUAL_COUNTRY_OVERRIDES = {
     "tanzania": "Tanzania",
 }
 
+ISO_FORBIDDEN = {
+    ("north korea", "KOR"),
+    ("south korea", "PRK"),
+    ("korea, north", "KOR"),
+    ("korea, south", "PRK"),
+    ("korea, dem. rep.", "KOR"),
+    ("korea, rep.", "PRK"),
+    ("korea dem rep", "KOR"),
+    ("korea rep", "PRK"),
+}
+
 STOPWORDS = {
     "party",
     "movement",
@@ -372,6 +383,119 @@ def load_efw_panel(paths: PipelinePaths) -> pd.DataFrame:
     return df[keep]
 
 
+def load_iso_reference() -> pd.DataFrame:
+    try:
+        import pycountry  # type: ignore
+    except Exception as exc:  # pragma: no cover - optional dependency
+        raise ImportError("pycountry is required for ISO mapping") from exc
+    rows = []
+    for country in pycountry.countries:
+        names = {country.name}
+        if hasattr(country, "official_name"):
+            names.add(country.official_name)
+        if hasattr(country, "common_name"):
+            names.add(country.common_name)
+        for name in names:
+            rows.append({
+                "iso3": country.alpha_3,
+                "country_name": name,
+                "country_name_norm": normalize_name(name),
+            })
+    df = pd.DataFrame(rows).drop_duplicates()
+    return df
+
+
+def _apply_iso_guard(name_norm: str, iso3: Optional[str]) -> Optional[str]:
+    if not iso3:
+        return iso3
+    if (name_norm, iso3) in ISO_FORBIDDEN:
+        return None
+    # Guard for common Korea mismatches.
+    if "korea" in name_norm and ("north" in name_norm or "dem" in name_norm) and iso3 == "KOR":
+        return None
+    if "korea" in name_norm and ("south" in name_norm or "rep" in name_norm) and iso3 == "PRK":
+        return None
+    return iso3
+
+
+def map_name_to_iso(name: str, iso_ref: pd.DataFrame, min_score: int = 80) -> dict:
+    norm = normalize_name(name)
+    if not norm:
+        return {
+            "iso3": None,
+            "match_score": 0,
+            "match_method": "empty",
+            "country_id_confidence": "fuzzy_low",
+        }
+
+    if re.fullmatch(r"[A-Za-z]{3}", str(name).strip()):
+        iso = str(name).strip().upper()
+        if iso in set(iso_ref["iso3"]):
+            return {
+                "iso3": iso,
+                "match_score": 100,
+                "match_method": "exact_code",
+                "country_id_confidence": "exact_code",
+            }
+
+    override = MANUAL_COUNTRY_OVERRIDES.get(norm)
+    if override:
+        override_norm = normalize_name(override)
+        match = iso_ref.loc[iso_ref["country_name_norm"] == override_norm, "iso3"]
+        if not match.empty:
+            iso = _apply_iso_guard(norm, match.iloc[0])
+            return {
+                "iso3": iso,
+                "match_score": 100,
+                "match_method": "manual_override",
+                "country_id_confidence": "manual_override",
+            }
+        # fallback to fuzzy on override name
+        match_name, score = best_fuzzy_match(override_norm, iso_ref["country_name_norm"].tolist(), min_score=min_score)
+        iso = iso_ref.loc[iso_ref["country_name_norm"] == match_name, "iso3"].iloc[0] if match_name else None
+        iso = _apply_iso_guard(norm, iso)
+        if score >= 90:
+            return {
+                "iso3": iso,
+                "match_score": score,
+                "match_method": "manual_override_fuzzy",
+                "country_id_confidence": "manual_override",
+            }
+        return {
+            "iso3": None,
+            "match_score": score,
+            "match_method": "manual_override_low",
+            "country_id_confidence": "fuzzy_low",
+        }
+
+    if norm in set(iso_ref["country_name_norm"]):
+        iso = iso_ref.loc[iso_ref["country_name_norm"] == norm, "iso3"].iloc[0]
+        iso = _apply_iso_guard(norm, iso)
+        return {
+            "iso3": iso,
+            "match_score": 100,
+            "match_method": "exact_name",
+            "country_id_confidence": "exact_code",
+        }
+
+    match_name, score = best_fuzzy_match(norm, iso_ref["country_name_norm"].tolist(), min_score=min_score)
+    iso = iso_ref.loc[iso_ref["country_name_norm"] == match_name, "iso3"].iloc[0] if match_name else None
+    iso = _apply_iso_guard(norm, iso)
+    if score >= 90 and iso:
+        return {
+            "iso3": iso,
+            "match_score": score,
+            "match_method": "fuzzy_high",
+            "country_id_confidence": "fuzzy_high",
+        }
+    return {
+        "iso3": None,
+        "match_score": score,
+        "match_method": "fuzzy_low",
+        "country_id_confidence": "fuzzy_low",
+    }
+
+
 def load_efw_iso(paths: PipelinePaths) -> set[str]:
     df = load_efw_panel(paths)
     return set(df["iso3"].dropna().astype(str).str.upper().unique())
@@ -393,6 +517,22 @@ def load_vparty(paths: PipelinePaths) -> pd.DataFrame:
     return df[keep]
 
 
+def load_cow2iso(paths: PipelinePaths) -> pd.DataFrame | None:
+    cow2iso_path = paths.root / "cow2iso.csv"
+    if not cow2iso_path.exists():
+        return None
+    df = pd.read_csv(cow2iso_path)
+    if "cow_id" in df.columns:
+        df["cow_id"] = pd.to_numeric(df["cow_id"], errors="coerce").astype("Int64")
+    if "iso3" in df.columns:
+        df["iso3"] = df["iso3"].astype(str).str.upper()
+        df.loc[df["iso3"].isin(["", "NAN", "NONE"]), "iso3"] = pd.NA
+    for col in ["valid_from", "valid_until"]:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce").astype("Int64")
+    return df
+
+
 def load_nelda(paths: PipelinePaths) -> pd.DataFrame:
     import pyreadstat
 
@@ -411,88 +551,58 @@ def load_nelda(paths: PipelinePaths) -> pd.DataFrame:
     return nelda
 
 
-def build_country_crosswalk(vparty: pd.DataFrame, efw_countries: pd.DataFrame) -> pd.DataFrame:
-    efw_names = efw_countries.dropna(subset=["country_name"]).copy()
-    efw_names["country_name_norm"] = efw_names["country_name"].map(normalize_name)
-    efw_name_to_iso = dict(zip(efw_names["country_name_norm"], efw_names["iso3"]))
+def build_country_crosswalk(vparty: pd.DataFrame, iso_ref: pd.DataFrame, cow2iso: pd.DataFrame | None = None) -> pd.DataFrame:
+    if cow2iso is not None and "cow_id" in cow2iso.columns and "iso3" in cow2iso.columns:
+        df = cow2iso.copy()
+        df = df.rename(columns={"cow_id": "cowcode"})
+        df["cowcode"] = pd.to_numeric(df["cowcode"], errors="coerce")
+        df["iso3"] = df["iso3"].astype(str).str.upper()
+        df = df.dropna(subset=["cowcode", "iso3"])
+        if "valid_from" in df.columns:
+            df["valid_from_rank"] = pd.to_numeric(df["valid_from"], errors="coerce").astype(float).fillna(-np.inf)
+        else:
+            df["valid_from_rank"] = -np.inf
+        if "valid_until" in df.columns:
+            df["valid_until_rank"] = pd.to_numeric(df["valid_until"], errors="coerce").astype(float).fillna(np.inf)
+        else:
+            df["valid_until_rank"] = np.inf
+        df = df.sort_values(
+            ["cowcode", "valid_from_rank", "valid_until_rank", "iso3"],
+            ascending=[True, False, False, True],
+            kind="mergesort",
+        )
+        df = df.groupby("cowcode", as_index=False).head(1)
+        df["match_score"] = 100
+        df["match_method"] = "cow2iso"
+        df["country_id_confidence"] = "cow2iso"
+        return df[["cowcode", "iso3", "match_score", "match_method", "country_id_confidence"]]
 
     rows = []
     for cowcode, grp in vparty.groupby("COWcode"):
         country_name = grp["country_name"].dropna().iloc[0]
-        norm = normalize_name(country_name)
-        override = MANUAL_COUNTRY_OVERRIDES.get(norm)
-        if override:
-            override_norm = normalize_name(override)
-            iso = efw_names.loc[efw_names["country_name_norm"] == override_norm, "iso3"]
-            if not iso.empty:
-                rows.append({
-                    "cowcode": cowcode,
-                    "vparty_country_name": country_name,
-                    "efw_country_name": override,
-                    "iso3": iso.iloc[0],
-                    "match_score": 100,
-                    "match_method": "manual_override",
-                })
-                continue
-        match, score = best_fuzzy_match(country_name, efw_names["country_name_norm"].tolist(), min_score=70)
-        if match:
-            rows.append({
-                "cowcode": cowcode,
-                "vparty_country_name": country_name,
-                "efw_country_name": efw_names.loc[efw_names["country_name_norm"] == match, "country_name"].iloc[0],
-                "iso3": efw_name_to_iso.get(match),
-                "match_score": score,
-                "match_method": "fuzzy",
-            })
-        else:
-            rows.append({
-                "cowcode": cowcode,
-                "vparty_country_name": country_name,
-                "efw_country_name": None,
-                "iso3": None,
-                "match_score": score,
-                "match_method": "unmatched",
-            })
+        mapped = map_name_to_iso(country_name, iso_ref)
+        rows.append({
+            "cowcode": cowcode,
+            "vparty_country_name": country_name,
+            "iso3": mapped["iso3"],
+            "match_score": mapped["match_score"],
+            "match_method": mapped["match_method"],
+            "country_id_confidence": mapped["country_id_confidence"],
+        })
     return pd.DataFrame(rows)
 
 
-def map_country_names_to_iso(country_names: pd.Series, efw_countries: pd.DataFrame) -> pd.DataFrame:
-    efw_names = efw_countries.dropna(subset=["country_name"]).copy()
-    efw_names["country_name_norm"] = efw_names["country_name"].map(normalize_name)
-    efw_name_to_iso = dict(zip(efw_names["country_name_norm"], efw_names["iso3"]))
-
+def map_country_names_to_iso(country_names: pd.Series, iso_ref: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for name in country_names.dropna().unique():
-        norm = normalize_name(name)
-        override = MANUAL_COUNTRY_OVERRIDES.get(norm)
-        if override:
-            override_norm = normalize_name(override)
-            iso = efw_names.loc[efw_names["country_name_norm"] == override_norm, "iso3"]
-            rows.append({
-                "country": name,
-                "efw_country_name": override,
-                "iso3": iso.iloc[0] if not iso.empty else None,
-                "match_score": 100,
-                "match_method": "manual_override",
-            })
-            continue
-        match, score = best_fuzzy_match(name, efw_names["country_name_norm"].tolist(), min_score=70)
-        if match:
-            rows.append({
-                "country": name,
-                "efw_country_name": efw_names.loc[efw_names["country_name_norm"] == match, "country_name"].iloc[0],
-                "iso3": efw_name_to_iso.get(match),
-                "match_score": score,
-                "match_method": "fuzzy",
-            })
-        else:
-            rows.append({
-                "country": name,
-                "efw_country_name": None,
-                "iso3": None,
-                "match_score": score,
-                "match_method": "unmatched",
-            })
+        mapped = map_name_to_iso(name, iso_ref)
+        rows.append({
+            "country": name,
+            "iso3": mapped["iso3"],
+            "match_score": mapped["match_score"],
+            "match_method": mapped["match_method"],
+            "country_id_confidence": mapped["country_id_confidence"],
+        })
     return pd.DataFrame(rows)
 
 
@@ -615,9 +725,11 @@ def add_nelda_flags(df: pd.DataFrame, nelda: pd.DataFrame) -> pd.DataFrame:
 def build_elections_ned(paths: PipelinePaths, logger: logging.Logger, strict: bool = False) -> pd.DataFrame:
     paths.ensure_dirs()
     efw = load_efw_panel(paths)
+    iso_ref = load_iso_reference()
     vparty = load_vparty(paths)
+    cow2iso = load_cow2iso(paths)
 
-    crosswalk = build_country_crosswalk(vparty, efw[["iso3", "country_name"]].drop_duplicates())
+    crosswalk = build_country_crosswalk(vparty, iso_ref, cow2iso=cow2iso)
     crosswalk.to_csv(paths.interim / "country_crosswalk_cow_iso.csv", index=False)
 
     party_index = prep_party_name_index(vparty)
@@ -630,9 +742,15 @@ def build_elections_ned(paths: PipelinePaths, logger: logging.Logger, strict: bo
 
     combined = pd.concat([pres, parl], ignore_index=True)
 
+    cow_map = crosswalk.rename(columns={
+        "iso3": "iso3_cow",
+        "match_score": "cow_match_score",
+        "match_method": "cow_match_method",
+        "country_id_confidence": "cow_confidence",
+    })
     combined = merge_with_diagnostics(
         combined,
-        crosswalk[["cowcode", "iso3"]],
+        cow_map[["cowcode", "iso3_cow", "cow_match_score", "cow_match_method", "cow_confidence"]],
         keys=None,
         left_on=["country_cow"],
         right_on=["cowcode"],
@@ -641,12 +759,18 @@ def build_elections_ned(paths: PipelinePaths, logger: logging.Logger, strict: bo
         logger=logger,
     )
 
-    name_map = map_country_names_to_iso(combined["country"], efw[["iso3", "country_name"]].drop_duplicates())
+    name_map = map_country_names_to_iso(combined["country"], iso_ref)
     name_map.to_csv(paths.interim / "country_crosswalk_ned_name_iso.csv", index=False)
 
+    name_map = name_map.rename(columns={
+        "iso3": "iso3_name",
+        "match_score": "name_match_score",
+        "match_method": "name_match_method",
+        "country_id_confidence": "name_confidence",
+    })
     combined = merge_with_diagnostics(
         combined,
-        name_map[["country", "iso3"]].rename(columns={"iso3": "iso3_name"}),
+        name_map[["country", "iso3_name", "name_match_score", "name_match_method", "name_confidence"]],
         keys=["country"],
         how="left",
         name="ned_iso_name",
@@ -654,7 +778,8 @@ def build_elections_ned(paths: PipelinePaths, logger: logging.Logger, strict: bo
         dedupe_right=True,
         suffixes=("", "_name"),
     )
-    combined["iso3"] = combined["iso3"].combine_first(combined["iso3_name"])
+    combined["iso3"] = combined.get("iso3_cow").combine_first(combined.get("iso3_name"))
+    combined["country_id_confidence"] = combined.get("cow_confidence").combine_first(combined.get("name_confidence"))
     combined = harmonize_keys(combined)
 
     matched_party1 = combined.apply(
@@ -715,43 +840,17 @@ def build_elections_ned(paths: PipelinePaths, logger: logging.Logger, strict: bo
     return combined
 
 
-def map_clea_countries_to_iso(clea_countries: pd.Series, efw_countries: pd.DataFrame) -> pd.DataFrame:
-    efw_names = efw_countries.dropna(subset=["country_name"]).copy()
-    efw_names["country_name_norm"] = efw_names["country_name"].map(normalize_name)
-    efw_name_to_iso = dict(zip(efw_names["country_name_norm"], efw_names["iso3"]))
-
+def map_clea_countries_to_iso(clea_countries: pd.Series, iso_ref: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for name in clea_countries.dropna().unique():
-        norm = normalize_name(name)
-        override = MANUAL_COUNTRY_OVERRIDES.get(norm)
-        if override:
-            override_norm = normalize_name(override)
-            iso = efw_names.loc[efw_names["country_name_norm"] == override_norm, "iso3"]
-            rows.append({
-                "clea_country": name,
-                "efw_country_name": override,
-                "iso3": iso.iloc[0] if not iso.empty else None,
-                "match_score": 100,
-                "match_method": "manual_override",
-            })
-            continue
-        match, score = best_fuzzy_match(name, efw_names["country_name_norm"].tolist(), min_score=70)
-        if match:
-            rows.append({
-                "clea_country": name,
-                "efw_country_name": efw_names.loc[efw_names["country_name_norm"] == match, "country_name"].iloc[0],
-                "iso3": efw_name_to_iso.get(match),
-                "match_score": score,
-                "match_method": "fuzzy",
-            })
-        else:
-            rows.append({
-                "clea_country": name,
-                "efw_country_name": None,
-                "iso3": None,
-                "match_score": score,
-                "match_method": "unmatched",
-            })
+        mapped = map_name_to_iso(name, iso_ref)
+        rows.append({
+            "clea_country": name,
+            "iso3": mapped["iso3"],
+            "match_score": mapped["match_score"],
+            "match_method": mapped["match_method"],
+            "country_id_confidence": mapped["country_id_confidence"],
+        })
     return pd.DataFrame(rows)
 
 
@@ -825,17 +924,29 @@ def aggregate_clea_lower(paths: PipelinePaths) -> pd.DataFrame:
 def build_elections_clea(paths: PipelinePaths, logger: logging.Logger, strict: bool = False) -> pd.DataFrame:
     paths.ensure_dirs()
     efw = load_efw_panel(paths)
+    iso_ref = load_iso_reference()
     vparty = load_vparty(paths)
     party_index = prep_party_name_index(vparty)
 
     clea_elections = aggregate_clea_lower(paths)
 
-    country_map = map_clea_countries_to_iso(clea_elections["ctr_n"], efw[["iso3", "country_name"]].drop_duplicates())
+    iso_ref_set = set(iso_ref["iso3"])
+    if "ctr" in clea_elections.columns:
+        clea_elections["iso3_ctr"] = clea_elections["ctr"].astype("string").str.upper()
+        clea_elections.loc[~clea_elections["iso3_ctr"].isin(iso_ref_set), "iso3_ctr"] = pd.NA
+
+    country_map = map_clea_countries_to_iso(clea_elections["ctr_n"], iso_ref)
     country_map.to_csv(paths.interim / "country_crosswalk_clea_iso.csv", index=False)
 
+    country_map = country_map.rename(columns={
+        "iso3": "iso3_clea",
+        "match_score": "clea_match_score",
+        "match_method": "clea_match_method",
+        "country_id_confidence": "clea_confidence",
+    })
     clea_elections = merge_with_diagnostics(
         clea_elections,
-        country_map[["clea_country", "iso3"]],
+        country_map[["clea_country", "iso3_clea", "clea_match_score", "clea_match_method", "clea_confidence"]],
         keys=None,
         left_on=["ctr_n"],
         right_on=["clea_country"],
@@ -843,6 +954,10 @@ def build_elections_clea(paths: PipelinePaths, logger: logging.Logger, strict: b
         name="clea_iso_name",
         logger=logger,
         suffixes=("", "_map"),
+    )
+    clea_elections["iso3"] = clea_elections.get("iso3_ctr").combine_first(clea_elections.get("iso3_clea"))
+    clea_elections["country_id_confidence"] = np.where(
+        clea_elections.get("iso3_ctr").notna(), "exact_code", clea_elections.get("clea_confidence")
     )
 
     cow_iso_path = paths.interim / "country_crosswalk_cow_iso.csv"
@@ -1053,6 +1168,143 @@ def compute_market_margin(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def _party_set(row: pd.Series) -> set[str]:
+    names = []
+    for col in ["party_1_name", "party_2_name"]:
+        if col in row.index and pd.notna(row.get(col)):
+            norm = normalize_party_name(str(row.get(col)))
+            if norm:
+                names.append(norm)
+    return set(names)
+
+
+def _margin_from_row(row: pd.Series) -> float:
+    s1 = pd.to_numeric(row.get("share_1"), errors="coerce")
+    s2 = pd.to_numeric(row.get("share_2"), errors="coerce")
+    if pd.isna(s1) or pd.isna(s2):
+        return np.nan
+    return float(s1 - s2)
+
+
+def assign_election_ids(df: pd.DataFrame, logger: Optional[logging.Logger] = None) -> pd.DataFrame:
+    df = df.copy()
+    df["merge_row_id"] = np.arange(len(df))
+    df["seq"] = pd.NA
+    df["merge_clea_matched"] = False
+    df["merge_clea_match_score"] = np.nan
+    df["merge_clea_match_rule"] = "unmatched"
+    df["merge_clea_ambiguous"] = False
+    df["merge_clea_margin_diff"] = np.nan
+    df["merge_clea_margin_conflict"] = False
+
+    group_keys = ["iso3", "office_type", "year", "month"]
+    if any(col not in df.columns for col in group_keys):
+        df["election_id"] = "row-" + df["merge_row_id"].astype(str)
+        return df
+
+    grouped = df.groupby(group_keys, dropna=False, sort=False)
+    for _, grp in grouped:
+        idx = grp.index.tolist()
+        key_vals = [grp.iloc[0][c] for c in group_keys]
+        if any(pd.isna(v) for v in key_vals):
+            ordered = grp.sort_values(["date", "merge_row_id"], ascending=[True, True], kind="mergesort")
+            for seq, row_idx in enumerate(ordered.index, start=1):
+                df.at[row_idx, "seq"] = seq
+            continue
+
+        ned_idx = grp.index[grp["source"] == "NED"].tolist()
+        clea_idx = grp.index[grp["source"] == "CLEA"].tolist()
+
+        # Assign seq for NED rows first by date, then row id.
+        if ned_idx:
+            ned_ordered = grp.loc[ned_idx].sort_values(["date", "merge_row_id"], ascending=[True, True], kind="mergesort")
+            for seq, row_idx in enumerate(ned_ordered.index, start=1):
+                df.at[row_idx, "seq"] = seq
+
+        # Match CLEA rows to NED rows within month using party overlap and margin proximity.
+        candidates = []
+        if ned_idx and clea_idx:
+            ned_rows = {i: grp.loc[i] for i in ned_idx}
+            clea_rows = {i: grp.loc[i] for i in clea_idx}
+            for c_idx, c_row in clea_rows.items():
+                best_ned = None
+                best_overlap = 0
+                best_margin = np.inf
+                ambiguous = False
+                c_party = _party_set(c_row)
+                c_margin = _margin_from_row(c_row)
+                for n_idx, n_row in ned_rows.items():
+                    n_party = _party_set(n_row)
+                    overlap = len(c_party & n_party)
+                    if overlap == 0:
+                        continue
+                    n_margin = _margin_from_row(n_row)
+                    margin_diff = abs(c_margin - n_margin) if pd.notna(c_margin) and pd.notna(n_margin) else np.inf
+                    if overlap > best_overlap or (overlap == best_overlap and margin_diff < best_margin):
+                        best_ned = n_idx
+                        best_overlap = overlap
+                        best_margin = margin_diff
+                        ambiguous = False
+                    elif overlap == best_overlap and margin_diff == best_margin:
+                        ambiguous = True
+                if best_ned is not None and best_overlap >= 1:
+                    score = 100 if best_overlap == 2 else 70
+                    candidates.append((score, best_margin, c_idx, best_ned, best_overlap, ambiguous))
+
+        candidates.sort(key=lambda x: (-x[0], x[1]))
+        used_ned = set()
+        used_clea = set()
+        for score, margin_diff, c_idx, n_idx, overlap, ambiguous in candidates:
+            if n_idx in used_ned or c_idx in used_clea:
+                continue
+            used_ned.add(n_idx)
+            used_clea.add(c_idx)
+            seq = df.at[n_idx, "seq"]
+            df.at[c_idx, "seq"] = seq
+            df.at[c_idx, "merge_clea_matched"] = True
+            df.at[n_idx, "merge_clea_matched"] = True
+            df.at[c_idx, "merge_clea_match_score"] = score
+            df.at[n_idx, "merge_clea_match_score"] = score
+            df.at[c_idx, "merge_clea_match_rule"] = f"party_overlap_{overlap}"
+            df.at[n_idx, "merge_clea_match_rule"] = f"party_overlap_{overlap}"
+            df.at[c_idx, "merge_clea_ambiguous"] = ambiguous
+            df.at[n_idx, "merge_clea_ambiguous"] = ambiguous
+            if pd.notna(margin_diff) and margin_diff != np.inf:
+                df.at[c_idx, "merge_clea_margin_diff"] = margin_diff
+                df.at[n_idx, "merge_clea_margin_diff"] = margin_diff
+                if margin_diff > 10:
+                    df.at[c_idx, "merge_clea_margin_conflict"] = True
+                    df.at[n_idx, "merge_clea_margin_conflict"] = True
+
+        # Assign seq for unmatched CLEA rows after NED rows.
+        if clea_idx:
+            assigned = df.loc[clea_idx, "seq"].notna()
+            remaining = [i for i, ok in zip(clea_idx, assigned) if not ok]
+            if remaining:
+                start = int(max([v for v in df.loc[idx, "seq"].dropna().astype(int)] + [0])) + 1
+                clea_ordered = grp.loc[remaining].sort_values(["date", "merge_row_id"], ascending=[True, True], kind="mergesort")
+                for offset, row_idx in enumerate(clea_ordered.index):
+                    df.at[row_idx, "seq"] = start + offset
+
+    df["seq"] = pd.to_numeric(df["seq"], errors="coerce").astype("Int64")
+    df["election_id"] = df.apply(
+        lambda r: f"{r['iso3']}-{r['office_type']}-{int(r['year'])}-{int(r['month']):02d}-{int(r['seq'])}"
+        if pd.notna(r.get("iso3"))
+        and pd.notna(r.get("office_type"))
+        and pd.notna(r.get("year"))
+        and pd.notna(r.get("month"))
+        and pd.notna(r.get("seq"))
+        else f"row-{int(r['merge_row_id'])}",
+        axis=1,
+    )
+
+    if logger:
+        dupes = df["election_id"].duplicated().sum()
+        if dupes:
+            logger.warning("election_id duplicates detected: %s", int(dupes))
+
+    return df
+
 def compute_merge_score(df: pd.DataFrame) -> pd.Series:
     has_shares = df["share_1"].notna() & df["share_2"].notna()
     has_ideology = df["ideo_party1"].notna() & df["ideo_party2"].notna()
@@ -1152,6 +1404,32 @@ def apply_best_merge(df: pd.DataFrame, efw_iso: set[str]) -> tuple[pd.DataFrame,
     df["source_rank"] = df["source"].map({"NED": 0, "CLEA": 1}).fillna(9)
     df["merge_score"] = compute_merge_score(df)
 
+    if "election_id" in df.columns:
+        full = df.copy()
+        full["merge_strategy"] = "election_id"
+        full["merge_key"] = full["election_id"].astype("string")
+        full = full.sort_values(["merge_key", "merge_score", "source_rank"], ascending=[True, False, True], kind="mergesort")
+        full["merge_rank"] = full.groupby("merge_key", dropna=False).cumcount()
+        full["merge_preferred"] = full["merge_rank"] == 0
+        best = full.loc[full["merge_preferred"]].copy()
+        metrics_df = pd.DataFrame([{
+            "strategy": "election_id",
+            "rows": int(len(best)),
+            "duplicate_groups": int((full["merge_key"].value_counts() > 1).sum()),
+            "rows_deduped": int(len(full) - len(best)),
+            "coverage_rate": (best["iso3"].nunique() / len(efw_iso)) if efw_iso else np.nan,
+            "share_complete_rate": float((best["share_1"].notna() & best["share_2"].notna()).mean()),
+            "margin_market_rate": float(best["margin_market"].notna().mean()),
+            "ideology_complete_rate": float((best["ideo_party1"].notna() & best["ideo_party2"].notna()).mean()),
+            "date_rate": float(best["date"].notna().mean()),
+            "avg_merge_score": float(best["merge_score"].mean()),
+            "retention_rate": float(len(best) / len(full)) if len(full) else np.nan,
+            "dedupe_rate": float((len(full) - len(best)) / len(full)) if len(full) else np.nan,
+            "strategy_score": np.nan,
+            "selected": True,
+        }])
+        return full, best, metrics_df, "election_id"
+
     metrics_list: list[dict] = []
     for strategy in MERGE_STRATEGIES:
         metrics, _ = evaluate_strategy(df, strategy, efw_iso)
@@ -1175,6 +1453,22 @@ def apply_best_merge(df: pd.DataFrame, efw_iso: set[str]) -> tuple[pd.DataFrame,
 
     best = full.loc[full["merge_preferred"]].copy()
     return full, best, metrics_df, best_strategy
+
+
+def build_match_diagnostics(df: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for source in ["NED", "CLEA"]:
+        subset = df[df["source"] == source]
+        if subset.empty:
+            continue
+        rows.append({
+            "source": source,
+            "rows": int(len(subset)),
+            "matched_share": float(subset.get("merge_clea_matched", pd.Series(False)).mean()),
+            "ambiguous_share": float(subset.get("merge_clea_ambiguous", pd.Series(False)).mean()),
+            "margin_conflict_share": float(subset.get("merge_clea_margin_conflict", pd.Series(False)).mean()),
+        })
+    return pd.DataFrame(rows)
 
 
 def build_master(paths: PipelinePaths, logger: logging.Logger, strict: bool = False) -> pd.DataFrame:
@@ -1268,21 +1562,8 @@ def build_master(paths: PipelinePaths, logger: logging.Logger, strict: bool = Fa
     combined["ideo_quality"] = np.where(q1 <= q2, combined["ideo_quality1"], combined["ideo_quality2"])
 
     combined = compute_market_margin(combined)
-
-    def key_for_row(row):
-        iso_val = row.get("iso3")
-        iso = "" if pd.isna(iso_val) else str(iso_val)
-        office_val = row.get("office_type")
-        office = "" if pd.isna(office_val) else str(office_val)
-        if pd.notna(row.get("date")):
-            date_str = row.get("date").strftime("%Y-%m-%d")
-        else:
-            y = row.get("year")
-            m = row.get("month") if pd.notna(row.get("month")) else ""
-            date_str = f"{y}-{m}" if pd.notna(y) else ""
-        return f"{iso}|{office}|{date_str}"
-
-    combined["election_key"] = combined.apply(key_for_row, axis=1)
+    combined = assign_election_ids(combined, logger=logger)
+    combined["election_key"] = combined["election_id"]
 
     combined["clean_flag"] = (
         combined["iso3"].notna()
@@ -1292,7 +1573,10 @@ def build_master(paths: PipelinePaths, logger: logging.Logger, strict: bool = Fa
         & (combined["share_1"] >= combined["share_2"])
     )
 
+    nelda_known = combined["nelda3"].notna() & combined["nelda4"].notna() & combined["nelda5"].notna()
     nelda_ok = (combined["nelda3"] == 1) & (combined["nelda4"] == 1) & (combined["nelda5"] == 1)
+    competitive_nelda = pd.Series(pd.NA, index=combined.index, dtype="boolean")
+    competitive_nelda.loc[nelda_known] = nelda_ok.loc[nelda_known]
     for col in ["flag_coup", "flag_inconsequential", "flag_unopposed", "flag_indirect"]:
         if col not in combined.columns:
             combined[col] = np.nan
@@ -1303,8 +1587,10 @@ def build_master(paths: PipelinePaths, logger: logging.Logger, strict: bool = Fa
         & (combined["flag_indirect"].fillna(0) != 1)
     )
 
-    combined["competitive_flag"] = np.where(nelda_ok.notna(), nelda_ok, np.nan)
-    combined["sample_competitive"] = combined["clean_flag"] & quality_ok & (nelda_ok.fillna(True))
+    combined["nelda_known"] = nelda_known
+    combined["competitive_nelda"] = competitive_nelda
+    combined["competitive_flag"] = competitive_nelda
+    combined["sample_competitive"] = combined["clean_flag"] & quality_ok & competitive_nelda
 
     efw_iso = load_efw_iso(paths)
     combined["efw_coverage"] = combined["iso3"].isin(efw_iso)
@@ -1337,6 +1623,9 @@ def combo_metrics(df: pd.DataFrame, efw_iso: set[str], name: str) -> dict:
 def build_master_outputs(paths: PipelinePaths, logger: logging.Logger, strict: bool = False) -> tuple[pd.DataFrame, pd.DataFrame]:
     full_df = build_master(paths, logger, strict=strict)
     efw_iso = load_efw_iso(paths)
+
+    match_diag = build_match_diagnostics(full_df)
+    match_diag.to_csv(paths.reports / "clea_match_diagnostics.csv", index=False)
 
     full_df, best_df, strategy_metrics, best_strategy = apply_best_merge(full_df, efw_iso)
 

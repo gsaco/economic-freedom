@@ -79,6 +79,9 @@ def load_efw_country_map(paths: PipelinePaths) -> pd.DataFrame:
 
 
 def load_partyfacts(paths: PipelinePaths) -> pd.DataFrame:
+    preferred = paths.root / "partyfacts-external-parties.csv"
+    if preferred.exists():
+        return pd.read_csv(preferred)
     return pd.read_csv(paths.external / "partyfacts_external_parties.csv")
 
 

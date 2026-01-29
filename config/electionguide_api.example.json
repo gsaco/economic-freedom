@@ -1,0 +1,12 @@
+{
+  "base_url": "https://example.electionguide.org/api",
+  "endpoint": "/elections",
+  "token": "REPLACE_WITH_TOKEN",
+  "auth_header": "Authorization",
+  "auth_scheme": "Bearer",
+  "params": {
+    "format": "json",
+    "page": 1
+  },
+  "output_path": "data/raw/electionguide/elections.json"
+}
