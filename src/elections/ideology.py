@@ -33,106 +33,112 @@ def build_ideology_obs(
     pf_external: pd.DataFrame,
     country_map: pd.DataFrame,
     audit_dir: Path,
+    sources_enabled: list[str] | None = None,
 ) -> pd.DataFrame:
     rows = []
+    enabled = set(sources_enabled) if sources_enabled is not None else {"vparty", "ches", "parlgov", "elff"}
 
     # V-Party
-    vparty_obs = vparty.copy()
-    vparty_obs = vparty_obs.rename(columns={"pf_party_id": "partyfacts_id", "year": "year", "v2pariglef": "ideo_raw"})
-    vparty_obs["source"] = "vparty"
-    vparty_obs["ideo_scale_note"] = "vparty_v2pariglef"
-    vparty_obs = vparty_obs[["partyfacts_id", "year", "ideo_raw", "source", "ideo_scale_note"]]
-    vparty_obs = vparty_obs.dropna(subset=["partyfacts_id", "ideo_raw"])
-    rows.append(vparty_obs)
+    if "vparty" in enabled:
+        vparty_obs = vparty.copy()
+        vparty_obs = vparty_obs.rename(columns={"pf_party_id": "partyfacts_id", "year": "year", "v2pariglef": "ideo_raw"})
+        vparty_obs["source"] = "vparty"
+        vparty_obs["ideo_scale_note"] = "vparty_v2pariglef"
+        vparty_obs = vparty_obs[["partyfacts_id", "year", "ideo_raw", "source", "ideo_scale_note"]]
+        vparty_obs = vparty_obs.dropna(subset=["partyfacts_id", "ideo_raw"])
+        rows.append(vparty_obs)
 
     # CHES
-    ches_map = pf_external[pf_external["dataset_key"] == "ches"].copy()
-    ches_map["dataset_party_id"] = ches_map["dataset_party_id"].astype(str)
-    ches_tmp = ches.copy()
-    ches_tmp["party_id"] = ches_tmp["party_id"].astype(str)
-    ches_tmp = ches_tmp.merge(ches_map[["dataset_party_id", "partyfacts_id"]], left_on="party_id", right_on="dataset_party_id", how="left")
-    ches_obs = ches_tmp.rename(columns={"lrecon": "ideo_raw", "year": "year"})
-    ches_obs["source"] = "ches"
-    ches_obs["ideo_scale_note"] = "ches_lrecon"
-    ches_obs = ches_obs[["partyfacts_id", "year", "ideo_raw", "source", "ideo_scale_note"]]
-    ches_obs = ches_obs.dropna(subset=["partyfacts_id", "ideo_raw"])
-    rows.append(ches_obs)
+    if "ches" in enabled:
+        ches_map = pf_external[pf_external["dataset_key"] == "ches"].copy()
+        ches_map["dataset_party_id"] = ches_map["dataset_party_id"].astype(str)
+        ches_tmp = ches.copy()
+        ches_tmp["party_id"] = ches_tmp["party_id"].astype(str)
+        ches_tmp = ches_tmp.merge(ches_map[["dataset_party_id", "partyfacts_id"]], left_on="party_id", right_on="dataset_party_id", how="left")
+        ches_obs = ches_tmp.rename(columns={"lrecon": "ideo_raw", "year": "year"})
+        ches_obs["source"] = "ches"
+        ches_obs["ideo_scale_note"] = "ches_lrecon"
+        ches_obs = ches_obs[["partyfacts_id", "year", "ideo_raw", "source", "ideo_scale_note"]]
+        ches_obs = ches_obs.dropna(subset=["partyfacts_id", "ideo_raw"])
+        rows.append(ches_obs)
 
     # ParlGov
-    parlgov_map = pf_external[pf_external["dataset_key"] == "parlgov"].copy()
-    parlgov_map["dataset_party_id"] = parlgov_map["dataset_party_id"].astype(str)
-    parlgov_tmp = parlgov_pos.copy()
-    parlgov_tmp["party_id"] = parlgov_tmp["party_id"].astype(str)
-    parlgov_tmp = parlgov_tmp.merge(parlgov_map[["dataset_party_id", "partyfacts_id"]], left_on="party_id", right_on="dataset_party_id", how="left")
-    parlgov_obs = parlgov_tmp.rename(columns={"state_market": "ideo_raw"})
-    parlgov_obs["source"] = "parlgov"
-    parlgov_obs["ideo_scale_note"] = "parlgov_state_market"
-    parlgov_obs["year"] = pd.NA
-    parlgov_obs = parlgov_obs[["partyfacts_id", "year", "ideo_raw", "source", "ideo_scale_note"]]
-    parlgov_obs = parlgov_obs.dropna(subset=["partyfacts_id", "ideo_raw"])
-    rows.append(parlgov_obs)
+    if "parlgov" in enabled:
+        parlgov_map = pf_external[pf_external["dataset_key"] == "parlgov"].copy()
+        parlgov_map["dataset_party_id"] = parlgov_map["dataset_party_id"].astype(str)
+        parlgov_tmp = parlgov_pos.copy()
+        parlgov_tmp["party_id"] = parlgov_tmp["party_id"].astype(str)
+        parlgov_tmp = parlgov_tmp.merge(parlgov_map[["dataset_party_id", "partyfacts_id"]], left_on="party_id", right_on="dataset_party_id", how="left")
+        parlgov_obs = parlgov_tmp.rename(columns={"state_market": "ideo_raw"})
+        parlgov_obs["source"] = "parlgov"
+        parlgov_obs["ideo_scale_note"] = "parlgov_state_market"
+        parlgov_obs["year"] = pd.NA
+        parlgov_obs = parlgov_obs[["partyfacts_id", "year", "ideo_raw", "source", "ideo_scale_note"]]
+        parlgov_obs = parlgov_obs.dropna(subset=["partyfacts_id", "ideo_raw"])
+        rows.append(parlgov_obs)
 
     # ELFF (fuzzy match to PartyFacts)
-    # Map ELFF countries to ISO3
-    country_lookup = country_map[["iso3", "country_name_std"]].copy()
-    country_lookup["country_norm"] = country_lookup["country_name_std"].map(normalize_name)
-    elff = elff.copy()
-    elff["country_norm"] = elff["countryname"].map(normalize_name)
-    elff = elff.merge(country_lookup[["iso3", "country_norm"]], on="country_norm", how="left")
+    if "elff" in enabled:
+        # Map ELFF countries to ISO3
+        country_lookup = country_map[["iso3", "country_name_std"]].copy()
+        country_lookup["country_norm"] = country_lookup["country_name_std"].map(normalize_name)
+        elff = elff.copy()
+        elff["country_norm"] = elff["countryname"].map(normalize_name)
+        elff = elff.merge(country_lookup[["iso3", "country_norm"]], on="country_norm", how="left")
 
-    # Build PartyFacts aliases
-    pf_core = pf_core.copy()
-    pf_core["iso3"] = pf_core["country"].astype(str).str.upper()
-    pf_aliases = []
-    for _, row in pf_core.iterrows():
-        for col in ["name", "name_english", "name_short", "name_other"]:
-            val = row.get(col)
-            if pd.isna(val) or val is None:
+        # Build PartyFacts aliases
+        pf_core = pf_core.copy()
+        pf_core["iso3"] = pf_core["country"].astype(str).str.upper()
+        pf_aliases = []
+        for _, row in pf_core.iterrows():
+            for col in ["name", "name_english", "name_short", "name_other"]:
+                val = row.get(col)
+                if pd.isna(val) or val is None:
+                    continue
+                norm = normalize_name(val)
+                if not norm:
+                    continue
+                pf_aliases.append({
+                    "partyfacts_id": row["partyfacts_id"],
+                    "iso3": row["iso3"],
+                    "alias": norm,
+                })
+        pf_aliases = pd.DataFrame(pf_aliases)
+
+        elff_rows = []
+        for _, row in elff.iterrows():
+            iso3 = row.get("iso3")
+            if pd.isna(iso3):
                 continue
-            norm = normalize_name(val)
-            if not norm:
+            party_norm = normalize_name(row.get("partyname"))
+            if not party_norm:
                 continue
-            pf_aliases.append({
-                "partyfacts_id": row["partyfacts_id"],
-                "iso3": row["iso3"],
-                "alias": norm,
+            pool = pf_aliases[pf_aliases["iso3"] == iso3]
+            if pool.empty:
+                continue
+            choices = pool["alias"].tolist()
+            if process and fuzz:
+                best, score, _ = process.extractOne(party_norm, choices, scorer=fuzz.token_sort_ratio)
+            else:
+                best = None
+                score = 0
+                for c in choices:
+                    if c == party_norm:
+                        best = c
+                        score = 100
+                        break
+            if best is None or score < 90:
+                continue
+            pid = pool.loc[pool["alias"] == best, "partyfacts_id"].iloc[0]
+            elff_rows.append({
+                "partyfacts_id": pid,
+                "year": row.get("year"),
+                "ideo_raw": row.get("econlr"),
+                "source": "elff",
+                "ideo_scale_note": "elff_econlr",
             })
-    pf_aliases = pd.DataFrame(pf_aliases)
-
-    elff_rows = []
-    for _, row in elff.iterrows():
-        iso3 = row.get("iso3")
-        if pd.isna(iso3):
-            continue
-        party_norm = normalize_name(row.get("partyname"))
-        if not party_norm:
-            continue
-        pool = pf_aliases[pf_aliases["iso3"] == iso3]
-        if pool.empty:
-            continue
-        choices = pool["alias"].tolist()
-        if process and fuzz:
-            best, score, _ = process.extractOne(party_norm, choices, scorer=fuzz.token_sort_ratio)
-        else:
-            best = None
-            score = 0
-            for c in choices:
-                if c == party_norm:
-                    best = c
-                    score = 100
-                    break
-        if best is None or score < 90:
-            continue
-        pid = pool.loc[pool["alias"] == best, "partyfacts_id"].iloc[0]
-        elff_rows.append({
-            "partyfacts_id": pid,
-            "year": row.get("year"),
-            "ideo_raw": row.get("econlr"),
-            "source": "elff",
-            "ideo_scale_note": "elff_econlr",
-        })
-    if elff_rows:
-        rows.append(pd.DataFrame(elff_rows))
+        if elff_rows:
+            rows.append(pd.DataFrame(elff_rows))
 
     obs = pd.concat(rows, ignore_index=True)
     obs["ideo_raw"] = pd.to_numeric(obs["ideo_raw"], errors="coerce")
@@ -148,7 +154,13 @@ def build_ideology_obs(
     return obs[["partyfacts_id", "iso3", "source", "year", "ideo_raw", "ideo_std", "ideo_scale_note"]]
 
 
-def assign_ideology_to_elections(elections: pd.DataFrame, obs: pd.DataFrame, source_priority: list[str], year_windows: dict) -> pd.DataFrame:
+def assign_ideology_to_elections(
+    elections: pd.DataFrame,
+    obs: pd.DataFrame,
+    source_priority: list[str],
+    year_windows: dict,
+    stale_after_years: int | None = None,
+) -> pd.DataFrame:
     df = elections.copy()
     obs = obs.copy()
 
@@ -219,13 +231,26 @@ def assign_ideology_to_elections(elections: pd.DataFrame, obs: pd.DataFrame, sou
         for i, r in enumerate(results)
     ]
 
+    df["ideology_1_source_key"] = [r[1]["source"] if r[1] is not None else pd.NA for r in results]
+    df["ideology_2_source_key"] = [r[2]["source"] if r[2] is not None else pd.NA for r in results]
+    df["ideology_1_year"] = df["ideo_year_1"]
+    df["ideology_2_year"] = df["ideo_year_2"]
+    df["ideology_1_year_gap"] = df["ideo_year_diff_1"]
+    df["ideology_2_year_gap"] = df["ideo_year_diff_2"]
+    if stale_after_years is not None:
+        df["ideology_1_stale_flag"] = df["ideology_1_year_gap"].apply(lambda x: bool(x > stale_after_years) if pd.notna(x) else pd.NA)
+        df["ideology_2_stale_flag"] = df["ideology_2_year_gap"].apply(lambda x: bool(x > stale_after_years) if pd.notna(x) else pd.NA)
+    else:
+        df["ideology_1_stale_flag"] = pd.NA
+        df["ideology_2_stale_flag"] = pd.NA
+
     # compute margin_market
     df["margin_market"] = pd.NA
     df["D_market_win"] = pd.NA
     df["margin_market_abs"] = pd.NA
 
     has_ideo = df["ideo_std_1"].notna() & df["ideo_std_2"].notna() & df["share_1"].notna() & df["share_2"].notna()
-    more_market_party1 = df["ideo_std_1"] >= df["ideo_std_2"]
+    more_market_party1 = df["ideo_std_1"].fillna(-np.inf) >= df["ideo_std_2"].fillna(-np.inf)
     df.loc[has_ideo & more_market_party1, "margin_market"] = df.loc[has_ideo & more_market_party1, "share_1"] - df.loc[has_ideo & more_market_party1, "share_2"]
     df.loc[has_ideo & (~more_market_party1), "margin_market"] = df.loc[has_ideo & (~more_market_party1), "share_2"] - df.loc[has_ideo & (~more_market_party1), "share_1"]
     df.loc[has_ideo, "D_market_win"] = (df.loc[has_ideo, "margin_market"] >= 0).astype(int)

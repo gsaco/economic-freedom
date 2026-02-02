@@ -11,14 +11,15 @@ _non_alnum_re = re.compile(r"[^a-z0-9]+")
 
 
 def normalize_name(value: str | None) -> str:
-    if value is None:
+    if value is None or (isinstance(value, float) and pd.isna(value)):
         return ""
     text = str(value).strip()
     if not text:
         return ""
-    text = unicodedata.normalize("NFKC", text)
-    text = text.replace("&", "and")
     text = text.lower()
+    text = unicodedata.normalize("NFKD", text)
+    text = text.encode("ascii", "ignore").decode("ascii")
+    text = text.replace("&", "and")
     text = _non_alnum_re.sub(" ", text)
     text = _whitespace_re.sub(" ", text).strip()
     return text

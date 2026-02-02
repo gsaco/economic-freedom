@@ -24,22 +24,15 @@ params:
     tie_delta: 0.5
     year_window: 10  # max window for candidate pool bounds
   ideology:
-    source_priority: [vparty, ches, elff, parlgov]
+    sources_enabled: [vparty]
+    source_priority: [vparty]
     year_windows:
-      vparty: 4
-      ches: 4
-      elff: 8
-      parlgov: null
+      vparty: 10
+    stale_after_years: 5
   dedupe:
     source_rank: [ned_pres, ned_parl, clea_lc]
     prefer_date_precision: [day, month, year]
-  efw:
-    horizons: [0,1,2,3,4,5,6,7,8]
+    margin_diff_max: 5
   standardization:
     share_proportion_threshold: 1.5
     stable_sort: mergesort
-  flags:
-    nelda_competitive_values:
-      yes: ["yes"]
-      no: ["no"]
-      unclear: ["unclear", "N/A"]

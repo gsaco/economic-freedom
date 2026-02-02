@@ -2,10 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 import pandas as pd
-import pyreadstat
-import zipfile
 
-from .io import read_ned_pres, read_ned_parl, read_nelda, read_clea_lc, read_vparty, read_efw_panel, read_dpi, read_ches, read_elff, read_des_zip, read_idea, read_cow2iso
+from .io import read_ned_pres, read_ned_parl, read_clea_lc, read_vparty, read_cow2iso
 
 
 def _year_range(series) -> str | None:
@@ -49,21 +47,6 @@ def build_source_registry(raw_root: Path, external_root: Path, out_path: Path) -
         "notes": f"rows={len(ned_parl)} cols={len(ned_parl.columns)}",
     })
 
-    # NELDA
-    nelda = read_nelda(raw_root / "nelda" / "NELDA 6.0" / "id & q-wide_share.dta")
-    rows.append({
-        "source_id": "nelda_6_dta",
-        "file": str(raw_root / "nelda" / "NELDA 6.0" / "id & q-wide_share.dta"),
-        "format": "Stata .dta",
-        "unit_of_observation": "Election event",
-        "time_coverage": _year_range(nelda.get("year")),
-        "geo_coverage": f"countries={nelda['country'].nunique()}" if "country" in nelda else None,
-        "core_IDs_present": "electionid, ccode, year, mmdd",
-        "suspected_duplicates": "electionid should be unique",
-        "key_variables": "nelda1..nelda58",
-        "notes": f"rows={len(nelda)} cols={len(nelda.columns)}",
-    })
-
     # CLEA LC
     clea = read_clea_lc(raw_root / "clea" / "clea_lc_20251015.sav")
     rows.append({
@@ -92,21 +75,6 @@ def build_source_registry(raw_root: Path, external_root: Path, out_path: Path) -
         "suspected_duplicates": "unique on (v2paid,year) expected",
         "key_variables": "v2pariglef",
         "notes": f"rows={len(vparty)} cols={len(vparty.columns)}",
-    })
-
-    # EFW panel
-    efw = read_efw_panel(raw_root / "efw" / "efotw-2025-master-index-data-for-researchers-iso.xlsx")
-    rows.append({
-        "source_id": "efw_2025_iso_xlsx",
-        "file": str(raw_root / "efw" / "efotw-2025-master-index-data-for-researchers-iso.xlsx"),
-        "format": "Excel .xlsx",
-        "unit_of_observation": "Country × year",
-        "time_coverage": _year_range(efw.get("Year")),
-        "geo_coverage": f"iso3={efw['ISO_Code'].nunique()}" if "ISO_Code" in efw else None,
-        "core_IDs_present": "ISO_Code, Year",
-        "suspected_duplicates": "unique on (ISO_Code,Year) expected",
-        "key_variables": "Summary, Area 1..5",
-        "notes": f"rows={len(efw)} cols={len(efw.columns)}",
     })
 
     # External key datasets (prefer repo-level PartyFacts files if present)
@@ -144,76 +112,6 @@ def build_source_registry(raw_root: Path, external_root: Path, out_path: Path) -
         "notes": f"rows={len(pf_external)} cols={len(pf_external.columns)}",
     })
 
-    ches = read_ches(external_root / "ches_1999_2024.csv")
-    rows.append({
-        "source_id": "ches_1999_2024",
-        "file": str(external_root / "ches_1999_2024.csv"),
-        "format": "CSV",
-        "unit_of_observation": "Party × survey year",
-        "time_coverage": _year_range(ches.get("year")),
-        "geo_coverage": f"countries={ches['country'].nunique()}" if "country" in ches else None,
-        "core_IDs_present": "party_id, country, year",
-        "suspected_duplicates": "unique on (party_id,year) expected",
-        "key_variables": "lrecon",
-        "notes": f"rows={len(ches)} cols={len(ches.columns)}",
-    })
-
-    elff = read_elff(external_root / "elff_partypos_summaries.csv")
-    rows.append({
-        "source_id": "elff_partypos",
-        "file": str(external_root / "elff_partypos_summaries.csv"),
-        "format": "CSV",
-        "unit_of_observation": "Party × year",
-        "time_coverage": _year_range(elff.get("year")),
-        "geo_coverage": f"countries={elff['countryname'].nunique()}" if "countryname" in elff else None,
-        "core_IDs_present": "countryname, partyname, year",
-        "suspected_duplicates": "duplicates possible",
-        "key_variables": "econlr",
-        "notes": f"rows={len(elff)} cols={len(elff.columns)}",
-    })
-
-    des = read_des_zip(external_root / "des_es_data_v50.zip")
-    rows.append({
-        "source_id": "des_es_v50",
-        "file": str(external_root / "des_es_data_v50.zip::es_data-v5_0.csv"),
-        "format": "CSV in ZIP",
-        "unit_of_observation": "Election-level ES features",
-        "time_coverage": _year_range(pd.to_datetime(des.get("date"), errors="coerce").dt.year),
-        "geo_coverage": f"countries={des['country'].nunique()}" if "country" in des else None,
-        "core_IDs_present": "elec_id, country, date",
-        "suspected_duplicates": "elec_id unique expected",
-        "key_variables": "electoral system fields",
-        "notes": f"rows={len(des)} cols={len(des.columns)}",
-    })
-
-    idea = read_idea(external_root / "idea_export_electoral_system_design_database.xlsx")
-    rows.append({
-        "source_id": "idea_esd",
-        "file": str(external_root / "idea_export_electoral_system_design_database.xlsx"),
-        "format": "Excel .xlsx",
-        "unit_of_observation": "Country × year",
-        "time_coverage": _year_range(idea.get("Year")),
-        "geo_coverage": f"iso3={idea['ISO3'].nunique()}" if "ISO3" in idea else None,
-        "core_IDs_present": "ISO3, Year",
-        "suspected_duplicates": "possible duplicates",
-        "key_variables": "electoral system fields",
-        "notes": f"rows={len(idea)} cols={len(idea.columns)}",
-    })
-
-    dpi = read_dpi(external_root / "dpi" / "DPI2020" / "dpi2020.csv")
-    rows.append({
-        "source_id": "dpi_2020",
-        "file": str(external_root / "dpi" / "DPI2020" / "dpi2020.csv"),
-        "format": "CSV",
-        "unit_of_observation": "Country × year",
-        "time_coverage": _year_range(dpi.get("year")),
-        "geo_coverage": f"countries={dpi['countryname'].nunique()}" if "countryname" in dpi else None,
-        "core_IDs_present": "countryname, ifs, year",
-        "suspected_duplicates": "unique on (countryname,year) expected",
-        "key_variables": "system, checks, ideology",
-        "notes": f"rows={len(dpi)} cols={len(dpi.columns)}",
-    })
-
     # cow2iso crosswalk (if present)
     cow2iso_path = repo_root / "cow2iso.csv"
     if cow2iso_path.exists():
@@ -229,6 +127,30 @@ def build_source_registry(raw_root: Path, external_root: Path, out_path: Path) -
             "suspected_duplicates": "multiple iso3 per cow_id across time",
             "key_variables": "cow_id, iso3, valid_from, valid_until, statenme",
             "notes": f"rows={len(cow2iso)} cols={len(cow2iso.columns)}",
+        })
+
+    # EFW panel dataset (if present)
+    efw_candidates: list[Path] = []
+    for root in [repo_root, external_root, raw_root, repo_root / "data"]:
+        if root.exists():
+            efw_candidates += sorted(root.rglob("*efw*.xls*"))
+            efw_candidates += sorted(root.rglob("*EFW*.xls*"))
+    seen = set()
+    efw_candidates = [p for p in efw_candidates if not (p in seen or seen.add(p))]
+    if efw_candidates:
+        efw_path = efw_candidates[0]
+        efw = pd.read_excel(efw_path, sheet_name="EFW Panel Dataset")
+        rows.append({
+            "source_id": "efw_panel",
+            "file": str(efw_path),
+            "format": "Excel",
+            "unit_of_observation": "Country × year",
+            "time_coverage": _year_range(efw.get("Year")),
+            "geo_coverage": f"countries={efw['Countries'].nunique()}" if "Countries" in efw else None,
+            "core_IDs_present": "ISO_Code, Countries, Year",
+            "suspected_duplicates": "unique on (ISO_Code,Year) expected",
+            "key_variables": "Summary, Area 1-5",
+            "notes": f"rows={len(efw)} cols={len(efw.columns)}",
         })
 
     out = pd.DataFrame(rows)

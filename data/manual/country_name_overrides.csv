@@ -1,0 +1,22 @@
+source_system,source_name_raw,iso3,notes
+DPI,Bosnia-Herz,BIH,abbrev
+DPI,C. Verde Is.,CPV,abbrev
+DPI,Cent. Af. Rep.,CAF,abbrev
+DPI,Comoro Is.,COM,abbrev
+DPI,Czech Rep.,CZE,abbrev
+DPI,Dom. Rep.,DOM,abbrev
+DPI,Eq. Guinea,GNQ,abbrev
+DPI,P. N. Guinea,PNG,abbrev
+DPI,S. Africa,ZAF,abbrev
+DPI,FRG/Germany,DEU,historical
+NED,Bosnia-Herz,BIH,abbrev
+NED,C. Verde Is.,CPV,abbrev
+NED,Cent. Af. Rep.,CAF,abbrev
+NED,Comoro Is.,COM,abbrev
+NED,Czech Rep.,CZE,abbrev
+NED,Dom. Rep.,DOM,abbrev
+NED,Eq. Guinea,GNQ,abbrev
+NED,P. N. Guinea,PNG,abbrev
+NED,S. Africa,ZAF,abbrev
+NED,Congo (DRC),COD,disambiguated
+NED,FRG/Germany,DEU,historical
