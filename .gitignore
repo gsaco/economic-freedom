@@ -37,6 +37,7 @@ data/raw/
 data/external/
 data/interim/
 data/processed/
+papers/
 reports/
 
 # Local secrets/config
