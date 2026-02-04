@@ -1,0 +1,6 @@
+key_name,cols,n_rows,rows_with_any_missing_key_component,duplicate_rows_including_missing,duplicate_rows_nonmissing_only,unique_key_values_nonmissing
+event_id,event_id,6503,0,0,0,6503
+source+source_election_id,"source,source_election_id",6503,0,4,4,6501
+iso3+office_type+election_date,"iso3,office_type,election_date",6503,352,332,2,6150
+iso3+office_type+election_year+election_month_int,"iso3,office_type,election_year,election_month_int",6503,2,4,4,6499
+iso3+office_type+election_year,"iso3,office_type,election_year",6503,2,359,359,6318

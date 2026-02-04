@@ -1,0 +1,22 @@
+| var                          |   missing_share |
+|:-----------------------------|----------------:|
+| macro_urban_share            |      0.00606061 |
+| macro_dep_ratio              |      0.00606061 |
+| macro_pop_growth             |      0.00606061 |
+| macro_pop_log                |      0.00606061 |
+| macro_gdp_pc_real_log        |      0.0848485  |
+| macro_exrate_lcu_per_usd_log |      0.0870523  |
+| macro_gdp_growth             |      0.105785   |
+| macro_gdp_pc_growth          |      0.105785   |
+| macro_natres_rents_gdp       |      0.118457   |
+| macro_inflation_cpi          |      0.211019   |
+| macro_exports_gdp            |      0.21157    |
+| macro_trade_gdp              |      0.21157    |
+| macro_imports_gdp            |      0.21157    |
+| macro_gov_cons_gdp           |      0.220937   |
+| macro_inv_gdp                |      0.25124    |
+| macro_money_broad_gdp        |      0.263912   |
+| macro_ca_gdp                 |      0.296419   |
+| macro_credit_private_gdp     |      0.334986   |
+| macro_tax_rev_gdp            |      0.53719    |
+| macro_debt_gdp               |      0.835813   |

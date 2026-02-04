@@ -1,0 +1,4 @@
+step,n_rows,n_cols,n_iso3,notes,n_dupe_rows_on_keys
+loaded_elections_master,6544,109,216,,0.0
+after_strict_key_resolution,6541,114,216,,
+after_flag_bool_conversion,6541,125,216,,

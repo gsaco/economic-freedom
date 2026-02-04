@@ -1,0 +1,32 @@
+primary_key:
+- event_id
+required_columns:
+- event_id
+- iso3
+- office_type
+- election_year
+- date_precision
+- dpi_year_pre1
+- dpi_year_post1
+categorical_domains:
+  office_type:
+  - parliamentary
+  - presidential
+  date_precision:
+  - day
+  - month
+  - year
+bounds:
+  share_1:
+  - 0
+  - 100
+  share_2:
+  - 0
+  - 100
+  margin:
+  - 0
+  - 100
+invariants:
+- event_id unique
+- if share_2 notna then margin == share_1 - share_2 (tolerance 1e-6)
+- if date_precision == day then election_date notna
