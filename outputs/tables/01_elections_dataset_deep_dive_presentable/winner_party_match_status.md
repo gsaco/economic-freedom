@@ -1,11 +1,12 @@
 | winner_party_match_status   |   n_events |      share |
 |:----------------------------|-----------:|-----------:|
-| matched_exact               |       2863 | 0.440258   |
-| unmatched                   |       1335 | 0.20529    |
-| missing                     |       1050 | 0.161464   |
-| ambiguous_exact             |        612 | 0.0941104  |
-| generic                     |        360 | 0.0553591  |
-| matched_fuzzy               |        155 | 0.0238352  |
+| matched_exact               |       1945 | 0.299093   |
+| matched_clea_id             |       1346 | 0.206981   |
+| unmatched                   |       1159 | 0.178225   |
+| missing                     |       1041 | 0.16008    |
+| ambiguous_exact             |        413 | 0.0635091  |
+| generic                     |        355 | 0.0545902  |
+| matched_fuzzy               |        130 | 0.0199908  |
 | no_candidates               |         85 | 0.0130709  |
-| ambiguous_fuzzy             |         29 | 0.00445948 |
-| matched_fuzzy_tie           |         14 | 0.00215285 |
+| ambiguous_fuzzy             |         17 | 0.00261418 |
+| matched_fuzzy_tie           |         12 | 0.0018453  |

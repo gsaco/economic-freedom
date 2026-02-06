@@ -1,11 +1,12 @@
 | runnerup_party_match_status   |   n_events |      share |
 |:------------------------------|-----------:|-----------:|
-| matched_exact                 |       2344 | 0.360449   |
-| missing                       |       1770 | 0.272182   |
-| unmatched                     |       1229 | 0.18899    |
-| ambiguous_exact               |        554 | 0.0851915  |
-| generic                       |        322 | 0.0495156  |
-| matched_fuzzy                 |        163 | 0.0250654  |
-| no_candidates                 |         74 | 0.0113794  |
-| ambiguous_fuzzy               |         29 | 0.00445948 |
-| matched_fuzzy_tie             |         18 | 0.00276795 |
+| missing                       |       1763 | 0.271106   |
+| matched_exact                 |       1473 | 0.226511   |
+| matched_clea_id               |       1274 | 0.19591    |
+| unmatched                     |       1088 | 0.167307   |
+| ambiguous_exact               |        368 | 0.0565893  |
+| generic                       |        300 | 0.0461326  |
+| matched_fuzzy                 |        121 | 0.0186068  |
+| no_candidates                 |         75 | 0.0115331  |
+| ambiguous_fuzzy               |         25 | 0.00384438 |
+| matched_fuzzy_tie             |         16 | 0.0024604  |

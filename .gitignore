@@ -37,6 +37,11 @@ data/raw/
 data/external/
 data/interim/
 data/processed/
+outputs/
+pwt70-74.csv
+pwt75-89.csv
+pwt90-04.csv
+pwt2005-23.csv
 papers/
 reports/
 
